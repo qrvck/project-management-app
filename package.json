@@ -14,9 +14,7 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
-    "rdndmb-html5-to-touch": "^7.1.0",
     "react": "^18.2.0",
-    "react-dnd-multi-backend": "^7.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.3",
     "react-redux": "^8.0.5",
@@ -51,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@dnd-kit/core": "^6.0.5",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
