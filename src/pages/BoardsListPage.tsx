@@ -1,7 +1,13 @@
 import React from 'react';
+import BoardsList from 'components/boardsListPage/boardsList/BoardsList';
 
 function BoardsListPage() {
-  return <h1>Boards List Page</h1>;
+  return (
+    <>
+      <h2>Boards</h2>
+      <BoardsList />
+    </>
+  );
 }
 
 export default BoardsListPage;
