@@ -15,6 +15,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "i18next": "^22.0.5",
+    "i18next-http-backend": "^2.0.1",
     "rdndmb-html5-to-touch": "^7.1.0",
     "react": "^18.2.0",
     "react-dnd-multi-backend": "^7.1.1",
