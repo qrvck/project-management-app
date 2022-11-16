@@ -1,13 +1,15 @@
+@import 'styles/_colors.scss';
+
 .link {
-  color: #000000;
+  color: inherit;
   text-decoration: none;
 
-  border: 2px solid #d9d6fe;
+  border: 2px solid $light-violet;
   border-radius: 6px;
   cursor: pointer;
 
   &:hover {
-    border-color: #7a5af8;
+    border-color: $violet;
   }
 }
 
