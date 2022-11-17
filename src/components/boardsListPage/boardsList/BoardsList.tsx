@@ -40,7 +40,7 @@ function BoardsList() {
   return (
     <div className={styles.list}>
       {boards.map((board) => (
-        <BoardCard key={board._id} to={board._id} tittle={board.title} owner={board.owner} />
+        <BoardCard key={board._id} to={board._id} title={board.title} owner={board.owner} />
       ))}
     </div>
   );

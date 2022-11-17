@@ -10,17 +10,17 @@ import styles from './BoardCard.module.scss';
 
 interface IBoardCardProps {
   to: string;
-  tittle: string;
+  title: string;
   owner: string;
 }
 
-function BoardCard({ to, tittle, owner }: IBoardCardProps) {
+function BoardCard({ to, title, owner }: IBoardCardProps) {
   const { t } = useTranslation('boards-list-page');
 
   return (
     <NavLink className={styles.link} to={to}>
       <Paper className={styles.paper} elevation={4}>
-        <p className={styles.title}>{tittle}</p>
+        <p className={styles.title}>{title}</p>
         <p className={styles.owner}>
           {t('owner')}: {owner}
         </p>
