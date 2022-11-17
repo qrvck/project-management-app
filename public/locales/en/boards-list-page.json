@@ -1,6 +1,4 @@
 {
   "title": "Your boards",
-  "card": {
-    "owner": "owner"
-  }
+  "owner": "owner"
 }

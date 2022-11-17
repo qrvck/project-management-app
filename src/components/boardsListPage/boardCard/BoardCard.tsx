@@ -22,7 +22,7 @@ function BoardCard({ to, tittle, owner }: IBoardCardProps) {
       <Paper className={styles.paper} elevation={4}>
         <p className={styles.title}>{tittle}</p>
         <p className={styles.owner}>
-          {t('card.owner')}: {owner}
+          {t('owner')}: {owner}
         </p>
         <IconButton className={styles.deleteBtn}>
           <Delete />
