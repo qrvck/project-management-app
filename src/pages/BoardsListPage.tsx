@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import BoardsList from 'components/boardsListPage/boardsList/BoardsList';
+import BoardsList from 'components/boardsListPage/boardsList';
 
 function BoardsListPage() {
   const { t } = useTranslation('boards-list-page');

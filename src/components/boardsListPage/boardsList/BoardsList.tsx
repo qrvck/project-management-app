@@ -1,5 +1,5 @@
 import React from 'react';
-import BoardCard from '../boardCard/BoardCard';
+import BoardCard from '../boardCard';
 import styles from './BoardsList.module.scss';
 
 const boards = [
