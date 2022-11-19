@@ -9,7 +9,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<WelcomePage />} />
-        <Route path="auth" element={<AuthPage />} />
+        <Route path="sign-in" element={<AuthPage />} />
+        <Route path="sign-up" element={<AuthPage />} />
         <Route path="edit-profile" element={<EditProfilePage />} />
         <Route path="board-management" element={<BoardManagementPage />} />
         <Route path="boards-list" element={<BoardsListPage />} />
