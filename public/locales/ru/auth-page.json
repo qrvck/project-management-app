@@ -1,0 +1,17 @@
+{
+  "image title": "Добро пожаловать",
+  "image subtitle": "всего пара кликов и мы начнем",
+  "sign up": "Регистрация",
+  "name": "Имя",
+  "login": "Логин",
+  "password": "Пароль",
+
+  "this field is required": "обязательное поле",
+  "minimum length 2 symbols": "минимальная длина 2 символа",
+  "minimum length 4 symbols": "минимальная длина 4 символа",
+  "minimum length 8 symbols": "минимальная длина 8 символа",
+  "maximum length 20 symbols": "максимальная длина 20 символов",
+  "must only contain letters": "должен содержать только буквы",
+  "must only contain latin letters or/and digits": "должен содержать только латинские буквы или/и цифры", 
+  "must contain at least one number, uppercase and lowercase letters": "должен содержать минимум одну цифру, заглавную и строчную буквы"
+}

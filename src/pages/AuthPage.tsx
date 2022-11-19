@@ -1,7 +1,8 @@
 import React from 'react';
+import AuthForm from 'components/authPage/authForm';
 
 function AuthPage() {
-  return <h1>Auth Page</h1>;
+  return <AuthForm />;
 }
 
 export default AuthPage;

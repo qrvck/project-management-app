@@ -1,0 +1,64 @@
+@import 'styles/_variables';
+
+.wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 70px;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 57px 62px;
+
+  box-shadow: 0px 7px 25px $gray;
+  border-radius: 24px;
+}
+
+.welcomeImage {
+  display: block;
+  margin: auto;
+}
+
+.imageTitle, 
+.imageSubtitle {
+  text-align: center;
+}
+
+.imageTitle {
+  margin: 15px 0 0;
+
+  font-weight: 600;
+  font-size: 24px;
+}
+
+
+.imageSubtitle {
+  margin: 0;
+  font-size: 14px;
+}
+
+.title {
+  margin: 0;
+  
+  font-size: 76px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form {
+  margin-top: 30px;
+}
+
+.nameInput,
+.loginInput,
+.passwordInput {
+  & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: $violet;
+  }
+}
+
+.submitButton {
+ background-color: $violet;
+ &:hover {
+  background-color: $dark-violet;
+ }
+}
