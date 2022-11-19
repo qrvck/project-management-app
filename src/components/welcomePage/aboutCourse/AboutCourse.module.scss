@@ -1,0 +1,33 @@
+@import 'styles/_variables';
+@import 'styles/_mixins';
+
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+
+  @include for-mobile {
+    max-width: none;
+  }
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  padding: 20px 0;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  text-shadow: $grey-text-shadow;
+}
+
+.description {
+  margin: 0;
+}
