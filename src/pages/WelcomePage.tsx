@@ -1,7 +1,21 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import AboutApp from 'components/welcomePage/aboutApp';
+import Team from 'components/welcomePage/team';
+import AboutCourse from 'components/welcomePage/aboutCourse';
+import styles from './WelcomePage.module.scss';
 
 function WelcomePage() {
-  return <h1>Welcome Page</h1>;
+  const { t } = useTranslation('welcome-page');
+
+  return (
+    <>
+      <h2 className={styles.pageTitle}>{t('title')}</h2>
+      <AboutApp />
+      <Team />
+      <AboutCourse />
+    </>
+  );
 }
 
 export default WelcomePage;
