@@ -2,6 +2,7 @@
   "image title": "Welcome aboard",
   "image subtitle": "just a couple of clicks and we’ll start",
   "sign up": "Sign Up",
+  "sign in": "Sign In",
   "name": "Name",
   "login": "Login",
   "password": "Password",
@@ -13,5 +14,5 @@
   "maximum length 20 symbols": "maximum length 20 symbols",
   "must only contain letters": "must only contain letters",
   "must only contain latin letters or/and digits": "must only contain latin letters or/and digits",
-  "must contain at least one number, uppercase and lowercase letter": "must contain at least one number, uppercase and lowercase letter"
+  "at least one number, one uppercase and one lowercase letters": "at least one number, one uppercase and one lowercase letters"
 }

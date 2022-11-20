@@ -2,12 +2,12 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 70px;
+  grid-template-columns: 37% 56%;
+  column-gap: 7%;
   align-items: center;
-  max-width: 760px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 57px 62px;
+  padding: 32px;
 
   box-shadow: 0px 7px 25px $gray;
   border-radius: 24px;
@@ -27,7 +27,7 @@
   margin: 15px 0 0;
 
   font-weight: 600;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 
@@ -39,7 +39,7 @@
 .title {
   margin: 0;
   
-  font-size: 76px;
+  font-size: 50px;
   text-align: center;
   font-weight: 600;
 }
