@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Navigation from './navigation';
 import styles from './Header.module.scss';
 
 function Header() {
@@ -28,7 +30,12 @@ function Header() {
       ref={headerRef}
     >
       <div className={`container ${styles.container}`}>
-        <h1 className={styles.logo}>Project Management</h1>
+        <h1 className={styles.logo}>
+          <Link className={styles.logoLink} to="/">
+            Project Management
+          </Link>
+        </h1>
+        <Navigation isSticky={sticky.isSticky} />
       </div>
     </header>
   );
