@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BoardColumn } from '../boardColumn';
 import {
   DndContext,
@@ -11,6 +11,8 @@ import {
   UniqueIdentifier,
   useSensor,
   useSensors,
+  DragOverlay,
+  DragStartEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -19,7 +21,7 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { Grid } from '@mui/material';
-import { TTask } from '../taskList';
+import { Task, TTask } from '../taskList';
 import styles from './Board.module.scss';
 
 const generateColumns = () => {
@@ -69,6 +71,11 @@ const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
 
 function Board() {
   const [columns, setColumns] = useState(initColumns);
+  const [activeItem, setActiveItem] = useState<{
+    id: UniqueIdentifier;
+    columnId: string;
+    type: string;
+  } | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -77,6 +84,26 @@ function Board() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  useEffect(() => {
+    if (!activeItem) return;
+
+    const activeColumn = columns[getColumnIndex(activeItem?.columnId, columns)];
+
+    const activeTask = activeColumn.items.find(
+      (item: TTask) => item.id === activeItem.id.toString()
+    );
+    if (activeTask) {
+      //setActiveTask(activeTask);
+      return;
+    }
+  }, [activeItem, columns]);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    console.log(active);
+    active && setActiveItem({ id: active.id, columnId: active.data.current?.columnId, type: '' });
+  };
 
   const handlerDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
@@ -170,13 +197,16 @@ function Board() {
       }
       return;
     }
+    //setActiveId(null);
   };
+
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCorners}
       onDragOver={handlerDragOver}
       onDragEnd={handlerDragEnd}
+      onDragStart={handleDragStart}
     >
       <SortableContext
         items={columns.map((column) => column?.id)}
@@ -190,6 +220,9 @@ function Board() {
           </div>
         </div>
       </SortableContext>
+      <DragOverlay>
+        {activeId && activeTask ? <Task {...activeTask} isDragging></Task> : null}
+      </DragOverlay>
     </DndContext>
   );
 }
