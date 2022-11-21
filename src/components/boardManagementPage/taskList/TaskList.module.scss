@@ -1,0 +1,11 @@
+@import '../../../styles/colors';
+@import '../../../styles/mixins';
+
+.scrollable {
+  padding-top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+
+  @include custom-scroll;
+}
