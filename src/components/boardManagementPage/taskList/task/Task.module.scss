@@ -1,0 +1,7 @@
+@import '../../../../styles/colors';
+
+.task {
+  border: 1px solid;
+  border-color: $task-border;
+  border-radius: 0.3rem;
+}
