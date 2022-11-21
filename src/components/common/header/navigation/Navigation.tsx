@@ -12,13 +12,14 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from './Navigation.module.scss';
 
 function Navigation({ isSticky }: { isSticky: boolean }) {
-  const { t } = useTranslation('header');
+  const { t, i18n } = useTranslation('header');
   const isUserLogged = true;
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState(i18n.language);
 
   const handleLangChange = (event: React.MouseEvent<HTMLElement>, newLang: string) => {
     if (newLang) {
       setLang(newLang);
+      i18n.changeLanguage(newLang);
     }
   };
 
