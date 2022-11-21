@@ -1,0 +1,77 @@
+@import 'styles/_variables';
+
+.navigationList {
+  display: flex;
+  column-gap: 10px;
+}
+
+.navigationItem {
+  display: flex;
+  align-items: center;
+  column-gap: 2px;
+}
+
+.navigationLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navigationButton {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.navigationLink,
+.navigationButton {
+  position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      display: block;
+      width: 0;
+      height: 2px;
+      background-color: $dark-grey;
+      transition: width 0.5s;
+    }
+
+    &.sticky::after {
+      background-color: $white;
+    }
+
+    &:hover::after {
+      left: 0;
+      width: 100%;
+    }
+}
+
+.langToggle {
+  font-size: 18px;
+  color: inherit;
+}
+
+.langItem {
+  width: 41px;
+  padding: 2px 5px;
+  font: inherit;
+  color: inherit;
+
+    &.sticky {
+      border-color: rgba(255, 255, 255, 0.30);
+
+        &:global.Mui-selected {
+          color: inherit;
+          background-color: rgba(255, 255, 255, 0.18);
+        }
+
+        &:global.Mui-selected:hover {
+          background-color: rgba(255, 255, 255, 0.22);
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.06);
+        }
+    }
+}
