@@ -6,11 +6,11 @@
   background-color: $white;
   transition: all 0.3s linear;
 
-    &.sticky {
-      box-shadow: 0 10px 22px 0 rgba(0, 0, 0, 0.2);
-      background-color: $dark-violet;
-      color: $white;
-    }
+  &.sticky {
+    box-shadow: 0 10px 22px 0 rgba(0, 0, 0, 0.2);
+    background-color: $dark-violet;
+    color: $white;
+  }
 }
 
 .container {
