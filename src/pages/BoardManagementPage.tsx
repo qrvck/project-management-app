@@ -1,6 +1,6 @@
 import React from 'react';
-import { Board } from '../components/boardManagementPage';
 import { useTranslation } from 'react-i18next';
+import Board from 'components/boardManagementPage';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 

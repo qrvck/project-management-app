@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BoardColumn } from '../boardColumn';
+import BoardColumn from '../boardColumn';
 import {
   DndContext,
   closestCorners,
