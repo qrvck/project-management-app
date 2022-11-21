@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { yellow } from '@mui/material/colors';
 import { TTask } from './Task.types';
+import Box from '@mui/material/Box';
+import yellow from '@mui/material/colors/yellow';
 import styles from './Task.module.scss';
 
 interface TTaskProps extends TTask {

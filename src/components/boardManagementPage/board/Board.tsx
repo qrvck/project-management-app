@@ -18,8 +18,8 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { Grid } from '@mui/material';
 import { TTask } from '../taskList';
+import Grid from '@mui/material/Grid';
 import styles from './Board.module.scss';
 
 const generateColumns = () => {

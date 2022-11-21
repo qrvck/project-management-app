@@ -1,7 +1,8 @@
 import React from 'react';
 import { Board } from '../components/boardManagementPage';
-import { Box, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 type TBoardManagementPageProps = {
   boardId?: number;
