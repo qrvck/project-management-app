@@ -1,5 +1,4 @@
-import TaskList from './TaskList';
-import { Task, TTask } from './task';
+export { Task } from './task';
+export { default } from './TaskList';
 
-export { TaskList, Task };
-export type { TTask };
+export type { TTask } from './task';
