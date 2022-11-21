@@ -9,12 +9,14 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Hamburger from './hamburger';
 import styles from './Navigation.module.scss';
 
 function Navigation({ isSticky }: { isSticky: boolean }) {
   const { t, i18n } = useTranslation('header');
-  const isUserLogged = true;
+  const isUserLogged = true; //когда будет готова регистрация, брать из глобального стэйта
   const [lang, setLang] = useState(i18n.language);
+  const [isHamburgerOpen, setHamburgerOpen] = useState(false);
 
   const handleLangChange = (event: React.MouseEvent<HTMLElement>, newLang: string) => {
     if (newLang) {
@@ -23,9 +25,21 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
     }
   };
 
+  const toggleHamburger = () => {
+    setHamburgerOpen(!isHamburgerOpen);
+  };
+
   return (
-    <nav>
-      <ul className={styles.navigationList}>
+    <nav className={styles.navigation}>
+      <div
+        className={`${styles.hamburgerOverlay} ${isHamburgerOpen ? styles.hidden : ''}`}
+        onClick={toggleHamburger}
+      />
+      <ul
+        className={`${styles.navigationList} ${isSticky ? styles.sticky : ''} ${
+          isHamburgerOpen ? styles.hidden : ''
+        }`}
+      >
         {isUserLogged ? (
           <li className={styles.navigationItem}>
             <HomeIcon />
@@ -121,6 +135,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
           </ToggleButtonGroup>
         </li>
       </ul>
+      <Hamburger isSticky={isSticky} isOpen={isHamburgerOpen} toggleHamburger={toggleHamburger} />
     </nav>
   );
 }
