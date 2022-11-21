@@ -1,0 +1,52 @@
+@import 'styles/_variables';
+@import 'styles/_mixins';
+
+.hamburger {
+  display: none;
+    @include for-all-below-desktop {
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      flex-flow: column nowrap;
+      width: 25px;
+      height: 25px; 
+      cursor: pointer;
+      transition: 0.5s;
+        &:hover {
+          transform: scale(1.05);
+        }
+    }
+}
+
+.line {
+  width: 25px;
+  height: 2px;
+  border-radius: 10px;
+  background-color: $dark-grey;
+  transform-origin: 1px;
+  transition: all 0.3s linear;
+    &.sticky {
+      background-color: $white;
+    }
+}
+
+.line1 {
+  transform: rotate(0);
+    &.open {
+      transform: rotate(45deg);
+    }
+}
+
+.line2 {
+  opacity: 1;
+    &.open {
+      opacity: 0;
+    }
+}
+
+.line3 {
+  transform: rotate(0);
+    &.open {
+      transform: rotate(-45deg);
+    }
+}
