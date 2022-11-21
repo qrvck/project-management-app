@@ -1,0 +1,25 @@
+@import './colors';
+
+@mixin custom-scroll {
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+    height: $scrollbar-height;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-border-radius: $scrollbar-radius;
+    border-radius: $scrollbar-radius;
+    background-color: $scrollbar-track;
+    box-shadow: $scrollbar-track-shadow;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    -webkit-border-radius: $scrollbar-radius;
+    border-radius: $scrollbar-radius;
+    background-color: $scrollbar-thumb;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $scrollbar-thumb-hover;
+  }
+}
