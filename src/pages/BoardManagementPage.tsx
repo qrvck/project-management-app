@@ -13,7 +13,9 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
 
   return (
     <>
-      <h2>Board Management Page, boradId={boardId}</h2>
+      <h2>
+        {t('title')} [boardId={boardId}]
+      </h2>
       <Box mb={2}>
         <Button variant="contained">+ {t('addColumn')}</Button>
       </Box>
