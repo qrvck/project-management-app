@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -24,7 +25,7 @@ type TFormValues = {
 
 function SignUpForm() {
   const [isShowingPassword, setShowingPassword] = useState<boolean>(false);
-  const { t } = useTranslation('auth-page');
+  const { t } = useTranslation('sign-pages');
   const {
     register,
     handleSubmit,
@@ -169,6 +170,18 @@ function SignUpForm() {
               {t('sign up')}
             </Button>
           </form>
+          <div className={styles.redirectWrapper}>
+            <p className={styles.redirectText}>{t('already have an account')}?</p>
+            <Button
+              className={styles.redirectButton}
+              variant="outlined"
+              size="small"
+              component={Link}
+              to="/sign-in"
+            >
+              {t('sign in')}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
