@@ -19,7 +19,6 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { TTask } from '../taskList';
-import Grid from '@mui/material/Grid';
 import styles from './Board.module.scss';
 
 const generateColumns = () => {
@@ -184,9 +183,9 @@ function Board() {
       >
         <div className={styles.fixed}>
           <div className={styles.scrollable}>
-            <Grid container spacing={2} wrap={'nowrap'} className={styles.columns}>
+            <div className={styles.columns}>
               {columns.map((column) => column?.id && <BoardColumn key={column?.id} {...column} />)}
-            </Grid>
+            </div>
           </div>
         </div>
       </SortableContext>

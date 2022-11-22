@@ -27,30 +27,29 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
   });
 
   return (
-    <Grid item xs={4}>
-      <Paper
-        elevation={3}
-        ref={setNodeRef}
-        className={styles.column}
-        sx={{
-          transform: CSS.Transform.toString(transform),
-          transition,
-          cursor: isDragging ? 'grabbing' : 'grab',
-          backgroundColor: isDragging ? grey[300] : grey[200],
-        }}
-        {...listeners}
-        {...attributes}
-      >
-        <h3 className={styles.title}>{label}</h3>
+    <Paper
+      elevation={3}
+      ref={setNodeRef}
+      className={styles.column}
+      sx={{
+        flexShrink: 0,
+        transform: CSS.Transform.toString(transform),
+        transition,
+        cursor: isDragging ? 'grabbing' : 'grab',
+        backgroundColor: isDragging ? grey[300] : grey[200],
+      }}
+      {...listeners}
+      {...attributes}
+    >
+      <h3 className={styles.title}>{label}</h3>
 
-        <TaskList items={items} columnId={id} />
-        <Box p={1}>
-          <Button size="small" color="secondary" variant="contained">
-            + {t('addTask')}
-          </Button>
-        </Box>
-      </Paper>
-    </Grid>
+      <TaskList items={items} columnId={id} />
+      <Box p={1}>
+        <Button size="small" color="secondary" variant="contained">
+          + {t('addTask')}
+        </Button>
+      </Box>
+    </Paper>
   );
 }
 

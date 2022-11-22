@@ -20,6 +20,10 @@ body {
   min-height: 100vh;
 }
 
+main {
+  display: flex;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
