@@ -6,6 +6,8 @@
   "name": "Имя",
   "login": "Логин",
   "password": "Пароль",
+  "have no account yet": "Еще нет аккаунта",
+  "already have an account": "Уже имеете аккаунт",
 
   "this field is required": "обязательное поле",
   "minimum length 2 symbols": "минимальная длина 2 символа",

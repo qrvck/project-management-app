@@ -82,3 +82,27 @@
   background-color: $dark-violet;
  }
 }
+
+.redirectWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.redirectText {
+  margin: 0;
+  font-size: 15px;
+}
+
+.redirectButton {
+  width: 120px;
+
+  color: $violet;
+  border-color: $violet;
+
+  &:hover {
+    color: $dark-violet;
+    border-color: $dark-violet;
+  } 
+}

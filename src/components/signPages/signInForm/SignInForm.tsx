@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import Login from '@mui/icons-material/Login';
 import LockIcon from '@mui/icons-material/Lock';
@@ -22,7 +23,7 @@ type TFormValues = {
 
 function SignInForm() {
   const [isShowingPassword, setShowingPassword] = useState<boolean>(false);
-  const { t } = useTranslation('auth-page');
+  const { t } = useTranslation('sign-pages');
   const {
     register,
     handleSubmit,
@@ -112,6 +113,18 @@ function SignInForm() {
               {t('sign in')}
             </Button>
           </form>
+          <div className={styles.redirectWrapper}>
+            <p className={styles.redirectText}>{t('have no account yet')}?</p>
+            <Button
+              className={styles.redirectButton}
+              variant="outlined"
+              size="small"
+              component={Link}
+              to="/sign-up"
+            >
+              {t('sign up')}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

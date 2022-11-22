@@ -6,6 +6,8 @@
   "name": "Name",
   "login": "Login",
   "password": "Password",
+  "have no account yet": "Have no account yet",
+  "already have an account": "Already have an account",
 
   "this field is required": "this field is required",
   "minimum length 2 symbols": "minimum length 2 symbols",
