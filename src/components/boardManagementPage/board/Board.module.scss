@@ -1,11 +1,11 @@
 @import 'styles/_mixins';
 
 .fixed {
-  width: 98vw;
-  overflow: hidden;
-  margin: 0 auto;
   flex-grow: 1;
+  width: 98vw;
   height: 210px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .scrollable {
