@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { yellow } from '@mui/material/colors';
 import { TTask } from './Task.types';
+import Box from '@mui/material/Box';
+import yellow from '@mui/material/colors/yellow';
 import styles from './Task.module.scss';
 
-interface TTaskProps extends TTask {
+interface ITaskProps extends TTask {
   isDragging?: boolean;
 }
 
-function Task({ title, isDragging = false }: TTaskProps) {
+function Task({ title, isDragging = false }: ITaskProps) {
   return (
     <Box
       className={styles.task}

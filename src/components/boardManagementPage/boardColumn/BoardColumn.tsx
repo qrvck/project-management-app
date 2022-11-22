@@ -1,10 +1,13 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { grey } from '@mui/material/colors';
-import { Box, Button, Grid, Paper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TaskList, TTask } from '../taskList';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
 type TBoardColumnProps = {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BoardColumn } from '../boardColumn';
+import BoardColumn from '../boardColumn';
 import {
   DndContext,
   closestCorners,
@@ -20,8 +20,8 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { Grid } from '@mui/material';
-import { Task, TTask } from '../taskList';
+import { TTask } from '../taskList';
+import Grid from '@mui/material/Grid';
 import styles from './Board.module.scss';
 
 const generateColumns = () => {

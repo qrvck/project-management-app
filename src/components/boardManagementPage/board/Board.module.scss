@@ -1,11 +1,8 @@
-@import '../../../styles/mixins';
+@import 'styles/_mixins';
 
 .fixed {
-  width: 98vw;
-  overflow: hidden;
-  margin: 0 auto;
   flex-grow: 1;
-  height: 210px;
+  overflow: hidden;
 }
 
 .scrollable {
@@ -18,6 +15,5 @@
 }
 
 .columns {
-  height: 100%;
-  padding: 0 16px;
+  padding: 16px;
 }

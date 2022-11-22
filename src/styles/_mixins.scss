@@ -1,4 +1,4 @@
-@import './colors';
+@import './variables';
 
 @mixin custom-scroll {
   &::-webkit-scrollbar {
@@ -21,5 +21,11 @@
 
   &::-webkit-scrollbar-thumb:hover {
     background: $scrollbar-thumb-hover;
+  }
+}
+
+@mixin for-mobile {
+  @media (max-width: 600px) {
+    @content;
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
-import { orange } from '@mui/material/colors';
-import { Box } from '@mui/material';
 import { TaskContainer, TTask } from './task';
+import Box from '@mui/material/Box';
+import orange from '@mui/material/colors/orange';
 import styles from './TaskList.module.scss';
 
 type TTaskListProps = {

@@ -1,6 +1,4 @@
-import TaskContainer from './TaskContainer';
-import Task from './Task';
-import { TTask } from './Task.types';
+export { default as TaskContainer } from './TaskContainer';
+export { default as Task } from './Task';
 
-export { TaskContainer, Task };
-export type { TTask };
+export type { TTask } from './Task.types';
