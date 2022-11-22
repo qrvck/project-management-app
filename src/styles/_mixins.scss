@@ -23,3 +23,9 @@
     background: $scrollbar-thumb-hover;
   }
 }
+
+@mixin for-mobile {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
