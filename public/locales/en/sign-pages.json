@@ -14,7 +14,8 @@
   "minimum length 4 symbols": "minimum length 4 symbols",
   "minimum length 8 symbols": "minimum length 8 symbols",
   "maximum length 20 symbols": "maximum length 20 symbols",
-  "must only contain letters": "must only contain letters",
-  "must only contain latin letters or/and digits": "must only contain latin letters or/and digits",
+  "must start only with a letter": "must start only with a letter",
+  "must contain only letters": "must contain only letters",
+  "must contain only latin letters or/and digits": "must contain only latin letters or/and digits",
   "at least one number, one uppercase and one lowercase letters": "at least one number, one uppercase and one lowercase letters"
 }

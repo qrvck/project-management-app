@@ -84,7 +84,7 @@ function SignUpForm() {
                 },
                 pattern: {
                   value: /^[a-zA-Zа-яёА-ЯЁ]+$/u,
-                  message: t('must only contain letters') || '',
+                  message: t('must contain only letters') || '',
                 },
               })}
             />
@@ -117,10 +117,10 @@ function SignUpForm() {
                 },
                 pattern: {
                   value: /^[a-zA-Z1-9]+$/,
-                  message: t('must only contain latin letters or/and digits') || '',
+                  message: t('must contain only latin letters or/and digits') || '',
                 },
                 validate: (value) =>
-                  !parseInt(value.slice(0, 1)) || t('can only start with a letter') || '',
+                  !parseInt(value.slice(0, 1)) || t('must start only with a letter') || '',
               })}
             />
 
