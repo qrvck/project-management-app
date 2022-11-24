@@ -13,7 +13,7 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
   const { t } = useTranslation('board-management-page');
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`container ${styles.wrapper}`}>
       <h2>
         {t('title')} [boardId={boardId}]
       </h2>
