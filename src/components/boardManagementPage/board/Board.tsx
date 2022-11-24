@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import BoardColumn from '../boardColumn';
 import {
   DndContext,
-  closestCorners,
   DragEndEvent,
   DragOverEvent,
   KeyboardSensor,
@@ -13,6 +12,7 @@ import {
   useSensors,
   DragOverlay,
   DragStartEvent,
+  closestCenter,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -20,9 +20,11 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { TTask } from '../taskList';
+import { Task, TTask } from '../taskList';
 import Grid from '@mui/material/Grid';
 import styles from './Board.module.scss';
+import { TColumn, TDraggedItem, EDraggedItemType } from './Board.types';
+import BoardColumnOverlay from '../boardColumn/BoardColumnOverlay';
 
 const generateColumns = () => {
   return Array(5)
@@ -30,6 +32,8 @@ const generateColumns = () => {
     .map((_, idx) => ({
       id: self.crypto.randomUUID(),
       label: `Column ${idx + 1}`,
+      //owner: 'userId of owner',
+      //users: [34, 67, 45],
       items: [
         {
           id: self.crypto.randomUUID(),
@@ -55,12 +59,6 @@ const generateColumns = () => {
 
 const initColumns = generateColumns();
 
-type TColumn = {
-  id: string;
-  label: string;
-  items: TTask[];
-};
-
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
   return columns.findIndex((column) => column.id === id);
 };
@@ -71,11 +69,9 @@ const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
 
 function Board() {
   const [columns, setColumns] = useState(initColumns);
-  const [activeItem, setActiveItem] = useState<{
-    id: UniqueIdentifier;
-    columnId: string;
-    type: string;
-  } | null>(null);
+  const [columnIds, setColumnIds] = useState<string[]>(() => columns.map((column) => column?.id));
+  const [draggedItem, setDraggedItem] = useState<TDraggedItem | null>(null);
+  const [activeItem, setActiveItem] = useState<TTask | TColumn | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -85,24 +81,32 @@ function Board() {
     })
   );
 
+  const draggedItemType: EDraggedItemType = draggedItem?.data.current?.type;
+
   useEffect(() => {
-    if (!activeItem) return;
+    if (!draggedItem) return;
 
-    const activeColumn = columns[getColumnIndex(activeItem?.columnId, columns)];
+    const { id } = draggedItem;
 
-    const activeTask = activeColumn.items.find(
-      (item: TTask) => item.id === activeItem.id.toString()
-    );
-    if (activeTask) {
-      //setActiveTask(activeTask);
+    if (draggedItem.data.current?.type === EDraggedItemType.COLUMN) {
+      const activeColumn = columns.find((column) => column.id === id);
+      activeColumn && setActiveItem(activeColumn);
       return;
     }
-  }, [activeItem, columns]);
+    const columnId = draggedItem.data.current?.columnId;
+
+    const activeColumn = columns[getColumnIndex(columnId, columns)];
+
+    const activeTask =
+      activeColumn && activeColumn.items.find((item: TTask) => item.id === id.toString());
+
+    activeTask && setActiveItem(activeTask);
+  }, [draggedItem, columns]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    console.log(active);
-    active && setActiveItem({ id: active.id, columnId: active.data.current?.columnId, type: '' });
+
+    active && setDraggedItem(active);
   };
 
   const handlerDragOver = (event: DragOverEvent) => {
@@ -110,8 +114,12 @@ function Board() {
 
     if (!over || active.id === over.id) return;
 
+    const activeType = active.data.current?.type;
+    const overType = over.data.current?.type;
+
     const activeContainerID: string = active.data.current?.columnId || null;
-    const overContainerID: string = over?.data.current?.columnId || null;
+    const overContainerID: string =
+      (activeType !== overType && over?.id) || over?.data.current?.columnId || null;
 
     if (!activeContainerID || !overContainerID || activeContainerID === overContainerID) {
       return;
@@ -124,7 +132,11 @@ function Board() {
       if (!activeColumn || !overColumn) return [...prev];
 
       const activeIndex = getTaskIndex(active.id, activeColumn);
-      const overIndex = !overColumn.items.length ? 0 : getTaskIndex(over?.id, overColumn);
+      const overIndex = !overColumn.items.length
+        ? 0
+        : overType !== activeType && overType === EDraggedItemType.TASK
+        ? overColumn.items.length
+        : getTaskIndex(over?.id, overColumn);
 
       prev[prev.indexOf(activeColumn)] = {
         ...activeColumn,
@@ -160,6 +172,7 @@ function Board() {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
+      setDraggedItem(null);
       return;
     }
 
@@ -170,13 +183,19 @@ function Board() {
       return;
     }
 
-    if (activeContainerID === overContainerID) {
+    if (activeContainerID === overContainerID || columnIds.includes(overContainerID)) {
       const currentColumn = columns.find(({ id }) => id === activeContainerID);
 
       if (!currentColumn) {
+        const activeType = active.data.current?.type;
+        const overType = over.data.current?.type;
+
         if (active.id !== over?.id) {
           const activeIndex: number = getColumnIndex(active.id, columns);
-          const overIndex: number = getColumnIndex(over?.id || 0, columns);
+          const overIndex: number =
+            activeType !== overType && activeType === EDraggedItemType.COLUMN
+              ? getColumnIndex(over?.data.current?.columnId, columns)
+              : getColumnIndex(over?.id || 0, columns);
 
           setColumns(arrayMove(columns, activeIndex, overIndex));
         }
@@ -197,13 +216,16 @@ function Board() {
       }
       return;
     }
-    //setActiveId(null);
+
+    setDraggedItem(null);
   };
+
+  const DraggedComponent = draggedItemType === EDraggedItemType.COLUMN ? BoardColumnOverlay : Task;
 
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={closestCenter}
       onDragOver={handlerDragOver}
       onDragEnd={handlerDragEnd}
       onDragStart={handleDragStart}
@@ -220,9 +242,7 @@ function Board() {
           </div>
         </div>
       </SortableContext>
-      <DragOverlay>
-        {activeId && activeTask ? <Task {...activeTask} isDragging></Task> : null}
-      </DragOverlay>
+      <DragOverlay>{activeItem && <DraggedComponent item={activeItem} dragOverlay />}</DragOverlay>
     </DndContext>
   );
 }

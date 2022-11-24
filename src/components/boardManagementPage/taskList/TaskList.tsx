@@ -31,7 +31,7 @@ function TaskList({ columnId, items }: TTaskListProps) {
       >
         <ul>
           {items.map((item) => (
-            <TaskContainer key={item.id} {...item} columnId={columnId} />
+            <TaskContainer key={item.id} item={item} columnId={columnId} />
           ))}
         </ul>
       </Box>

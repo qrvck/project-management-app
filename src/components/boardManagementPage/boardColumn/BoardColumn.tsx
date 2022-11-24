@@ -3,6 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
 import { TaskList, TTask } from '../taskList';
+import { EDraggedItemType } from '../board';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -21,7 +22,7 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
-      type: 'column',
+      type: EDraggedItemType.COLUMN,
       columnId: 'root',
     },
   });
@@ -37,12 +38,12 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
           transition,
           cursor: isDragging ? 'grabbing' : 'grab',
           backgroundColor: isDragging ? grey[300] : grey[200],
+          opacity: isDragging ? 0.5 : 1,
         }}
         {...listeners}
         {...attributes}
       >
         <h3 className={styles.title}>{label}</h3>
-
         <TaskList items={items} columnId={id} />
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained">

@@ -3,16 +3,20 @@ import Task from './Task';
 import { TTask } from './Task.types';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
+import { EDraggedItemType } from 'components/boardManagementPage';
 
-interface TTaskContainerProps extends TTask {
+type TTaskContainerProps = {
+  item: TTask;
   columnId: string;
-}
+  dragOverlay?: boolean;
+};
 
-function TaskContainer({ id, title, description, columnId }: TTaskContainerProps) {
+function TaskContainer({ item, columnId, dragOverlay = false }: TTaskContainerProps) {
+  const { id } = item;
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
-      type: 'task',
+      type: EDraggedItemType.TASK,
       columnId,
     },
   });
@@ -24,7 +28,7 @@ function TaskContainer({ id, title, description, columnId }: TTaskContainerProps
 
   return (
     <li style={style} ref={setNodeRef} {...attributes} {...listeners}>
-      <Task id={id} title={title} description={description} isDragging={isDragging} />
+      <Task item={item} dragOverlay={dragOverlay} />
     </li>
   );
 }

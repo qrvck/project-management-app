@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import Board from 'components/boardManagementPage';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import styles from './BoardsListPage.module.scss';
 
 type TBoardManagementPageProps = {
   boardId?: number;
@@ -13,7 +12,7 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
   const { t } = useTranslation('board-management-page');
 
   return (
-    <div className={styles.wrapper}>
+    <>
       <h2>
         {t('title')} [boardId={boardId}]
       </h2>
@@ -21,7 +20,7 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
         <Button variant="contained">+ {t('addColumn')}</Button>
       </Box>
       <Board />
-    </div>
+    </>
   );
 }
 
