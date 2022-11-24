@@ -41,7 +41,7 @@ function SignUpForm() {
   };
 
   const onSubmit: SubmitHandler<TFormValues> = (data) => {
-    console.log(data);
+    console.log(data); // не финальная реализация. функционал будет расширен и доработан
   };
 
   return (
