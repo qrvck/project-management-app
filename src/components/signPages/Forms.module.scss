@@ -79,7 +79,7 @@
 .submitButton {
  background-color: $violet;
  &:hover {
-  background-color: $dark-violet;
+  background-color: $deep-violet;
  }
 }
 
@@ -102,7 +102,7 @@
   border-color: $violet;
 
   &:hover {
-    color: $dark-violet;
-    border-color: $dark-violet;
+    color: $deep-violet;
+    border-color: $deep-violet;
   } 
 }
