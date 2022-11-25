@@ -10,9 +10,7 @@
   "already have an account": "Уже имеете аккаунт",
 
   "this field is required": "обязательное поле",
-  "minimum length 2 symbols": "минимальная длина 2 символов",
-  "minimum length 4 symbols": "минимальная длина 4 символов",
-  "minimum length 8 symbols": "минимальная длина 8 символов",
+  "minimum length symbols": "минимальная длина символов - {{symbolsCount}}",
   "maximum length 20 symbols": "максимальная длина 20 символов",
   "must start only with a letter": "должен начинаться только с буквы",
   "must contain only letters": "должен содержать только буквы",

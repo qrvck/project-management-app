@@ -76,7 +76,7 @@ function SignUpForm() {
                 required: t('this field is required') || '',
                 minLength: {
                   value: 2,
-                  message: t('minimum length 2 symbols') || '',
+                  message: t('minimum length symbols', { symbolsCount: '2' }) || '',
                 },
                 maxLength: {
                   value: 20,
@@ -109,7 +109,7 @@ function SignUpForm() {
                 required: t('this field is required') || '',
                 minLength: {
                   value: 4,
-                  message: t('minimum length 4 symbols') || '',
+                  message: t('minimum length symbols', { symbolsCount: '4' }) || '',
                 },
                 maxLength: {
                   value: 20,
@@ -157,7 +157,7 @@ function SignUpForm() {
                 required: t('this field is required') || '',
                 minLength: {
                   value: 8,
-                  message: t('minimum length 8 symbols') || '',
+                  message: t('minimum length symbols', { symbolsCount: '8' }) || '',
                 },
                 pattern: {
                   value: /^(?=.*[0-9])(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ])/,

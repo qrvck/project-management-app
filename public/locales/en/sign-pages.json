@@ -10,9 +10,7 @@
   "already have an account": "Already have an account",
 
   "this field is required": "this field is required",
-  "minimum length 2 symbols": "minimum length 2 symbols",
-  "minimum length 4 symbols": "minimum length 4 symbols",
-  "minimum length 8 symbols": "minimum length 8 symbols",
+  "minimum length symbols": "minimum length symbols - {{symbolsCount}}",
   "maximum length 20 symbols": "maximum length 20 symbols",
   "must start only with a letter": "must start only with a letter",
   "must contain only letters": "must contain only letters",
