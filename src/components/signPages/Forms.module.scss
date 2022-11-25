@@ -34,7 +34,7 @@
   }
 }
 
-.imageTitle, 
+.imageTitle,
 .imageSubtitle {
   text-align: center;
 }
@@ -46,7 +46,6 @@
   font-size: 22px;
 }
 
-
 .imageSubtitle {
   margin: 0;
   font-size: 14px;
@@ -54,7 +53,7 @@
 
 .title {
   margin: 0;
-  
+
   font-size: 45px;
   text-align: center;
   font-weight: 600;
@@ -77,7 +76,7 @@
 .passwordInput {
   & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
     border-color: $violet;
-  };
+  }
 
   & :global(.MuiInputBase-root),
   & :global(.MuiFormHelperText-root) {
@@ -94,13 +93,13 @@
 .submitButton,
 .redirectButton {
   font-family: inherit;
-} 
+}
 
 .submitButton {
- background-color: $violet;
- &:hover {
-  background-color: $deep-violet;
- }
+  background-color: $violet;
+  &:hover {
+    background-color: $deep-violet;
+  }
 }
 
 .redirectWrapper {
@@ -124,5 +123,5 @@
   &:hover {
     color: $deep-violet;
     border-color: $deep-violet;
-  } 
+  }
 }
