@@ -1,0 +1,175 @@
+@import 'styles/_variables';
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pageTitle,
+.message {
+  text-align: center;
+}
+
+.pageTitle {
+  margin: 20px;
+  font-weight: 600;
+  line-height: 36px;
+}
+
+.message {
+  margin: 0;
+}
+
+.planet {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 25px 15px 15px;
+  border-radius: 50%;
+  background-color: $dove-grey;
+  box-shadow: inset -20px 0 0 0 $concrete, 0 0 30px 0 $concrete;
+  
+  & .crater {
+    position: absolute;
+    border-radius: 50%;
+    background-color: $battleship-grey; 
+  }
+  
+  & .crater:nth-child(1) {
+    top: 100px;
+    left: 40px;
+    width: 75px;
+    height: 80px;
+    box-shadow: inset 10px 0 3px 0 $grey, -3px 0 0 0.1px $smoke, 7px 0 3px 0 $concrete;
+  }
+
+  & .crater:nth-child(2) {
+    top: 220px;
+    left: 140px;
+    width: 28px;
+    height: 20px;
+    box-shadow: inset 6px 3px 6px 0 $grey, -1px -1px 0 1px $smoke, 6px 3px 6px 0 $concrete;
+    transform: rotate(-22deg);
+  }
+
+  & .crater:nth-child(3) {
+    top: 140px;
+    left: 200px;
+    width: 26px;
+    height: 36px;
+    box-shadow: inset 6px 0 3px 0 $grey, -2px 0 0 1px $smoke;
+    transform: rotate(12deg);
+  }
+
+  & .crater:nth-child(4) {
+    top: 220px;
+    left: 203px;
+    width: 8px;
+    height: 28px;
+    box-shadow: inset 2px 1px 1px 0 $concrete, inset -3px 3px 0 0 $concrete;
+    transform: rotate(52deg);
+  }
+
+  & .crater:nth-child(5) {
+    top: 8px;
+    left: 200px;
+    width: 13px;
+    height: 40px;
+    box-shadow: inset 6px 3px 0 0 $concrete, inset -3px 3px 0 0 $concrete;
+    transform: rotate(-47deg);
+  }
+  
+  .flag {
+    position: absolute;
+    top: -17px;
+    left: 42px;
+    padding: 3px 5px;
+    border-radius: 0 2px 2px 0;
+    background: $crimson;
+    font-size: 14px;
+    color: $white;
+    line-height: 20px;
+    transform: rotate(-32deg);
+    cursor: default;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -3px;
+      width: 3px;
+      height: 40px;
+      background: $davy-grey;
+    }
+  }
+
+  .car {
+    position: absolute;
+    top: 50px;
+    left: 180px;
+    transform: rotate(110deg);
+    .body {
+      position: absolute;
+      z-index: 99;
+      width: 15px;
+      height: 23px;
+      border-radius: 5px;
+      background: $white;
+      box-shadow: -3px 0 0 0 $battleship-grey;
+      &:after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 6px;
+        width: 10px;
+        height: 13px;
+        box-shadow: -4px -3px 0 0 $concrete;
+      }
+    }
+    
+    .wheels {
+      position: absolute;
+      left: -0.3em;
+      &:after,
+      &:before {
+        content: "";
+        position: absolute;
+        z-index: 9;
+        width: 24px;
+        height: 8px;
+        border-radius: 3px;
+        background: $dark-grey;
+      }
+      &:after {
+        top: 13px;
+      }
+      &:before {
+        top: 1px;
+      }
+    }
+    
+    .trace {
+      position: absolute;
+      top: 24px;
+      left: -15px;
+      transform: rotate(-22deg);
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: inset 3px 5px 0 0 $concrete;
+      }
+      &:after {
+        left: 9px; 
+      }
+      &:before {
+        left: 20px; 
+      }
+    }
+  }
+}
