@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import StarsIcon from '@mui/icons-material/Stars';
 import styles from './AboutApp.module.scss';
 
@@ -9,11 +9,9 @@ function AboutApp() {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>{t('aboutHeader')}</h3>
-      <div className={styles.descriptionContainer}>
-        <p className={styles.description}>{t('appDescription.paragraphOne')}</p>
-        <p className={styles.description}>{t('appDescription.paragraphTwo')}</p>
-        <p className={styles.description}>{t('appDescription.paragraphThree')}</p>
-      </div>
+      <p className={styles.description}>
+        <Trans>{t('appDescription')}</Trans>
+      </p>
       <div className={styles.features}>
         <div className={styles.feature}>
           <StarsIcon className={styles.starIcon} />

@@ -9,12 +9,12 @@ function WelcomePage() {
   const { t } = useTranslation('welcome-page');
 
   return (
-    <>
+    <div className="container">
       <h2 className={styles.pageTitle}>{t('title')}</h2>
       <AboutApp />
       <Team />
       <AboutCourse />
-    </>
+    </div>
   );
 }
 

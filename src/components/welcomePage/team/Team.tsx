@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Team.module.scss';
-import mentor from 'assets/images/mentor.png';
-import femaleProgrammer1 from 'assets/images/female-programmer-1.png';
-import femaleProgrammer2 from 'assets/images/female-programmer-2.png';
-import maleProgrammer from 'assets/images/male-programmer.png';
+import mentor from 'assets/images/team/mentor.png';
+import femaleProgrammer1 from 'assets/images/team/female-programmer-1.png';
+import femaleProgrammer2 from 'assets/images/team/female-programmer-2.png';
+import maleProgrammer from 'assets/images/team/male-programmer.png';
 
 function Team() {
   const { t } = useTranslation('welcome-page');

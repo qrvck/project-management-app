@@ -10,9 +10,8 @@
   }
 }
 
-.descriptionContainer {
-  display: flex;
-  flex-direction: column;
+.description {
+  margin: 0;
   padding: 20px 0;
 }
 
@@ -26,10 +25,6 @@
   font-size: 26px;
   font-weight: 700;
   text-shadow: $grey-text-shadow;
-}
-
-.description {
-  margin: 0;
 }
 
 .features {

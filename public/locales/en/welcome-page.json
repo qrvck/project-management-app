@@ -2,11 +2,7 @@
   "title": "Welcome!",
   "aboutHeader": "About Our App",
   "teamHeader": "Meet Our Teammates",
-  "appDescription": {
-    "paragraphOne": "This Project Management App was developed as the final part of the process of learning React at the Rolling Scopes School.",
-    "paragraphTwo": "The App has localization (English and Russian) and adaptive layout with a minimum page width of 320px.",
-    "paragraphThree": "Functionality available to authenticated users:"
-  },
+  "appDescription": "This Project Management App was developed as the final part of the process of learning React at the Rolling Scopes School.<br />The App has localization (English and Russian) and adaptive layout with a minimum page width of 320px.<br />Functionality available to authenticated users:",
   "featureOne": "Creating new boards, deleting existing ones",
   "featureTwo": "Creating new columns on the board, renaming and deleting existing ones",
   "featureThree": "Creating tasks in columns, viewing their full description, editing and deleting them",
@@ -20,6 +16,5 @@
   "memberTwo": "Uladzislau Kapitan",
   "memberThree": "Anna Zozulia",
   "memberFour": "Irina Kosyanchuk",
-  "schoolDescription": "The Rolling Scopes School is a free-of-charge and community-based education program created by a group of developers and existing since 2013. Everyone can study here, regardless of age, professional employment, or place of residence.",
-  "courseDescription": "The React Course is conducted in English, lasts more than 2 months and requires knowledge and experience in using the following technologies and tools: JavaScript, TypeScript, Git, GitHub, NPM, Webpack, CSS3 / HTML5, Chrome DevTools, Figma, REST."
+  "courseDescription": "The Rolling Scopes School is a free-of-charge and community-based education program created by a group of developers and existing since 2013. Everyone can study here, regardless of age, professional employment, or place of residence.<br />The React Course is conducted in English, lasts more than 2 months and requires knowledge and experience in using the following technologies and tools: JavaScript, TypeScript, Git, GitHub, NPM, Webpack, CSS3 / HTML5, Chrome DevTools, Figma, REST."
 }

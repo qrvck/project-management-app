@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import styles from './AboutCourse.module.scss';
 
 function AboutCourse() {
@@ -8,10 +8,9 @@ function AboutCourse() {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>Rolling Scopes School</h3>
-      <div className={styles.descriptionContainer}>
-        <p className={styles.description}>{t('schoolDescription')}</p>
-        <p className={styles.description}>{t('courseDescription')}</p>
-      </div>
+      <p className={styles.description}>
+        <Trans>{t('courseDescription')}</Trans>
+      </p>
     </div>
   );
 }
