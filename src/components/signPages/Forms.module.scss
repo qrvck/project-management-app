@@ -73,8 +73,18 @@
 .passwordInput {
   & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
     border-color: $violet;
+  };
+
+  & :global(.MuiInputBase-root),
+  & :global(.MuiFormHelperText-root) {
+    font-family: inherit;
   }
 }
+
+.submitButton,
+.redirectButton {
+  font-family: inherit;
+} 
 
 .submitButton {
  background-color: $violet;
