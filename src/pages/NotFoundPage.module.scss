@@ -94,6 +94,7 @@
     line-height: 20px;
     transform: rotate(-32deg);
     cursor: default;
+
     &:before {
       content: '';
       position: absolute;
@@ -110,6 +111,7 @@
     top: 50px;
     left: 180px;
     transform: rotate(110deg);
+
     .body {
       position: absolute;
       z-index: 99;
@@ -118,6 +120,7 @@
       border-radius: 5px;
       background: $white;
       box-shadow: -3px 0 0 0 $battleship-grey;
+
       &:after {
         content: '';
         position: absolute;
@@ -131,7 +134,7 @@
 
     .wheels {
       position: absolute;
-      left: -0.3em;
+      left: -6px;
       &:after,
       &:before {
         content: '';
@@ -142,9 +145,11 @@
         border-radius: 3px;
         background: $dark-grey;
       }
+
       &:after {
         top: 13px;
       }
+
       &:before {
         top: 1px;
       }
@@ -155,6 +160,7 @@
       top: 24px;
       left: -15px;
       transform: rotate(-22deg);
+
       &:before,
       &:after {
         content: '';
@@ -164,9 +170,11 @@
         border-radius: 50%;
         box-shadow: inset 3px 5px 0 0 $concrete;
       }
+
       &:after {
         left: 9px;
       }
+
       &:before {
         left: 20px;
       }

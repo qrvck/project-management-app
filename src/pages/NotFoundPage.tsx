@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import styles from './NotFoundPage.module.scss';
 
 function NotFoundPage() {
@@ -21,9 +21,9 @@ function NotFoundPage() {
         <div className={styles.flag}>404</div>
       </div>
       <h2 className={styles.pageTitle}>{t('title')}</h2>
-      <p className={styles.message}>{t('errorMessage.paragraphOne')}</p>
-      <p className={styles.message}>{t('errorMessage.paragraphTwo')}</p>
-      <p className={styles.message}>{t('errorMessage.paragraphThree')}</p>
+      <p className={styles.message}>
+        <Trans>{t('errorMessage')}</Trans>
+      </p>
     </div>
   );
 }
