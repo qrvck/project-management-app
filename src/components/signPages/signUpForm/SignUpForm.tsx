@@ -119,8 +119,8 @@ function SignUpForm() {
                   value: /^[a-zA-Z1-9]+$/,
                   message: t('must contain only latin letters or/and digits') || '',
                 },
-                validate: (value) =>
-                  !parseInt(value.slice(0, 1)) || t('must start only with a letter') || '',
+                validate: (inputValue) =>
+                  !parseInt(inputValue[0]) || t('must start only with a letter') || '',
               })}
             />
 
