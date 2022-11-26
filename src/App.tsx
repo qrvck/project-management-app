@@ -1,8 +1,15 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from 'components/common/layout/Layout';
-import { AuthPage, BoardManagementPage, BoardsListPage, WelcomePage, EditProfilePage } from 'pages';
+import {
+  AuthPage,
+  BoardManagementPage,
+  BoardsListPage,
+  WelcomePage,
+  EditProfilePage,
+  NotFoundPage,
+} from 'pages';
 
 function App() {
   return (
@@ -14,6 +21,8 @@ function App() {
         <Route path="edit-profile" element={<EditProfilePage />} />
         <Route path="board-management" element={<BoardManagementPage />} />
         <Route path="boards-list" element={<BoardsListPage />} />
+        <Route path="404" element={<NotFoundPage />} />
+        <Route path="*" element={<Navigate to="404" />} />
       </Route>
     </Routes>
   );
