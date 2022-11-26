@@ -1,0 +1,30 @@
+@import 'styles/_mixins';
+
+.fixed {
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrollable {
+  width: 100%;
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  @include custom-scroll;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding:8px 5px 8px;
+}

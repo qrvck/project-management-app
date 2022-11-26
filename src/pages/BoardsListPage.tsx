@@ -1,7 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import BoardsList from 'components/boardsListPage/boardsList';
+
+import styles from './BoardsListPage.module.scss';
 
 function BoardsListPage() {
-  return <h1>Boards List Page</h1>;
+  const { t } = useTranslation('boards-list-page');
+
+  return (
+    <div className={styles.wrapper}>
+      <h2>{t('title')}</h2>
+      <BoardsList />
+    </div>
+  );
 }
 
 export default BoardsListPage;
