@@ -1,0 +1,53 @@
+@import 'styles/_variables';
+@import 'styles/_mixins';
+
+.container {
+  padding: 50px 0;
+
+  @include for-mobile {
+    padding: 30px 0;
+  }
+}
+
+.members {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 30px 60px;
+  padding: 25px 0 20px 0;
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  width: 220px;
+}
+
+.photo {
+  width: 160px;
+  height: 160px;
+}
+
+.title,
+.name,
+.role {
+  text-align: center;
+}
+
+.title,
+.name {
+  font-weight: 700;
+}
+
+.title {
+  font-size: 26px;
+  text-shadow: $grey-text-shadow;
+}
+
+.name,
+.role {
+  margin: 0;
+}
