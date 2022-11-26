@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Board from 'components/boardManagementPage';
 import { AddColumn } from 'components/boardManagementPage/addColumnForm';
-import styles from './BoardsListPage.module.scss';
+import styles from './BoardManagementPage.module.scss';
 import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
 import { SubmitHandler } from 'react-hook-form';
 
