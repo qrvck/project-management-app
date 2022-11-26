@@ -1,0 +1,8 @@
+@import 'styles/_variables';
+
+.task {
+  border: 1px solid;
+  border-color: $task-border;
+  border-radius: 4px;
+  font-size: 14px;
+}

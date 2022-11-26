@@ -4,6 +4,7 @@ import BoardManagementPage from './BoardManagementPage';
 import BoardsListPage from './BoardsListPage';
 import WelcomePage from './WelcomePage';
 import EditProfilePage from './EditProfilePage';
+import NotFoundPage from './NotFoundPage';
 
 export {
   SignUpPage,
@@ -12,4 +13,5 @@ export {
   BoardsListPage,
   WelcomePage,
   EditProfilePage,
+  NotFoundPage,
 };
