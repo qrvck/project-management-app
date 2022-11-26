@@ -3,8 +3,14 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import AddColumnForm from './AddColumnForm';
+import { TAddColumnFormValues } from './AddColumn.types';
 
-function AddColumn() {
+type TAddColumnProps = {
+  boardId: number;
+  onSubmit: (data: TAddColumnFormValues) => void;
+};
+
+function AddColumn({ boardId, onSubmit }: TAddColumnProps) {
   const { t } = useTranslation('board-management-page');
   const [open, setOpen] = React.useState(false);
 
@@ -24,7 +30,7 @@ function AddColumn() {
           + {t('addColumn')}
         </Button>
       </Box>
-      {open && <AddColumnForm onClose={handleClose} isOpen={open} />}
+      {open && <AddColumnForm onClose={handleClose} onSubmit={onSubmit} isOpen={open} />}
     </>
   );
 }
