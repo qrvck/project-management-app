@@ -1,14 +1,20 @@
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import * as authApi from 'api/auth';
+
+interface IServerError {
+  statusCode: string;
+  message: string;
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  error?: string;
+  error: IServerError | null;
   signIn: (email: string, password: string) => void;
-  signUp: (email: string, name: string, password: string) => void;
+  signUp: (name: string, login: string, password: string) => void;
   logout: () => void;
 }
 
@@ -16,7 +22,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<IServerError | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
@@ -24,42 +30,52 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    if (error) setError('');
+    if (error) setError(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {
     const token = localStorage.getItem('pm-token');
 
     if (token) {
-      const decodedToken = jwtDecode<JwtPayload>(token);
-      const millisecondTokenExpirationTime = decodedToken.exp ? decodedToken.exp / 1000 : 0;
-      const millisecondCurrentTime = new Date().getTime();
-      const tokenEndsInMilliseconds = millisecondTokenExpirationTime - millisecondCurrentTime;
-
-      if (tokenEndsInMilliseconds > 1) {
-        setAuthenticated(true);
-
-        setTimeout(() => {
-          logout();
-          navigate('/');
-        }, tokenEndsInMilliseconds);
-      }
+      setLogoutTimer(token);
     }
 
     setLoadingInitial(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function signIn(login: string, password: string) {
+  const setLogoutTimer = (token: string) => {
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    const millisecondTokenExpirationTime = decodedToken.exp ? decodedToken.exp * 1000 : 0;
+    const millisecondCurrentTime = new Date().getTime();
+    const tokenEndsInMilliseconds = millisecondTokenExpirationTime - millisecondCurrentTime;
+
+    if (tokenEndsInMilliseconds > 1) {
+      setAuthenticated(true);
+
+      setTimeout(() => {
+        logout();
+        navigate('/');
+      }, tokenEndsInMilliseconds);
+    }
+  };
+
+  async function signIn(login: string, password: string) {
     setLoading(true);
 
     authApi
-      .signIn({ login, password })
+      .signIn(login, password)
       .then((response) => {
         setAuthenticated(true);
         localStorage.setItem('pm-token', JSON.stringify(response.token));
         navigate('/boards-list');
+        setLogoutTimer(response.token);
       })
-      .catch((error) => setError(error))
+      .catch((error) => {
+        setError(error);
+        console.log(error);
+      })
       .finally(() => setLoading(false));
   }
 
@@ -67,18 +83,20 @@ function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
 
     authApi
-      .signUp({ name, login, password })
+      .signUp(name, login, password)
       .then(() => {
         signIn(login, password);
       })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }
 
   function logout() {
     localStorage.removeItem('pm-token');
     setAuthenticated(false);
-    navigate('/', { replace: true });
+    navigate('/');
   }
 
   const memoedValue = useMemo(
@@ -90,6 +108,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       signUp,
       logout,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isAuthenticated, isLoading, error]
   );
 

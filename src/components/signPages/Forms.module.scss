@@ -63,12 +63,26 @@
   }
 }
 
-.form {
-  margin-top: 30px;
+.serverError,
+.submitButton,
+.redirectButton {
+  font-family: inherit;
+}
+
+.serverError {
+  padding: 0 16px;
 
   @include for-mobile {
-    margin-top: 20px;
+    font-size: 13px;
   }
+}
+
+.hiddenServerError {
+  visibility: hidden;
+}
+
+.form {
+  margin-top: 10px;
 }
 
 .nameInput,
@@ -88,11 +102,6 @@
   & :global(.MuiFormHelperText-root) {
     min-height: 40px;
   }
-}
-
-.submitButton,
-.redirectButton {
-  font-family: inherit;
 }
 
 .submitButton {
@@ -124,4 +133,20 @@
     color: $deep-violet;
     border-color: $deep-violet;
   }
+}
+
+.loaderWrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 700;
+
+  background-color: $opacity-04-white;
 }

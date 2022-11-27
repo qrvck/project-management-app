@@ -1,48 +1,35 @@
 import API_BASE_URL from './constants';
 
-interface ISignUpParams {
-  name: string;
-  login: string;
-  password: string;
-}
-
-interface INewUser {
+interface IUser {
   name: string;
   login: string;
   _id: string;
 }
 
-interface ISignInParams {
-  login: string;
-  password: string;
-}
-
-async function signUp(params: ISignUpParams): Promise<INewUser> {
+async function signUp(name: string, login: string, password: string): Promise<IUser> {
   const response = await fetch(`${API_BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({ name, login, password }),
   });
 
   const data = await response.json();
-
-  return data;
+  return response.ok ? data : Promise.reject(data);
 }
 
-async function signIn(params: ISignInParams): Promise<{ token: string }> {
+async function signIn(login: string, password: string): Promise<{ token: string }> {
   const response = await fetch(`${API_BASE_URL}/auth/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({ login, password }),
   });
 
   const data = await response.json();
-
-  return data;
+  return response.ok ? data : Promise.reject(data);
 }
 
 export { signUp, signIn };
