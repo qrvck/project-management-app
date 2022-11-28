@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useMemo, useSta
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import * as authApi from 'api/auth';
+import { signUp as signUpApi, signIn as signInApi } from 'api/auth';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -61,8 +61,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn(login: string, password: string) {
     setLoading(true);
 
-    authApi
-      .signIn(login, password)
+    signInApi(login, password)
       .then((response) => {
         setAuthenticated(true);
         localStorage.setItem('pm-token', JSON.stringify(response.token));
@@ -78,8 +77,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   function signUp(name: string, login: string, password: string) {
     setLoading(true);
 
-    authApi
-      .signUp(name, login, password)
+    signUpApi(name, login, password)
       .then(() => {
         signIn(login, password);
       })
