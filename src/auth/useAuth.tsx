@@ -64,7 +64,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     signInApi(login, password)
       .then((response) => {
-        setAuthenticated(true);
         localStorage.setItem('pm-token', JSON.stringify(response.token));
         navigate('/boards-list');
         setLogoutTimer(response.token);
