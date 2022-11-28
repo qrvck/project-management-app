@@ -42,17 +42,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const setLogoutTimer = (token: string) => {
     const decodedToken = jwtDecode<JwtPayload>(token);
-    const millisecondTokenExpirationTime = decodedToken.exp ? decodedToken.exp * 1000 : 0;
-    const millisecondCurrentTime = new Date().getTime();
-    const tokenEndsInMilliseconds = millisecondTokenExpirationTime - millisecondCurrentTime;
+    const millisecondsInOneSecond = 1000;
+    const tokenExpirationTime = decodedToken.exp ? decodedToken.exp * millisecondsInOneSecond : 0;
+    const currentTime = new Date().getTime();
+    const tokenEndIn = tokenExpirationTime - currentTime;
 
-    if (tokenEndsInMilliseconds > 1) {
+    if (tokenEndIn > 1) {
       setAuthenticated(true);
 
       setTimeout(() => {
         logout();
         navigate('/');
-      }, tokenEndsInMilliseconds);
+      }, tokenEndIn);
     } else {
       logout();
     }
