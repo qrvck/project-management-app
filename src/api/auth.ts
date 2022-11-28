@@ -16,7 +16,10 @@ async function signUp(name: string, login: string, password: string): Promise<IU
   });
 
   const data = await response.json();
-  return response.ok ? data : Promise.reject(data);
+
+  if (!response.ok) throw new Error(data.message);
+
+  return data;
 }
 
 async function signIn(login: string, password: string): Promise<{ token: string }> {
@@ -29,7 +32,10 @@ async function signIn(login: string, password: string): Promise<{ token: string 
   });
 
   const data = await response.json();
-  return response.ok ? data : Promise.reject(data);
+
+  if (!response.ok) throw new Error(data.message);
+
+  return data;
 }
 
 export { signUp, signIn };
