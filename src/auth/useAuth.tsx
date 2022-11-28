@@ -4,15 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import * as authApi from 'api/auth';
 
-interface IServerError {
-  statusCode: string;
-  message: string;
-}
-
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: IServerError | null;
+  errorMessage: string;
   signIn: (email: string, password: string) => void;
   signUp: (name: string, login: string, password: string) => void;
   logout: () => void;
@@ -22,7 +17,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [error, setError] = useState<IServerError | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
@@ -30,7 +25,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    if (error) setError(null);
+    if (errorMessage) setErrorMessage('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
@@ -73,8 +68,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setLogoutTimer(response.token);
       })
       .catch((error) => {
-        setError(error);
-        console.log(error);
+        if (error instanceof Error) setErrorMessage(error.message.toLowerCase());
       })
       .finally(() => setLoading(false));
   }
@@ -88,7 +82,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         signIn(login, password);
       })
       .catch((error) => {
-        setError(error);
+        if (error instanceof Error) setErrorMessage(error.message.toLowerCase());
         setLoading(false);
       });
   }
@@ -103,13 +97,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       isAuthenticated,
       isLoading,
-      error,
+      errorMessage,
       signIn,
       signUp,
       logout,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isAuthenticated, isLoading, error]
+    [isAuthenticated, isLoading, errorMessage]
   );
 
   return (
