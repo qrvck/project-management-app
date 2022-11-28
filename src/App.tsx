@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from 'components/common/layout/Layout';
-import Loader from 'components/loader';
+import Loader from 'components/common/loader';
 
 const AuthPage = lazy(() => import('pages/AuthPage'));
 const BoardManagementPage = lazy(() => import('pages/BoardManagementPage'));
