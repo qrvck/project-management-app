@@ -32,12 +32,12 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
   return (
     <nav className={styles.navigation}>
       <div
-        className={`${styles.hamburgerOverlay} ${isHamburgerOpen ? styles.hidden : ''}`}
+        className={`${styles.hamburgerOverlay} ${isHamburgerOpen ? styles.open : ''}`}
         onClick={toggleHamburger}
       />
       <ul
         className={`${styles.navigationList} ${isSticky ? styles.sticky : ''} ${
-          isHamburgerOpen ? styles.hidden : ''
+          isHamburgerOpen ? styles.open : ''
         }`}
       >
         {isUserLogged ? (

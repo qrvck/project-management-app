@@ -19,7 +19,7 @@
     background-color: rgba(41, 41, 41, 0.6);
     overflow-x: hidden;
     transition: 0.5s ease-in-out;
-    &.hidden {
+    &.open {
       right: 0;
     }
   }
@@ -49,7 +49,7 @@
     &.sticky {
       background-color: $dark-violet;
     }
-    &.hidden {
+    &.open {
       right: 0;
     }
   }
