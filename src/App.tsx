@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import ErrorBoundary from 'components/errorBoundary';
 
 import Layout from 'components/common/layout/Layout';
 import {
