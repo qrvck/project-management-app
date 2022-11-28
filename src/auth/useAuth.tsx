@@ -53,6 +53,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
         logout();
         navigate('/');
       }, tokenEndsInMilliseconds);
+    } else {
+      logout();
     }
   };
 
