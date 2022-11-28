@@ -2,8 +2,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
-import AddColumnForm from './AddColumnForm';
 import { TAddColumnFormValues } from './AddColumn.types';
+import AddColumnForm from './AddColumnForm';
 
 type TAddColumnProps = {
   boardId: number;

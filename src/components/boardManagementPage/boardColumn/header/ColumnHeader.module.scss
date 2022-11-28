@@ -1,0 +1,31 @@
+@import 'styles/_variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items:center;
+  margin: 10px 12px;
+  padding-bottom: 8px;
+  border-bottom: solid 1px $column-title-border;  
+}
+
+.title {
+  font-size: 17px;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.deleteBtn {
+  border-radius: 50%;
+  min-width: auto;
+  margin: 0 -8px 0 0;
+  padding: 8px;
+
+  &:hover{
+    fill: red;
+  }
+}

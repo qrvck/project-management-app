@@ -66,15 +66,24 @@ const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
   return column.items.findIndex((task) => task.id === id);
 };
 
-function Board() {
+type TBoardProps = {
+  boardId: number;
+};
+
+function Board({ boardId }: TBoardProps) {
   const [columns, setColumns] = useState(initColumns);
 
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 0,
+      },
+    }),
+    useSensor(TouchSensor)
+    // useSensor(KeyboardSensor, {
+    //   //coordinateGetter: sortableKeyboardCoordinates,
+    // })
   );
 
   const handlerDragOver = (event: DragOverEvent) => {
@@ -184,7 +193,10 @@ function Board() {
         <div className={styles.fixed}>
           <div className={styles.scrollable}>
             <div className={styles.columns}>
-              {columns.map((column) => column?.id && <BoardColumn key={column?.id} {...column} />)}
+              {columns.map(
+                (column) =>
+                  column?.id && <BoardColumn key={column?.id} boardId={boardId} {...column} />
+              )}
             </div>
           </div>
         </div>

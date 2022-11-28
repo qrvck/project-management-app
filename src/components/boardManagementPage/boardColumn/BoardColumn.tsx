@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import ColumnHeader from './header/ColumnHeader';
+
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
@@ -14,9 +16,10 @@ type TBoardColumnProps = {
   id: string;
   label: string;
   items: TTask[];
+  boardId: number;
 };
 
-function BoardColumn({ id, label, items }: TBoardColumnProps) {
+function BoardColumn({ id, label, items, boardId }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
@@ -41,9 +44,10 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
         {...listeners}
         {...attributes}
       >
-        <h3 className={styles.title}>{label}</h3>
+        <ColumnHeader label={label} boardId={boardId} columnId={id} />
 
         <TaskList items={items} columnId={id} />
+
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained">
             + {t('addTask')}

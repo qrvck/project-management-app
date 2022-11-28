@@ -23,7 +23,7 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
         {t('title')} [boardId={boardId}]
       </h2>
       <AddColumn boardId={boardId} onSubmit={handlerSubmit} />
-      <Board />
+      <Board boardId={boardId} />
     </div>
   );
 }
