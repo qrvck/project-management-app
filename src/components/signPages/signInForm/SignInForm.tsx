@@ -24,7 +24,7 @@ type TFormValues = {
 };
 
 function SignInForm() {
-  const { signIn, isLoading, error } = useAuth();
+  const { signIn, isLoading, errorMessage } = useAuth();
 
   const [isShowingPassword, setShowingPassword] = useState<boolean>(false);
   const { t } = useTranslation('sign-pages');
@@ -60,10 +60,10 @@ function SignInForm() {
             <h2 className={styles.title}>{t('sign in')}</h2>
 
             <Alert
-              className={`${styles.serverError} ${error ? '' : styles.hiddenServerError}`}
+              className={`${styles.serverError} ${errorMessage ? '' : styles.hiddenServerError}`}
               severity="error"
             >
-              {t(error ? error.message : '')}
+              {t(errorMessage)}
             </Alert>
 
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
