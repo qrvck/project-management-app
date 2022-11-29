@@ -1,0 +1,19 @@
+{
+  "image title": "Welcome aboard",
+  "image subtitle": "just a couple of clicks and we’ll start",
+  "sign up": "Sign Up",
+  "sign in": "Sign In",
+  "name": "Name",
+  "login": "Login",
+  "password": "Password",
+  "have no account yet": "Have no account yet",
+  "already have an account": "Already have an account",
+
+  "this field is required": "this field is required",
+  "minimum length symbols": "minimum length symbols - {{symbolsCount}}",
+  "maximum length 20 symbols": "maximum length 20 symbols",
+  "must start only with a letter": "must start only with a letter",
+  "must contain only letters": "must contain only letters",
+  "must contain only latin letters or/and digits": "must contain only latin letters or/and digits",
+  "at least one number, one uppercase and one lowercase letters": "at least one number, one uppercase and one lowercase letters"
+}

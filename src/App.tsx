@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from 'components/common/layout/Layout';
 import {
-  AuthPage,
+  SignUpPage,
+  SignInPage,
   BoardManagementPage,
   BoardsListPage,
   WelcomePage,
@@ -16,8 +17,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<WelcomePage />} />
-        <Route path="sign-in" element={<AuthPage />} />
-        <Route path="sign-up" element={<AuthPage />} />
+        <Route path="sign-in" element={<SignInPage />} />
+        <Route path="sign-up" element={<SignUpPage />} />
         <Route path="edit-profile" element={<EditProfilePage />} />
         <Route path="board-management" element={<BoardManagementPage />} />
         <Route path="boards-list" element={<BoardsListPage />} />
