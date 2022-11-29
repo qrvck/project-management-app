@@ -20,6 +20,8 @@ import {
 } from '@dnd-kit/sortable';
 import { TTask } from '../taskList';
 import styles from './Board.module.scss';
+import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
+import { AlertColor } from '@mui/material/Alert';
 
 const generateColumns = () => {
   return Array(5)
@@ -52,12 +54,6 @@ const generateColumns = () => {
 
 const initColumns = generateColumns();
 
-type TColumn = {
-  id: string;
-  label: string;
-  items: TTask[];
-};
-
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
   return columns.findIndex((column) => column.id === id);
 };
@@ -70,9 +66,19 @@ type TBoardProps = {
   boardId: number;
 };
 
+type TColumn = {
+  id: string;
+  label: string;
+  items: TTask[];
+};
+
 function Board({ boardId }: TBoardProps) {
   const [columns, setColumns] = useState(initColumns);
-
+  const [snackState, setSnackState] = useState<TSnackbarMessage>({
+    isOpen: false,
+    severity: 'success',
+    message: '',
+  });
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -179,29 +185,45 @@ function Board({ boardId }: TBoardProps) {
       return;
     }
   };
+
+  function handleClose() {
+    setSnackState((prev) => ({ ...prev, isOpen: false }));
+  }
+
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragOver={handlerDragOver}
-      onDragEnd={handlerDragEnd}
-    >
-      <SortableContext
-        items={columns.map((column) => column?.id)}
-        strategy={horizontalListSortingStrategy}
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragOver={handlerDragOver}
+        onDragEnd={handlerDragEnd}
       >
-        <div className={styles.fixed}>
-          <div className={styles.scrollable}>
-            <div className={styles.columns}>
-              {columns.map(
-                (column) =>
-                  column?.id && <BoardColumn key={column?.id} boardId={boardId} {...column} />
-              )}
+        <SortableContext
+          items={columns.map((column) => column?.id)}
+          strategy={horizontalListSortingStrategy}
+        >
+          <div className={styles.fixed}>
+            <div className={styles.scrollable}>
+              <div className={styles.columns}>
+                {columns.map(
+                  (column) =>
+                    column?.id && (
+                      <BoardColumn
+                        key={column?.id}
+                        boardId={boardId}
+                        {...column}
+                        showSnackMessage={setSnackState}
+                      />
+                    )
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </SortableContext>
-    </DndContext>
+        </SortableContext>
+      </DndContext>
+
+      <SnackbarMessage {...snackState} onClose={handleClose} />
+    </>
   );
 }
 
