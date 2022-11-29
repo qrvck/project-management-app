@@ -11,15 +11,17 @@ import ColumnHeader from './header/ColumnHeader';
 
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
+import { TSnackbarMessage } from 'components/common/snackbar';
 
 type TBoardColumnProps = {
   id: string;
   label: string;
   items: TTask[];
   boardId: number;
+  showSnackMessage: (props: TSnackbarMessage) => void;
 };
 
-function BoardColumn({ id, label, items, boardId }: TBoardColumnProps) {
+function BoardColumn({ id, label, items, boardId, showSnackMessage }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
@@ -44,7 +46,12 @@ function BoardColumn({ id, label, items, boardId }: TBoardColumnProps) {
         {...listeners}
         {...attributes}
       >
-        <ColumnHeader label={label} boardId={boardId} columnId={id} />
+        <ColumnHeader
+          label={label}
+          boardId={boardId}
+          columnId={id}
+          showSnackMessage={showSnackMessage}
+        />
 
         <TaskList items={items} columnId={id} />
 

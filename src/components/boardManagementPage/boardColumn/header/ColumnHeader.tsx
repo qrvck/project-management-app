@@ -1,18 +1,19 @@
-import React, { FocusEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Tooltip from '@mui/material/Tooltip';
 import EditTitleForm from './EditTitleForm';
+import DeleteColumnButton from './DeleteColumnButton';
+import { TSnackbarMessage } from 'components/common/snackbar';
 import styles from './ColumnHeader.module.scss';
-import { ClickAwayListener } from '@mui/material';
 
 type TColumnHeaderProps = {
   boardId: number;
   columnId: string;
   label: string;
+  showSnackMessage: (props: TSnackbarMessage) => void;
 };
 
-function ColumnHeader({ label, boardId, columnId }: TColumnHeaderProps) {
+function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHeaderProps) {
   const [openEditForm, setOpenEditForm] = useState(false);
 
   const handleEdit = (event: React.MouseEvent) => {
@@ -20,27 +21,24 @@ function ColumnHeader({ label, boardId, columnId }: TColumnHeaderProps) {
     setOpenEditForm((prev) => !prev);
   };
 
-  const handleDelete = (event: React.MouseEvent) => {
-    event.preventDefault();
-    console.log(event);
-    console.log('Delete; boardId: ', boardId, 'columnId: ', columnId);
-  };
-
-  const handleClickAway = () => {
+  const handleClose = () => {
     setOpenEditForm(false);
   };
 
   return (
     <Box className={styles.header}>
-      {openEditForm && <EditTitleForm label={label} onClickAway={handleClickAway} />}
-      {!openEditForm && (
-        <h3 className={styles.title} onClick={handleEdit}>
-          {label}
-        </h3>
+      {openEditForm && (
+        <EditTitleForm label={label} close={handleClose} showSnackMessage={showSnackMessage} />
       )}
-      <IconButton className={styles.deleteBtn} onClick={handleDelete} aria-label="Delete column">
-        <DeleteOutlineOutlinedIcon fontSize="small" />
-      </IconButton>
+      {!openEditForm && (
+        <Tooltip title="Click to edit column name" enterNextDelay={10000} arrow>
+          <h3 className={styles.title} onClick={handleEdit}>
+            {label}
+          </h3>
+        </Tooltip>
+      )}
+
+      <DeleteColumnButton columnName={label} showSnackMessage={showSnackMessage} />
     </Box>
   );
 }
