@@ -4,7 +4,7 @@ import DialogContent from '@mui/material/DialogContent';
 import styles from './ModalForm.module.scss';
 
 type TDialogProps = {
-  title: string;
+  title?: string;
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -13,7 +13,7 @@ type TDialogProps = {
 const ModalForm: React.FC<TDialogProps> = ({ title, isOpen, onClose, children }) => {
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs" fullWidth>
-      <h3 className={styles.title}>{title}</h3>
+      {title && <h3 className={styles.title}>{title}</h3>}
       <DialogContent>{children}</DialogContent>
     </Dialog>
   );
