@@ -7,8 +7,6 @@ import { TAddColumnFormProps, TAddColumnFormValues } from './AddColumn.types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 // import { useTranslation } from 'react-i18next';
 
-import styles from './AddColumnForm.module.scss';
-
 export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnFormProps) {
   // const { t } = useTranslation('add-column-form');
   const {
