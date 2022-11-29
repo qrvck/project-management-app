@@ -5,23 +5,16 @@ import {
   closestCorners,
   DragEndEvent,
   DragOverEvent,
-  KeyboardSensor,
   MouseSensor,
   TouchSensor,
   UniqueIdentifier,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {
-  SortableContext,
-  horizontalListSortingStrategy,
-  arrayMove,
-  sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
+import { SortableContext, horizontalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { TTask } from '../taskList';
 import styles from './Board.module.scss';
 import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
-import { AlertColor } from '@mui/material/Alert';
 
 const generateColumns = () => {
   return Array(5)
@@ -87,9 +80,6 @@ function Board({ boardId }: TBoardProps) {
       },
     }),
     useSensor(TouchSensor)
-    // useSensor(KeyboardSensor, {
-    //   //coordinateGetter: sortableKeyboardCoordinates,
-    // })
   );
 
   const handlerDragOver = (event: DragOverEvent) => {
