@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { signUp as signUpApi, signIn as signInApi } from 'api/auth';
 
-interface AuthContextType {
+interface IAuthContext {
   isAuthenticated: boolean;
   isLoading: boolean;
   errorMessage: string;
@@ -13,7 +13,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
