@@ -1,32 +1,34 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Loader from 'components/common/loader';
 import ErrorBoundary from 'components/errorBoundary';
 
-import Layout from 'components/common/layout/Layout';
-import {
-  AuthPage,
-  BoardManagementPage,
-  BoardsListPage,
-  WelcomePage,
-  EditProfilePage,
-  NotFoundPage,
-} from 'pages';
+const Layout = lazy(() => import('components/common/layout'));
+const SignUpPage = lazy(() => import('pages/SignUpPage'));
+const SignInPage = lazy(() => import('pages/SignInPage'));
+const BoardManagementPage = lazy(() => import('pages/BoardManagementPage'));
+const BoardsListPage = lazy(() => import('pages/BoardsListPage'));
+const WelcomePage = lazy(() => import('pages/WelcomePage'));
+const EditProfilePage = lazy(() => import('pages/EditProfilePage'));
+const NotFoundPage = lazy(() => import('pages/NotFoundPage'));
 
 function App() {
   return (
     <ErrorBoundary useSuspense={false} key={useLocation().pathname}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<WelcomePage />} />
-          <Route path="sign-in" element={<AuthPage />} />
-          <Route path="sign-up" element={<AuthPage />} />
-          <Route path="edit-profile" element={<EditProfilePage />} />
-          <Route path="board-management" element={<BoardManagementPage />} />
-          <Route path="boards-list" element={<BoardsListPage />} />
-          <Route path="404" element={<NotFoundPage />} />
-          <Route path="*" element={<Navigate to="404" />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="sign-in" element={<SignInPage />} />
+            <Route path="sign-up" element={<SignUpPage />} />
+            <Route path="edit-profile" element={<EditProfilePage />} />
+            <Route path="board-management" element={<BoardManagementPage />} />
+            <Route path="boards-list" element={<BoardsListPage />} />
+            <Route path="404" element={<NotFoundPage />} />
+            <Route path="*" element={<Navigate to="404" />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </ErrorBoundary>
   );
 }

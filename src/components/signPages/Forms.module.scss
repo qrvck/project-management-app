@@ -1,0 +1,127 @@
+@import 'styles/_variables';
+@import 'styles/_mixins.scss';
+
+.wrapper {
+  padding: 25px 0;
+}
+
+.formCard {
+  display: grid;
+  grid-template-columns: 40% 53%;
+  column-gap: 7%;
+  align-items: center;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 32px;
+
+  box-shadow: 0px 7px 25px $grey;
+  border-radius: 24px;
+
+  @include for-mobile {
+    grid-template-columns: auto;
+    max-width: 320px;
+    padding: 22px;
+  }
+}
+
+.welcomeImage {
+  max-width: 222px;
+  display: block;
+  margin: auto;
+
+  @include for-mobile {
+    width: 150px;
+  }
+}
+
+.imageTitle,
+.imageSubtitle {
+  text-align: center;
+}
+
+.imageTitle {
+  margin: 15px 0 0;
+
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.imageSubtitle {
+  margin: 0;
+  font-size: 14px;
+}
+
+.title {
+  margin: 0;
+
+  font-size: 45px;
+  text-align: center;
+  font-weight: 600;
+
+  @include for-mobile {
+    font-size: 35px;
+  }
+}
+
+.form {
+  margin-top: 30px;
+
+  @include for-mobile {
+    margin-top: 20px;
+  }
+}
+
+.nameInput,
+.loginInput,
+.passwordInput {
+  & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: $violet;
+  }
+
+  & :global(.MuiInputBase-root),
+  & :global(.MuiFormHelperText-root) {
+    font-family: inherit;
+  }
+}
+
+.passwordInput {
+  & :global(.MuiFormHelperText-root) {
+    min-height: 40px;
+  }
+}
+
+.submitButton,
+.redirectButton {
+  font-family: inherit;
+}
+
+.submitButton {
+  background-color: $violet;
+  &:hover {
+    background-color: $deep-violet;
+  }
+}
+
+.redirectWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.redirectText {
+  margin: 0;
+  font-size: 15px;
+}
+
+.redirectButton {
+  width: 120px;
+
+  color: $violet;
+  border-color: $violet;
+
+  &:hover {
+    color: $deep-violet;
+    border-color: $deep-violet;
+  }
+}
