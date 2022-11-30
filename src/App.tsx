@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from 'components/common/layout/Layout';
+import Layout from 'components/common/layout';
 import Loader from 'components/common/loader';
 
 const SignUpPage = lazy(() => import('pages/SignUpPage'));
