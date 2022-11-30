@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import EditTitleForm from './editTitle/EditTitleForm';
+import EditTitleForm from './editTitle';
 import DeleteColumn from './deleteColumn';
 import { TSnackbarMessage } from 'components/common/snackbar';
+import { TOOLTIP_DELAY } from 'constants/index';
+import { useTranslation } from 'react-i18next';
+
 import styles from './ColumnHeader.module.scss';
 
 type TColumnHeaderProps = {
@@ -14,11 +17,12 @@ type TColumnHeaderProps = {
 };
 
 function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHeaderProps) {
+  const { t } = useTranslation('board-management-page');
   const [openEditForm, setOpenEditForm] = useState(false);
+  const columnName = useRef(label);
 
-  const handleEdit = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setOpenEditForm((prev) => !prev);
+  const handleEdit = () => {
+    setOpenEditForm(true);
   };
 
   const handleClose = () => {
@@ -28,17 +32,22 @@ function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHea
   return (
     <Box className={styles.header}>
       {openEditForm && (
-        <EditTitleForm label={label} close={handleClose} showSnackMessage={showSnackMessage} />
+        <EditTitleForm
+          label={label}
+          close={handleClose}
+          columnName={columnName}
+          showSnackMessage={showSnackMessage}
+        />
       )}
       {!openEditForm && (
-        <Tooltip title="Click to edit column name" enterNextDelay={10000} arrow>
+        <Tooltip title={t('editTitleTooltip')} enterNextDelay={TOOLTIP_DELAY} arrow>
           <h3 className={styles.title} onClick={handleEdit}>
-            {label}
+            {columnName.current}
           </h3>
         </Tooltip>
       )}
 
-      <DeleteColumn columnName={label} showSnackMessage={showSnackMessage} />
+      {!openEditForm && <DeleteColumn columnName={label} showSnackMessage={showSnackMessage} />}
     </Box>
   );
 }

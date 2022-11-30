@@ -5,4 +5,6 @@ const SENSOR_OPTIONS = {
   tolerance: 0,
 };
 
-export { SENSOR_OPTIONS };
+const TOOLTIP_DELAY = 10000;
+
+export { SENSOR_OPTIONS, TOOLTIP_DELAY };
