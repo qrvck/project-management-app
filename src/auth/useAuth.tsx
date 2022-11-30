@@ -4,8 +4,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { signUp as signUpApi, signIn as signInApi } from 'api/auth';
 
+interface IUser {
+  id: string;
+  login: string;
+  token: string;
+}
+
+interface IParsedToken extends JwtPayload {
+  exp: number;
+  id: string;
+  login: string;
+}
+
 interface IAuthContext {
   isAuthenticated: boolean;
+  user: IUser;
   isLoading: boolean;
   errorMessage: string;
   signIn: (email: string, password: string) => void;
@@ -16,6 +29,7 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<IUser>({ id: '', login: '', token: '' });
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -33,30 +47,40 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const token = localStorage.getItem('pm-token');
 
     if (token) {
-      setLogoutTimer(token);
+      const tokenValidityTime = getTokenValidityTime(token);
+      if (tokenValidityTime > 0) {
+        setAuthenticated(true);
+        setLogoutTimer(tokenValidityTime);
+        saveUserData(token);
+      } else {
+        logout();
+      }
     }
 
     setLoadingInitial(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setLogoutTimer = (token: string) => {
-    const decodedToken = jwtDecode<JwtPayload>(token);
+  function getTokenValidityTime(token: string) {
+    const decodedToken = jwtDecode<IParsedToken>(token);
     const millisecondsInOneSecond = 1000;
-    const tokenExpirationTime = decodedToken.exp ? decodedToken.exp * millisecondsInOneSecond : 0;
+    const tokenExpirationTime = decodedToken.exp * millisecondsInOneSecond;
     const currentTime = new Date().getTime();
     const tokenEndIn = tokenExpirationTime - currentTime;
 
-    if (tokenEndIn > 1) {
-      setAuthenticated(true);
+    return tokenEndIn;
+  }
 
-      setTimeout(() => {
-        logout();
-      }, tokenEndIn);
-    } else {
+  function setLogoutTimer(tokenValidityTime: number) {
+    setTimeout(() => {
       logout();
-    }
-  };
+    }, tokenValidityTime);
+  }
+
+  function saveUserData(token: string) {
+    const { id, login } = jwtDecode<IParsedToken>(token);
+    setUser({ id, login, token });
+  }
 
   async function signIn(login: string, password: string) {
     setLoading(true);
@@ -64,8 +88,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
     signInApi(login, password)
       .then((response) => {
         localStorage.setItem('pm-token', JSON.stringify(response.token));
+
+        const tokenValidityTime = getTokenValidityTime(response.token);
+
+        setAuthenticated(true);
+        setLogoutTimer(tokenValidityTime);
+        saveUserData(response.token);
         navigate('/boards-list');
-        setLogoutTimer(response.token);
       })
       .catch((error) => {
         if (error instanceof Error) setErrorMessage(error.message.toLowerCase());
@@ -89,11 +118,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
   function logout() {
     localStorage.removeItem('pm-token');
     setAuthenticated(false);
+    setUser({ id: '', login: '', token: '' });
     navigate('/');
   }
 
   const memoedValue = useMemo(
     () => ({
+      user,
       isAuthenticated,
       isLoading,
       errorMessage,
