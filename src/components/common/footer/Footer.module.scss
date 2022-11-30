@@ -1,0 +1,55 @@
+@import 'styles/_variables';
+@import 'styles/mixins';
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+  border-top: 2px solid $dark-grey;
+
+  @include for-mobile {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
+
+.copyright {
+  margin: 0;
+
+  @include for-mobile {
+    margin: 10px 0 0 0;
+  }
+}
+
+.authors {
+  display: flex;
+  column-gap: 15px;
+}
+
+.authorLink {
+  color: inherit;
+  text-decoration: none;
+  transition: 0.5s;
+
+  &:hover {
+    color: $deep-violet;
+  }
+}
+
+.courseLogo {
+  width: 102px;
+  height: 38px;
+  background-image: url('../../../assets/images/rs_school_js.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: 0.5s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @include for-mobile {
+    margin-bottom: 13px;
+  }
+}
