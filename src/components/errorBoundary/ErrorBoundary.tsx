@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import Loader from 'components/common/loader';
 import styles from './ErrorBoundary.module.scss';
 
 interface IErrorBoundaryProps extends WithTranslation {
@@ -26,7 +27,7 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
 
     if (this.state.hasError) {
       return !this.props.tReady ? (
-        <p>Loading..</p> //заменить на loader
+        <Loader />
       ) : (
         <p className={styles.message}>
           {t('message')}
