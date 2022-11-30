@@ -42,8 +42,7 @@ function SignInForm() {
     event.preventDefault();
   };
 
-  const onSubmit: SubmitHandler<TFormValues> = (data) => {
-    const { login, password } = data;
+  const onSubmit: SubmitHandler<TFormValues> = ({ login, password }) => {
     signIn(login, password);
   };
 
