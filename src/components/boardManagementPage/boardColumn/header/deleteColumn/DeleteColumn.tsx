@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
+import { ConfirmationPopup } from 'components/common/confirmationPopup';
 import { TSnackbarMessage } from 'components/common/snackbar';
-import { ModalForm } from 'components/common/modalForm';
 
 import styles from './DeleteColumn.module.scss';
 
@@ -50,30 +47,13 @@ function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
         </IconButton>
       </Tooltip>
 
-      <ModalForm isOpen={openConfirmationForm} onClose={handleClose}>
-        <div className={styles.confirmation}>
-          <NewReleasesOutlinedIcon color="warning" fontSize="large" className={styles.icon} />
-          <div>
-            <Typography mb={3}>
-              You are going to delete column &ldquo;{columnName}&rdquo;. Are you sure?
-            </Typography>
-            <Button
-              onClick={handleDelete}
-              variant="contained"
-              color="warning"
-              size="small"
-              className={styles.delete}
-            >
-              Delete
-            </Button>
-            <Button onClick={handleClose} size="small">
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </ModalForm>
-
-      {/* <SnackbarMessage isOpen={openSnack} onClose={handleCloseSnackBar} severity="success" /> */}
+      <ConfirmationPopup
+        isOpen={openConfirmationForm}
+        onClose={handleClose}
+        onDelete={handleDelete}
+      >
+        You are going to delete column &ldquo;{columnName}&rdquo;. Are you sure?
+      </ConfirmationPopup>
     </>
   );
 }
