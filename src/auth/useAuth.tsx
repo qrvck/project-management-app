@@ -52,7 +52,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
       setTimeout(() => {
         logout();
-        navigate('/');
       }, tokenEndIn);
     } else {
       logout();
