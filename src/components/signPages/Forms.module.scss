@@ -63,12 +63,26 @@
   }
 }
 
-.form {
-  margin-top: 30px;
+.serverError,
+.submitButton,
+.redirectButton {
+  font-family: inherit;
+}
+
+.serverError {
+  padding: 0 16px;
 
   @include for-mobile {
-    margin-top: 20px;
+    font-size: 13px;
   }
+}
+
+.hiddenServerError {
+  visibility: hidden;
+}
+
+.form {
+  margin-top: 10px;
 }
 
 .nameInput,
@@ -82,17 +96,16 @@
   & :global(.MuiFormHelperText-root) {
     font-family: inherit;
   }
+
+  & :global(.MuiFormHelperText-root) {
+    font-size: 14px;
+  }
 }
 
 .passwordInput {
   & :global(.MuiFormHelperText-root) {
     min-height: 40px;
   }
-}
-
-.submitButton,
-.redirectButton {
-  font-family: inherit;
 }
 
 .submitButton {

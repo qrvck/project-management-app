@@ -2,7 +2,11 @@ import React from 'react';
 import { SignInForm } from 'components/signPages';
 
 function SignInPage() {
-  return <SignInForm />;
+  return (
+    <div className="container">
+      <SignInForm />
+    </div>
+  );
 }
 
 export default SignInPage;
