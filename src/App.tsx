@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from 'components/common/layout';
 import Loader from 'components/common/loader';
 
+const Layout = lazy(() => import('components/common/layout'));
 const SignUpPage = lazy(() => import('pages/SignUpPage'));
 const SignInPage = lazy(() => import('pages/SignInPage'));
 const BoardManagementPage = lazy(() => import('pages/BoardManagementPage'));
