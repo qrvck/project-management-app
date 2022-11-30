@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
 
+import FullScreenLoader from 'components/common/fullScreenLoader';
+
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
@@ -198,12 +200,7 @@ function SignUpForm() {
           </div>
         </div>
       </div>
-      {isLoading && (
-        <div className={styles.loaderWrapper}>
-          <p>загрузка</p>
-          {/*заменить на лоадер */}
-        </div>
-      )}
+      {isLoading && <FullScreenLoader />}
     </>
   );
 }
