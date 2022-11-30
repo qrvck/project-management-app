@@ -15,6 +15,7 @@ import { SortableContext, horizontalListSortingStrategy, arrayMove } from '@dnd-
 import { TTask } from '../taskList';
 import styles from './Board.module.scss';
 import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
+import { SENSOR_OPTIONS } from 'constants/index';
 
 const generateColumns = () => {
   return Array(5)
@@ -74,12 +75,11 @@ function Board({ boardId }: TBoardProps) {
   });
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      activationConstraint: {
-        delay: 150,
-        tolerance: 0,
-      },
+      activationConstraint: SENSOR_OPTIONS,
     }),
-    useSensor(TouchSensor)
+    useSensor(TouchSensor, {
+      activationConstraint: SENSOR_OPTIONS,
+    })
   );
 
   const handlerDragOver = (event: DragOverEvent) => {
