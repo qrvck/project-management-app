@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import { ModalForm } from '../../common/modalForm';
 import { TAddColumnFormProps, TAddColumnFormValues } from './AddColumn.types';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import styles from './AddColumnForm.module.scss';
 // import { useTranslation } from 'react-i18next';
 
 export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnFormProps) {
@@ -47,14 +47,7 @@ export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnF
           error={!!errors.columnName}
         />
 
-        <Stack
-          spacing={2}
-          direction="row"
-          alignItems={'center'}
-          justifyContent={'center'}
-          mt={4}
-          mb={2}
-        >
+        <div className={styles.buttons}>
           <Button type="submit" variant="contained">
             {/* {t('addButton')} */} add column
           </Button>
@@ -62,7 +55,7 @@ export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnF
             {/* {t('cancelButton')} */}
             cancel
           </Button>
-        </Stack>
+        </div>
       </form>
     </ModalForm>
   );
