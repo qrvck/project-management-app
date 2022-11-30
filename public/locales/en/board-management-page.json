@@ -1,5 +1,6 @@
 {
   "title": "Board",
   "addColumn": "Add column",
-  "addTask": "Add task"
+  "addTask": "Add task",
+  "editTitleTooltip": "Click to edit column name"
 }
