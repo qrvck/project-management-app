@@ -8,14 +8,14 @@ import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import { TSnackbarMessage } from 'components/common/snackbar';
 import { ModalForm } from 'components/common/modalForm';
 
-import styles from './DeleteColumnButton.module.scss';
+import styles from './DeleteColumn.module.scss';
 
-type TDeleteColumnButtonProps = {
+type TDeleteColumnProps = {
   columnName: string;
   showSnackMessage: (props: TSnackbarMessage) => void;
 };
 
-function DeleteColumnButton({ columnName, showSnackMessage }: TDeleteColumnButtonProps) {
+function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
   const [openConfirmationForm, setOpenConfirmationForm] = useState(false);
 
   const handleBtnClick = (event: React.MouseEvent) => {
@@ -78,4 +78,4 @@ function DeleteColumnButton({ columnName, showSnackMessage }: TDeleteColumnButto
   );
 }
 
-export default DeleteColumnButton;
+export default DeleteColumn;

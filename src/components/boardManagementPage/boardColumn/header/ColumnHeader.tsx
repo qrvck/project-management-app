@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import EditTitleForm from './EditTitleForm';
-import DeleteColumnButton from './DeleteColumnButton';
+import EditTitleForm from './editTitle/EditTitleForm';
+import DeleteColumn from './deleteColumn';
 import { TSnackbarMessage } from 'components/common/snackbar';
 import styles from './ColumnHeader.module.scss';
 
@@ -38,7 +38,7 @@ function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHea
         </Tooltip>
       )}
 
-      <DeleteColumnButton columnName={label} showSnackMessage={showSnackMessage} />
+      <DeleteColumn columnName={label} showSnackMessage={showSnackMessage} />
     </Box>
   );
 }
