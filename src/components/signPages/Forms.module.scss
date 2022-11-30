@@ -96,6 +96,10 @@
   & :global(.MuiFormHelperText-root) {
     font-family: inherit;
   }
+
+  & :global(.MuiFormHelperText-root) {
+    font-size: 14px;
+  }
 }
 
 .passwordInput {
