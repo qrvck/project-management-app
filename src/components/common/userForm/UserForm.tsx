@@ -24,7 +24,7 @@ interface IUserFormProps {
 
 function UserForm({ submitButton, submitCallback }: IUserFormProps) {
   const [isShowingPassword, setShowingPassword] = useState<boolean>(false);
-  const { t } = useTranslation('sign-pages');
+  const { t } = useTranslation('user-form');
   const {
     register,
     handleSubmit,
