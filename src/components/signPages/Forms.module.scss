@@ -98,13 +98,10 @@
   }
 
   & :global(.MuiFormHelperText-root) {
-    font-size: 14px;
-  }
-}
-
-.passwordInput {
-  & :global(.MuiFormHelperText-root) {
     min-height: 40px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 
