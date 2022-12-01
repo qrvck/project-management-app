@@ -1,0 +1,26 @@
+@import 'styles/_variables';
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.warning {
+  display: flex;
+  align-items: center;
+}
+
+.warningIcon {
+  color: $crimson;
+}
+
+.deleteButton {
+  background-color: $crimson;
+  font-family: inherit;
+  &:hover {
+    background-color: $cherry;
+  }
+}
