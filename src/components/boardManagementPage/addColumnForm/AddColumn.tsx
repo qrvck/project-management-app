@@ -1,5 +1,4 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { TAddColumnFormValues } from './AddColumn.types';
@@ -25,11 +24,9 @@ function AddColumn({ boardId, onSubmit }: TAddColumnProps) {
 
   return (
     <>
-      <Box mb={2}>
-        <Button variant="contained" onClick={handlerClick}>
-          + {t('addColumn')}
-        </Button>
-      </Box>
+      <Button variant="contained" onClick={handlerClick} size={'small'}>
+        + {t('addColumn')}
+      </Button>
       {open && <AddColumnForm onClose={handleClose} onSubmit={onSubmit} isOpen={open} />}
     </>
   );

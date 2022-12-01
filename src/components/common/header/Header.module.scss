@@ -3,6 +3,7 @@
 .header {
   position: sticky;
   top: 0;
+  z-index: 1;
   background-color: $white;
   transition: all 0.3s linear;
 

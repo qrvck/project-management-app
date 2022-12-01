@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
+import { useTranslation } from 'react-i18next';
 
 import styles from './ConfirmationPopup.module.scss';
 
@@ -15,6 +16,8 @@ type TDialogProps = {
 };
 
 const ConfirmationPopup: React.FC<TDialogProps> = ({ isOpen, onClose, onDelete, children }) => {
+  const { t } = useTranslation('confirmation-popup');
+
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogContent>
@@ -29,10 +32,10 @@ const ConfirmationPopup: React.FC<TDialogProps> = ({ isOpen, onClose, onDelete, 
               size="small"
               className={styles.delete}
             >
-              Delete
+              {t('delete')}
             </Button>
             <Button onClick={onClose} size="small">
-              Cancel
+              {t('cancel')}
             </Button>
           </div>
         </div>

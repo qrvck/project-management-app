@@ -6,6 +6,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { TSnackbarMessage } from 'components/common/snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import styles from './EditTitleForm.module.scss';
 
@@ -17,6 +18,7 @@ type TEditTitleForm = {
 };
 
 function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitleForm) {
+  const { t } = useTranslation('board-management-page');
   const {
     register,
     handleSubmit,
@@ -33,10 +35,11 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
     showSnackMessage({
       isOpen: true,
       severity: 'success',
-      message: 'Title has been updated',
+      message: t('titleUpdated'),
     });
-    console.log('Change column name: ', data);
+
     columnName.current = data.editColumnName;
+
     close();
   };
 
@@ -46,7 +49,7 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
     showSnackMessage({
       isOpen: true,
       severity: 'error',
-      message: 'Title has not been updated',
+      message: t('titleNotUpdated'),
     });
 
     close();
@@ -74,14 +77,14 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
             fullWidth
             disableUnderline
             {...register('editColumnName', {
-              required: `Column name can't be empty`,
+              required: t('emptyName') || '',
               minLength: {
                 value: 2,
-                message: 'Column name must be at least 2 symbols',
+                message: t('minSymbols') || '',
               },
               maxLength: {
                 value: 50,
-                message: 'Column name must be maximum 50 symbols',
+                message: t('maxSymbols'),
               },
             })}
           />

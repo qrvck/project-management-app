@@ -30,7 +30,11 @@ function SnackbarMessage({ isOpen, onClose, severity, message }: ISnackbarMessag
       open={isOpen}
       onClose={handleClose}
     >
-      <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+      <Alert
+        onClose={handleClose}
+        severity={severity}
+        sx={{ width: '100%', whiteSpace: 'pre-line' }}
+      >
         {message}
       </Alert>
     </Snackbar>

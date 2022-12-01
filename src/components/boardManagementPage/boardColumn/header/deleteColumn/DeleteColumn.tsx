@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { ConfirmationPopup } from 'components/common/confirmationPopup';
 import { TSnackbarMessage } from 'components/common/snackbar';
+import { useTranslation } from 'react-i18next';
 
 import styles from './DeleteColumn.module.scss';
 
@@ -14,6 +15,7 @@ type TDeleteColumnProps = {
 
 function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
   const [openConfirmationForm, setOpenConfirmationForm] = useState(false);
+  const { t } = useTranslation('board-management-page');
 
   const handleBtnClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -31,20 +33,18 @@ function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
     showSnackMessage({
       isOpen: true,
       severity: 'success',
-      message: 'Column was deleted',
+      message: t('columnDeleted'),
     });
   };
 
   return (
     <>
-      <Tooltip title="Delete column" arrow>
-        <IconButton
-          className={styles.deleteBtn}
-          onClick={handleBtnClick}
-          aria-label="Delete column"
-        >
-          <DeleteOutlineOutlinedIcon fontSize="small" />
-        </IconButton>
+      <Tooltip title={t('deleteLabel')} arrow>
+        <>
+          <IconButton className={styles.deleteBtn} onClick={handleBtnClick}>
+            <DeleteOutlineOutlinedIcon fontSize="small" />
+          </IconButton>
+        </>
       </Tooltip>
 
       <ConfirmationPopup
@@ -52,7 +52,7 @@ function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
         onClose={handleClose}
         onDelete={handleDelete}
       >
-        You are going to delete column &ldquo;{columnName}&rdquo;. Are you sure?
+        {t('deleteColumnConfirmation', { columnName })}
       </ConfirmationPopup>
     </>
   );
