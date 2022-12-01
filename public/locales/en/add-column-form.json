@@ -1,6 +1,7 @@
 {
   "title": "Create column",
-  "inputLabel": "Column's name",
+  "inputLabel": "Column name",
   "addButton": "Add column",
-  "cancelButton": "Cancel"
+  "cancelButton": "Cancel",
+  "helperText": "Column name must be at least 2 symbols and maximum 50"
 }
