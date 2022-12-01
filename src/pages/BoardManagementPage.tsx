@@ -13,9 +13,7 @@ type TBoardManagementPageProps = {
 function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
   const { t } = useTranslation('board-management-page');
 
-  const handlerSubmit: SubmitHandler<TAddColumnFormValues> = (data) => {
-    console.log('submit from BoardManagementPage: ', data);
-  };
+  const handlerSubmit: SubmitHandler<TAddColumnFormValues> = (data) => {};
 
   return (
     <div className={`container ${styles.wrapper}`}>

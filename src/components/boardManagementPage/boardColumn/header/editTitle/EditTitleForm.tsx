@@ -55,8 +55,6 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
     close();
   };
 
-  console.log(errors.editColumnName);
-
   return (
     <>
       <form

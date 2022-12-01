@@ -25,7 +25,6 @@ export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnF
     event?.preventDefault();
     onSubmit(data);
     onClose();
-    console.log('submit: ', data);
   };
 
   return (
