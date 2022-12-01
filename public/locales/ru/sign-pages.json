@@ -8,6 +8,8 @@
   "password": "Пароль",
   "have no account yet": "Еще нет аккаунта",
   "already have an account": "Уже имеете аккаунт",
+  "authorization error": "Неправильный логин или пароль",
+  "login already exist": "Такой логин уже существует",
 
   "this field is required": "обязательное поле",
   "minimum length symbols": "минимальная длина символов - {{symbolsCount}}",
