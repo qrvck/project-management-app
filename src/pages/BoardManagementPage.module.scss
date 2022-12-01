@@ -3,3 +3,13 @@
   flex-direction: column;
   height: 100%;
 }
+
+.header {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.title{
+  font-size: 26px;
+}

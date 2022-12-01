@@ -19,10 +19,10 @@ function BoardManagementPage({ boardId = 1 }: TBoardManagementPageProps) {
 
   return (
     <div className={`container ${styles.wrapper}`}>
-      <h2>
-        {t('title')} [boardId={boardId}]
-      </h2>
-      <AddColumn boardId={boardId} onSubmit={handlerSubmit} />
+      <div className={styles.header}>
+        <h2 className={styles.title}>{t('title')}</h2>
+        <AddColumn boardId={boardId} onSubmit={handlerSubmit} />
+      </div>
       <Board boardId={boardId} />
     </div>
   );
