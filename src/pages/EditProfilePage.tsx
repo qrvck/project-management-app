@@ -9,13 +9,13 @@ import styles from './EditProfilePage.module.scss';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import CustomSnackBar from 'components/common/customSnackbar';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
-import { editUser } from 'api/user';
+import { editUserCall, deleteUserCall } from 'api/user';
 import useAuth from 'auth/useAuth';
 
 function EditProfilePage() {
   const { t } = useTranslation('edit-profile-page');
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackBar, setSnackBar] = useState<TSnackBarState>({
@@ -27,7 +27,7 @@ function EditProfilePage() {
   const updateUser = async (name: string, login: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      await editUser(user.token, user.id, name, login, password);
+      await editUserCall(user.token, user.id, name, login, password);
       setSnackBar({ type: 'success', isOpen: true, message: 'successfulEdit' });
     } catch (error) {
       let errorMessage: string;
@@ -37,6 +37,18 @@ function EditProfilePage() {
         errorMessage = 'unknownError';
       }
       setSnackBar({ isOpen: true, type: 'error', message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteUser = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await deleteUserCall(user.token, user.id);
+      logout();
+    } catch (error) {
+      setSnackBar({ isOpen: true, type: 'error', message: 'unknownError' });
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +75,7 @@ function EditProfilePage() {
         <div className={styles.formContainer}>
           <UserForm submitButton={t('editButton')} submitCallback={handleFormSubmit} />
         </div>
-        <Button className={styles.deleteButton} variant="contained">
+        <Button className={styles.deleteButton} variant="contained" onClick={deleteUser}>
           {t('deleteButton')}
         </Button>
       </div>
