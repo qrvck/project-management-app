@@ -1,11 +1,8 @@
 import React, { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import EditTitleForm from './editTitle';
 import DeleteColumn from './deleteColumn';
 import { TSnackbarMessage } from 'components/common/snackbar';
-import { TOOLTIP_DELAY } from 'constants/index';
-import { useTranslation } from 'react-i18next';
 
 import styles from './ColumnHeader.module.scss';
 
@@ -17,7 +14,6 @@ type TColumnHeaderProps = {
 };
 
 function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHeaderProps) {
-  const { t } = useTranslation('board-management-page');
   const [openEditForm, setOpenEditForm] = useState(false);
   const columnName = useRef(label);
 
@@ -40,11 +36,9 @@ function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHea
         />
       )}
       {!openEditForm && (
-        <Tooltip title={t('editTitleTooltip')} enterNextDelay={TOOLTIP_DELAY} arrow>
-          <h3 className={styles.title} onClick={handleEdit}>
-            {columnName.current}
-          </h3>
-        </Tooltip>
+        <h3 className={styles.title} onClick={handleEdit}>
+          {columnName.current}
+        </h3>
       )}
 
       {!openEditForm && <DeleteColumn columnName={label} showSnackMessage={showSnackMessage} />}

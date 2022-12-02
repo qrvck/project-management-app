@@ -5,13 +5,18 @@ import {
   closestCorners,
   DragEndEvent,
   DragOverEvent,
-  MouseSensor,
-  TouchSensor,
   UniqueIdentifier,
   useSensor,
   useSensors,
+  PointerSensor,
+  KeyboardSensor,
 } from '@dnd-kit/core';
-import { SortableContext, horizontalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+  arrayMove,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
 import { TTask } from '../taskList';
 import styles from './Board.module.scss';
 import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
@@ -74,11 +79,11 @@ function Board({ boardId }: TBoardProps) {
     message: '',
   });
   const sensors = useSensors(
-    useSensor(MouseSensor, {
+    useSensor(PointerSensor, {
       activationConstraint: SENSOR_OPTIONS,
     }),
-    useSensor(TouchSensor, {
-      activationConstraint: SENSOR_OPTIONS,
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 

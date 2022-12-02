@@ -1,8 +1,7 @@
 // constants
 
 const SENSOR_OPTIONS = {
-  delay: 150,
-  tolerance: 0,
+  distance: 3,
 };
 
 const TOOLTIP_DELAY = 10000;
