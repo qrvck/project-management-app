@@ -3,10 +3,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
 import { TaskList, TTask } from '../taskList';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
@@ -14,10 +15,12 @@ type TBoardColumnProps = {
   id: string;
   label: string;
   items: TTask[];
+  addTask: (columnId: string) => void;
 };
 
-function BoardColumn({ id, label, items }: TBoardColumnProps) {
+function BoardColumn({ id, label, items, addTask }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
+
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
@@ -25,6 +28,10 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
       columnId: 'root',
     },
   });
+
+  const handlerClick = () => {
+    addTask(id);
+  };
 
   return (
     <Grid item xs={4}>
@@ -45,7 +52,7 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
 
         <TaskList items={items} columnId={id} />
         <Box p={1}>
-          <Button size="small" color="secondary" variant="contained">
+          <Button size="small" color="secondary" variant="contained" onClick={handlerClick}>
             + {t('addTask')}
           </Button>
         </Box>
