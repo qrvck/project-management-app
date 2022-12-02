@@ -1,9 +1,9 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 import { TaskContainer, TTask } from './task';
-import Box from '@mui/material/Box';
-import orange from '@mui/material/colors/orange';
+
 import styles from './TaskList.module.scss';
 
 type TTaskListProps = {
@@ -12,7 +12,7 @@ type TTaskListProps = {
 };
 
 function TaskList({ columnId, items }: TTaskListProps) {
-  const { over, setNodeRef } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: `${columnId}drop`,
     data: {
       accepts: ['task'],
@@ -22,13 +22,7 @@ function TaskList({ columnId, items }: TTaskListProps) {
 
   return (
     <SortableContext items={items.map((task) => task.id)}>
-      <Box
-        ref={setNodeRef}
-        className={styles.scrollable}
-        sx={{
-          backgroundColor: over?.data.current?.columnId === columnId ? orange[100] : undefined,
-        }}
-      >
+      <Box ref={setNodeRef} className={styles.scrollable}>
         <ul>
           {items.map((item) => (
             <TaskContainer key={item.id} {...item} columnId={columnId} />

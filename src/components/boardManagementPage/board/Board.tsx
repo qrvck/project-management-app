@@ -10,6 +10,8 @@ import {
   useSensors,
   PointerSensor,
   KeyboardSensor,
+  DragOverlay,
+  DragStartEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -17,7 +19,7 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { TTask } from '../taskList';
+import { Task, TTask } from '../taskList';
 import styles from './Board.module.scss';
 import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
 import { SENSOR_OPTIONS } from 'constants/index';
@@ -73,6 +75,7 @@ type TColumn = {
 
 function Board({ boardId }: TBoardProps) {
   const [columns, setColumns] = useState(initColumns);
+  const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const [snackState, setSnackState] = useState<TSnackbarMessage>({
     isOpen: false,
     severity: 'success',
@@ -86,6 +89,18 @@ function Board({ boardId }: TBoardProps) {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+
+    if (active.data.current?.type === 'task') {
+      const activeColumn = columns.find(
+        (column) => column.id === active.data.current?.columnId.toString()
+      );
+      const task = activeColumn?.items.find((task) => task.id === active.id.toString());
+      task && setActiveItem({ ...task });
+    }
+  };
 
   const handlerDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
@@ -142,6 +157,7 @@ function Board({ boardId }: TBoardProps) {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
+      setActiveItem(null);
       return;
     }
 
@@ -179,6 +195,7 @@ function Board({ boardId }: TBoardProps) {
       }
       return;
     }
+    setActiveItem(null);
   };
 
   function handleClose() {
@@ -190,6 +207,7 @@ function Board({ boardId }: TBoardProps) {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
         onDragOver={handlerDragOver}
         onDragEnd={handlerDragEnd}
       >
@@ -215,6 +233,12 @@ function Board({ boardId }: TBoardProps) {
             </div>
           </div>
         </SortableContext>
+
+        {activeItem && (
+          <DragOverlay>
+            <Task {...activeItem} />
+          </DragOverlay>
+        )}
       </DndContext>
 
       <SnackbarMessage {...snackState} onClose={handleClose} />
