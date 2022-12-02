@@ -1,7 +1,7 @@
 import { API_BASE_URL } from './constants';
 import { IUser, IResponseError } from './types';
 
-async function editUser(
+async function editUserCall(
   token: string,
   id: string,
   name: string,
@@ -25,4 +25,20 @@ async function editUser(
   return data as IUser;
 }
 
-export { editUser };
+async function deleteUserCall(token: string, id: string): Promise<IUser> {
+  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data: IUser | IResponseError = await response.json();
+
+  if (!response.ok) throw new Error((data as IResponseError).message);
+
+  return data as IUser;
+}
+
+export { editUserCall, deleteUserCall };
