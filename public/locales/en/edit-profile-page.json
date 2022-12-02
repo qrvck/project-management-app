@@ -2,5 +2,8 @@
   "title": "Edit profile",
   "deleteButton": "Delete profile",
   "warning": "To change profile data, all fields must be completed",
-  "editButton": "Edit"
+  "editButton": "Edit",
+  "unknownError": "Unexpected error occurred. Try again",
+  "loginExists": "This login already exists",
+  "successfulEdit": "Profile successfully updated"
 }
