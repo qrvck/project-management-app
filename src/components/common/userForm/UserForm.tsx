@@ -152,7 +152,13 @@ function UserForm({ submitButton, submitCallback }: IUserFormProps) {
           })}
         />
 
-        <Button className={styles.submitButton} type="submit" variant="contained" fullWidth>
+        <Button
+          className={styles.submitButton}
+          type="submit"
+          variant="contained"
+          fullWidth
+          disabled={errors.login || errors.name || errors.password ? true : false}
+        >
           {submitButton}
         </Button>
       </form>

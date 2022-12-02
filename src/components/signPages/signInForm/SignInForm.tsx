@@ -123,7 +123,13 @@ function SignInForm() {
                 })}
               />
 
-              <Button className={styles.submitButton} type="submit" variant="contained" fullWidth>
+              <Button
+                className={styles.submitButton}
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={errors.login || errors.password ? true : false}
+              >
                 {t('sign in')}
               </Button>
             </form>
