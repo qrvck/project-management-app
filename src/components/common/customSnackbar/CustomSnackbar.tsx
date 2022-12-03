@@ -22,12 +22,7 @@ function CustomSnackBar({ isOpen, closeCallback, type, message }: ISnackBarProps
       autoHideDuration={2000}
       onClose={toggleSnackBar}
     >
-      <Alert
-        className={styles.alert}
-        onClose={toggleSnackBar}
-        severity={type}
-        sx={{ width: '100%' }}
-      >
+      <Alert className={styles.alert} onClose={toggleSnackBar} severity={type}>
         {message}
       </Alert>
     </Snackbar>
