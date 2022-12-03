@@ -64,6 +64,9 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
                   isSticky ? `${styles.navigationLink} ${styles.sticky}` : styles.navigationLink
                 }
                 to="/boards-list"
+                onClick={() => {
+                  if (isHamburgerOpen) toggleHamburger();
+                }}
               >
                 {t('mainPage')}
               </Link>
@@ -104,7 +107,10 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
                       ? `${styles.navigationButton} ${styles.sticky}`
                       : styles.navigationButton
                   }
-                  onClick={openAddBoardForm}
+                  onClick={() => {
+                    openAddBoardForm();
+                    if (isHamburgerOpen) toggleHamburger();
+                  }}
                 >
                   {t('createBoard')}
                 </span>
@@ -116,6 +122,9 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
                     isSticky ? `${styles.navigationLink} ${styles.sticky}` : styles.navigationLink
                   }
                   to="/edit-profile"
+                  onClick={() => {
+                    if (isHamburgerOpen) toggleHamburger();
+                  }}
                 >
                   {t('editProfile')}
                 </Link>
