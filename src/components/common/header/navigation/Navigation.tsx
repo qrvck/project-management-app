@@ -10,11 +10,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Hamburger from './hamburger';
+import useAuth from 'auth/useAuth';
 import styles from './Navigation.module.scss';
 
 function Navigation({ isSticky }: { isSticky: boolean }) {
   const { t, i18n } = useTranslation('header');
-  const isUserLogged = true; //когда будет готова регистрация, брать из глобального стэйта
+  const { isAuthenticated, logout } = useAuth();
   const [lang, setLang] = useState(i18n.language);
   const [isHamburgerOpen, setHamburgerOpen] = useState(false);
 
@@ -40,7 +41,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
           isHamburgerOpen ? styles.open : ''
         }`}
       >
-        {isUserLogged ? (
+        {isAuthenticated ? (
           <li className={styles.navigationItem}>
             <HomeIcon />
             <Link
@@ -78,7 +79,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
             </li>
           </>
         )}
-        {isUserLogged && (
+        {isAuthenticated && (
           <>
             <li className={styles.navigationItem}>
               <AddCircleOutlineIcon />
@@ -107,6 +108,7 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
                 className={
                   isSticky ? `${styles.navigationButton} ${styles.sticky}` : styles.navigationButton
                 }
+                onClick={logout}
               >
                 {t('signOut')}
               </span>
