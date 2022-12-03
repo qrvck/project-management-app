@@ -8,14 +8,14 @@
   height: 100%;
 }
 
-.pageTitle {
+.pageTitle,
+.warning {
   text-align: center;
 }
 
 .warning {
   display: flex;
   justify-content: center;
-  text-align: center;
 }
 
 .warningIcon {
