@@ -15,10 +15,10 @@ type TBoardColumnProps = {
   id: string;
   label: string;
   items: TTask[];
-  addTask: (columnId: string) => void;
+  addTask?: (columnId: string) => void;
 };
 
-function BoardColumn({ id, label, items, addTask }: TBoardColumnProps) {
+function BoardColumn({ id, label, items }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -29,9 +29,7 @@ function BoardColumn({ id, label, items, addTask }: TBoardColumnProps) {
     },
   });
 
-  const handlerClick = () => {
-    addTask(id);
-  };
+  const handlerClick = () => {};
 
   return (
     <Grid item xs={4}>

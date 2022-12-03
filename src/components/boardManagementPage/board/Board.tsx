@@ -6,11 +6,10 @@ import {
   DragEndEvent,
   DragOverEvent,
   KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
   UniqueIdentifier,
   useSensor,
   useSensors,
+  PointerSensor,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -66,12 +65,19 @@ const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
   return column.items.findIndex((task) => task.id === id);
 };
 
-function Board() {
+type TBoardProps = {
+  addTask: (columnId: string) => void;
+};
+
+function Board({ addTask }: TBoardProps) {
   const [columns, setColumns] = useState(initColumns);
 
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
