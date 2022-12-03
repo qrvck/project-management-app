@@ -54,9 +54,9 @@ function EditProfilePage() {
     }
   };
 
-  const toggleSnackBarOpen = (): void => {
+  const closeSnackBar = (): void => {
     setSnackBar((prevState) => {
-      return { ...prevState, isOpen: !prevState.isOpen };
+      return { ...prevState, isOpen: false };
     });
   };
 
@@ -79,11 +79,7 @@ function EditProfilePage() {
           {t('deleteButton')}
         </Button>
       </div>
-      <CustomSnackBar
-        {...snackBar}
-        onClose={toggleSnackBarOpen}
-        message={t(`${snackBar.message}`)}
-      />
+      <CustomSnackBar {...snackBar} onClose={closeSnackBar} message={t(`${snackBar.message}`)} />
       {isLoading && <FullScreenLoader />}
     </>
   );
