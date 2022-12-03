@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BoardColumn from '../boardColumn';
 import {
   DndContext,
@@ -20,9 +20,13 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { Task, TTask } from '../taskList';
-import styles from './Board.module.scss';
-import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
 import { SENSOR_OPTIONS } from 'constants/index';
+import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
+import { TColumn } from 'models/types';
+import { taskAPI } from 'api/task';
+import useAuth from 'auth/useAuth';
+
+import styles from './Board.module.scss';
 
 const generateColumns = () => {
   return Array(5)
@@ -56,25 +60,21 @@ const generateColumns = () => {
 const initColumns = generateColumns();
 
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
-  return columns.findIndex((column) => column.id === id);
+  return columns.findIndex((column) => column._id === id);
 };
 
-const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
-  return column.items.findIndex((task) => task.id === id);
-};
+// const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
+//   return column.items.findIndex((task) => task.id === id);
+// };
 
 type TBoardProps = {
-  boardId: number;
+  boardId: string;
+  columns: TColumn[];
 };
 
-type TColumn = {
-  id: string;
-  label: string;
-  items: TTask[];
-};
-
-function Board({ boardId }: TBoardProps) {
-  const [columns, setColumns] = useState(initColumns);
+function Board({ boardId, columns }: TBoardProps) {
+  const { user } = useAuth();
+  const [tasks, setTasks] = useState([]);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const [snackState, setSnackState] = useState<TSnackbarMessage>({
     isOpen: false,
@@ -90,15 +90,20 @@ function Board({ boardId }: TBoardProps) {
     })
   );
 
+  useEffect(() => {
+    const promises = columns.map((column) => taskAPI.getAll(user.token, boardId, column._id));
+    console.log(promises);
+  }, []);
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
     if (active.data.current?.type === 'task') {
       const activeColumn = columns.find(
-        (column) => column.id === active.data.current?.columnId.toString()
+        (column) => column._id === active.data.current?.columnId.toString()
       );
-      const task = activeColumn?.items.find((task) => task.id === active.id.toString());
-      task && setActiveItem({ ...task });
+      //const task = activeColumn?.items.find((task) => task.id === active.id.toString());
+      //task && setActiveItem({ ...task });
     }
   };
 
@@ -114,43 +119,43 @@ function Board({ boardId }: TBoardProps) {
       return;
     }
 
-    setColumns((prev) => {
-      const activeColumn = prev.find(({ id }) => id === activeContainerID);
-      const overColumn = prev.find(({ id }) => id === overContainerID);
+    // setColumns((prev) => {
+    //   const activeColumn = prev.find(({ id }) => id === activeContainerID);
+    //   const overColumn = prev.find(({ id }) => id === overContainerID);
 
-      if (!activeColumn || !overColumn) return [...prev];
+    //   if (!activeColumn || !overColumn) return [...prev];
 
-      const activeIndex = getTaskIndex(active.id, activeColumn);
-      const overIndex = !overColumn.items.length ? 0 : getTaskIndex(over?.id, overColumn);
+    //   const activeIndex = getTaskIndex(active.id, activeColumn);
+    //   const overIndex = !overColumn.items.length ? 0 : getTaskIndex(over?.id, overColumn);
 
-      prev[prev.indexOf(activeColumn)] = {
-        ...activeColumn,
-        items: [...activeColumn.items.filter((task) => task.id !== active.id.toString())],
-      };
+    //   prev[prev.indexOf(activeColumn)] = {
+    //     ...activeColumn,
+    //     items: [...activeColumn.items.filter((task) => task.id !== active.id.toString())],
+    //   };
 
-      const activeTaskItem = activeColumn.items[activeIndex];
+    //   const activeTaskItem = activeColumn.items[activeIndex];
 
-      if (!activeTaskItem) return [...prev];
+    //   if (!activeTaskItem) return [...prev];
 
-      if (overIndex === 0) {
-        prev[prev.indexOf(overColumn)] = {
-          ...overColumn,
-          items: [activeTaskItem, ...overColumn.items],
-        };
-      } else {
-        activeTaskItem &&
-          (prev[prev.indexOf(overColumn)] = {
-            ...overColumn,
-            items: [
-              ...overColumn.items.slice(0, overIndex),
-              activeTaskItem,
-              ...overColumn.items.slice(overIndex, overColumn.items.length),
-            ],
-          });
-      }
+    //   if (overIndex === 0) {
+    //     prev[prev.indexOf(overColumn)] = {
+    //       ...overColumn,
+    //       items: [activeTaskItem, ...overColumn.items],
+    //     };
+    //   } else {
+    //     activeTaskItem &&
+    //       (prev[prev.indexOf(overColumn)] = {
+    //         ...overColumn,
+    //         items: [
+    //           ...overColumn.items.slice(0, overIndex),
+    //           activeTaskItem,
+    //           ...overColumn.items.slice(overIndex, overColumn.items.length),
+    //         ],
+    //       });
+    //   }
 
-      return [...prev];
-    });
+    //   return [...prev];
+    // });
   };
 
   const handlerDragEnd = (event: DragEndEvent) => {
@@ -169,30 +174,30 @@ function Board({ boardId }: TBoardProps) {
     }
 
     if (activeContainerID === overContainerID) {
-      const currentColumn = columns.find(({ id }) => id === activeContainerID);
+      const currentColumn = columns.find(({ _id }) => _id === activeContainerID);
 
       if (!currentColumn) {
         if (active.id !== over?.id) {
           const activeIndex: number = getColumnIndex(active.id, columns);
           const overIndex: number = getColumnIndex(over?.id || 0, columns);
 
-          setColumns(arrayMove(columns, activeIndex, overIndex));
+          //setColumns(arrayMove(columns, activeIndex, overIndex));
         }
         return;
       }
 
-      const activeIndex: number = getTaskIndex(active.id, currentColumn);
-      const overIndex: number = getTaskIndex(over?.id || 0, currentColumn);
+      // const activeIndex: number = getTaskIndex(active.id, currentColumn);
+      // const overIndex: number = getTaskIndex(over?.id || 0, currentColumn);
 
-      if (activeIndex != overIndex) {
-        setColumns((prev) => {
-          prev[prev.indexOf(currentColumn)] = {
-            ...currentColumn,
-            items: arrayMove<TTask>(currentColumn.items, activeIndex, overIndex),
-          };
-          return [...prev];
-        });
-      }
+      // if (activeIndex != overIndex) {
+      //   setColumns((prev) => {
+      //     prev[prev.indexOf(currentColumn)] = {
+      //       ...currentColumn,
+      //       items: arrayMove<TTask>(currentColumn.items, activeIndex, overIndex),
+      //     };
+      //     return [...prev];
+      //   });
+      // }
       return;
     }
     setActiveItem(null);
@@ -207,12 +212,12 @@ function Board({ boardId }: TBoardProps) {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragOver={handlerDragOver}
-        onDragEnd={handlerDragEnd}
+        //onDragStart={handleDragStart}
+        //onDragOver={handlerDragOver}
+        //onDragEnd={handlerDragEnd}
       >
         <SortableContext
-          items={columns.map((column) => column?.id)}
+          items={columns.map((column) => column?._id)}
           strategy={horizontalListSortingStrategy}
         >
           <div className={styles.fixed}>
@@ -220,13 +225,8 @@ function Board({ boardId }: TBoardProps) {
               <div className={styles.columns}>
                 {columns.map(
                   (column) =>
-                    column?.id && (
-                      <BoardColumn
-                        key={column?.id}
-                        boardId={boardId}
-                        {...column}
-                        showSnackMessage={setSnackState}
-                      />
+                    column._id && (
+                      <BoardColumn key={column._id} {...column} showSnackMessage={setSnackState} />
                     )
                 )}
               </div>

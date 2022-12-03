@@ -5,7 +5,7 @@ import { TAddColumnFormValues } from './AddColumn.types';
 import AddColumnForm from './AddColumnForm';
 
 type TAddColumnProps = {
-  boardId: number;
+  boardId: string;
   onSubmit: (data: TAddColumnFormValues) => void;
 };
 

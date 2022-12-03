@@ -7,7 +7,7 @@ import { TSnackbarMessage } from 'components/common/snackbar';
 import styles from './ColumnHeader.module.scss';
 
 type TColumnHeaderProps = {
-  boardId: number;
+  boardId: string;
   columnId: string;
   label: string;
   showSnackMessage: (props: TSnackbarMessage) => void;

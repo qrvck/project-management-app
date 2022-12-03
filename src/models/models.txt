@@ -1,1 +1,0 @@
-for common types and interfaces

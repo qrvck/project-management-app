@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
@@ -14,14 +14,15 @@ import styles from './BoardColumn.module.scss';
 import { TSnackbarMessage } from 'components/common/snackbar';
 
 type TBoardColumnProps = {
-  id: string;
-  label: string;
-  items: TTask[];
-  boardId: number;
+  _id: string;
+  title: string;
+  order: number;
+  boardId: string;
   showSnackMessage: (props: TSnackbarMessage) => void;
 };
 
-function BoardColumn({ id, label, items, boardId, showSnackMessage }: TBoardColumnProps) {
+function BoardColumn({ _id: id, boardId, title, order, showSnackMessage }: TBoardColumnProps) {
+  const [items, setItems] = useState(null);
   const { t } = useTranslation('board-management-page');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
@@ -47,14 +48,13 @@ function BoardColumn({ id, label, items, boardId, showSnackMessage }: TBoardColu
         {...attributes}
       >
         <ColumnHeader
-          label={label}
+          label={title}
           boardId={boardId}
           columnId={id}
           showSnackMessage={showSnackMessage}
         />
-
-        <TaskList items={items} columnId={id} />
-
+        order = {order}
+        {items ? <TaskList items={items} columnId={id} /> : 'Loading...'}
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained">
             + {t('addTask')}
