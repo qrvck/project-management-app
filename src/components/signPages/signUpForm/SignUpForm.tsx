@@ -42,7 +42,7 @@ function SignUpForm() {
               {t(errorMessage)}
             </Alert>
 
-            <UserForm submitButton={t('sign up')} submitCallback={onSubmit} />
+            <UserForm submitButton={t('sign up')} onSubmit={onSubmit} />
 
             <div className={styles.redirectWrapper}>
               <p className={styles.redirectText}>{t('already have an account')}?</p>

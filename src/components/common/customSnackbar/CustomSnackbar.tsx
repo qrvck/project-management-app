@@ -8,12 +8,12 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CustomSnackBar({ isOpen, closeCallback, type, message }: ISnackBarProps) {
+function CustomSnackBar({ isOpen, onClose, type, message }: ISnackBarProps) {
   const toggleSnackBar = (event?: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason === 'clickaway') {
       return;
     }
-    closeCallback();
+    onClose();
   };
   return (
     <Snackbar

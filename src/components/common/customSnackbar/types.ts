@@ -1,8 +1,8 @@
 export interface ISnackBarProps {
   isOpen: boolean;
-  closeCallback: () => void;
+  onClose: () => void;
   type: 'error' | 'info' | 'success' | 'warning';
   message: string;
 }
 
-export type TSnackBarState = Omit<ISnackBarProps, 'closeCallback'>;
+export type TSnackBarState = Omit<ISnackBarProps, 'onClose'>;

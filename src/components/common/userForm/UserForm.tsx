@@ -19,10 +19,10 @@ import styles from '../../signPages/Forms.module.scss';
 
 interface IUserFormProps {
   submitButton: string;
-  submitCallback: ({ name, login, password }: TFormValues) => void;
+  onSubmit: ({ name, login, password }: TFormValues) => void;
 }
 
-function UserForm({ submitButton, submitCallback }: IUserFormProps) {
+function UserForm({ submitButton, onSubmit }: IUserFormProps) {
   const [isShowingPassword, setShowingPassword] = useState<boolean>(false);
   const { t } = useTranslation('user-form');
   const {
@@ -41,7 +41,7 @@ function UserForm({ submitButton, submitCallback }: IUserFormProps) {
 
   return (
     <>
-      <form className={styles.form} onSubmit={handleSubmit(submitCallback)} noValidate>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
         <TextField
           className={styles.nameInput}
           id="name-input"

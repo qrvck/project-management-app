@@ -73,7 +73,7 @@ function EditProfilePage() {
           <span>{t('warning')}</span>
         </div>
         <div className={styles.formContainer}>
-          <UserForm submitButton={t('editButton')} submitCallback={handleFormSubmit} />
+          <UserForm submitButton={t('editButton')} onSubmit={handleFormSubmit} />
         </div>
         <Button className={styles.deleteButton} variant="contained" onClick={deleteUser}>
           {t('deleteButton')}
@@ -81,7 +81,7 @@ function EditProfilePage() {
       </div>
       <CustomSnackBar
         {...snackBar}
-        closeCallback={toggleSnackBarOpen}
+        onClose={toggleSnackBarOpen}
         message={t(`${snackBar.message}`)}
       />
       {isLoading && <FullScreenLoader />}
