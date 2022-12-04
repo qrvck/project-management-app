@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import BoardCard from '../boardCard';
 import Loader from 'components/common/loader';
+import CustomSnackBar from 'components/common/customSnackbar';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import { getAllBoardsCall } from 'api/boards';
 import { TBoards } from 'api/types';
 import useAuth from 'auth/useAuth';
@@ -14,6 +15,11 @@ function BoardsList() {
   const [boards, setBoards] = useState<TBoards>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [snackBar, setSnackBar] = useState<TSnackBarState>({
+    isOpen: false,
+    type: 'success',
+    message: '',
+  });
 
   const getAllBoards = useCallback(async (): Promise<void> => {
     setIsLoading(true);
@@ -34,6 +40,20 @@ function BoardsList() {
     getAllBoards();
   }, [getAllBoards]);
 
+  const updateBoards = () => {
+    getAllBoards();
+  };
+
+  const closeSnackBar = (): void => {
+    setSnackBar((prevState) => {
+      return { ...prevState, isOpen: false };
+    });
+  };
+
+  const updateSnackBar = ({ isOpen, type, message }: TSnackBarState) => {
+    setSnackBar({ isOpen, type, message });
+  };
+
   return (
     <>
       <div className={styles.list}>
@@ -42,13 +62,19 @@ function BoardsList() {
           !isLoading &&
           !errorMessage &&
           boards.map((board) => (
-            <Link className={styles.link} key={board._id} to={`/board-management/${board._id}`}>
-              <BoardCard title={board.title} owner={board.owner} />
-            </Link>
+            <BoardCard
+              key={board._id}
+              boardId={board._id}
+              title={board.title}
+              owner={board.owner}
+              updateBoards={updateBoards}
+              updateSnackBar={updateSnackBar}
+            />
           ))}
       </div>
       {errorMessage && <p>{t(`${errorMessage}`)}</p>}
       {!boards.length && !isLoading && !errorMessage && <p>{t('noBoards')}</p>}
+      <CustomSnackBar {...snackBar} onClose={closeSnackBar} message={t(`${snackBar.message}`)} />
     </>
   );
 }
