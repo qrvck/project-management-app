@@ -1,0 +1,40 @@
+@import 'styles/_variables';
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pageTitle,
+.warning {
+  text-align: center;
+}
+
+.warning {
+  display: flex;
+  justify-content: center;
+}
+
+.warningIcon {
+  color: $crimson;
+}
+
+.formContainer {
+  max-width: 320px;
+  margin: 25px 0;
+  padding: 22px;
+  box-shadow: 0px 7px 25px $grey;
+  border-radius: 24px;
+}
+
+.deleteButton {
+  margin-bottom: 25px;
+  background-color: $crimson;
+  font-family: inherit;
+  &:hover {
+    background-color: $cherry;
+  }
+}

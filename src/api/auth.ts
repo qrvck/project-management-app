@@ -1,10 +1,5 @@
 import { API_BASE_URL } from './constants';
-
-interface IUser {
-  name: string;
-  login: string;
-  _id: string;
-}
+import { IUser } from './types';
 
 async function signUp(name: string, login: string, password: string): Promise<IUser> {
   const response = await fetch(`${API_BASE_URL}/auth/signup`, {

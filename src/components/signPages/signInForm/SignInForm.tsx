@@ -73,7 +73,7 @@ function SignInForm() {
                 id="login-input"
                 type="text"
                 placeholder={t('login') || ''}
-                helperText={errors.login?.message || ' '}
+                helperText={errors.login?.message ? t(`${errors.login.message}`) : ' '}
                 error={!!errors.login}
                 fullWidth
                 size="small"
@@ -85,7 +85,7 @@ function SignInForm() {
                   ),
                 }}
                 {...register('login', {
-                  required: t('this field is required') || '',
+                  required: 'this field is required' || '',
                 })}
               />
 
@@ -94,7 +94,7 @@ function SignInForm() {
                 id="password-input"
                 type={isShowingPassword ? 'text' : 'password'}
                 placeholder={t('password') || ''}
-                helperText={errors.password?.message || ' '}
+                helperText={errors.password?.message ? t(`${errors.password.message}`) : ' '}
                 error={!!errors.password}
                 size="small"
                 fullWidth
@@ -119,11 +119,17 @@ function SignInForm() {
                   ),
                 }}
                 {...register('password', {
-                  required: t('this field is required') || '',
+                  required: 'this field is required' || '',
                 })}
               />
 
-              <Button className={styles.submitButton} type="submit" variant="contained" fullWidth>
+              <Button
+                className={styles.submitButton}
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={!!errors.login || !!errors.password}
+              >
                 {t('sign in')}
               </Button>
             </form>
