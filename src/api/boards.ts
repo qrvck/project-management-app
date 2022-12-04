@@ -38,3 +38,35 @@ export async function getAllBoardsCall(token: string): Promise<TBoards> {
 
   return data as TBoards;
 }
+
+export async function getBoardCall(token: string, boardId: string): Promise<IBoard> {
+  const response = await fetch(`${API_BASE_URL}/boards/${boardId}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data: IBoard | IResponseError = await response.json();
+
+  if (!response.ok) throw new Error((data as IResponseError).message);
+
+  return data as IBoard;
+}
+
+export async function deleteBoardCall(token: string, boardId: string): Promise<IBoard> {
+  const response = await fetch(`${API_BASE_URL}/boards/${boardId}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data: IBoard | IResponseError = await response.json();
+
+  if (!response.ok) throw new Error((data as IResponseError).message);
+
+  return data as IBoard;
+}
