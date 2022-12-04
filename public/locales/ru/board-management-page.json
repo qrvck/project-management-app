@@ -3,6 +3,7 @@
   "addColumn": "Добавить колонку",
   "addTask": "Добавить задачу",
   "columnDeleted": "Колонка удалена",
+  "columnNotDeleted": "Ошибка. Колонка не удалена",
   "editTitleTooltip": "Нажмите, чтобы отредактировать название",
   "deleteColumnConfirmation": "Вы действительно хотите удалить колонку\n {{columnName}}?",
   "titleUpdated": "Название колонки успешно обновлено!",

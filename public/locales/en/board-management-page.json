@@ -4,6 +4,7 @@
   "addTask": "Add task",
   "editTitleTooltip": "Click to edit column name",
   "columnDeleted": "Column was deleted",
+  "columnNotDeleted": "Column wasn't deleted",
   "deleteLabel": "Delete column",
   "deleteColumnConfirmation": "You are going to delete column {{columnName}}.\n Are you sure?",
   "titleUpdated": "Title has been updated",
