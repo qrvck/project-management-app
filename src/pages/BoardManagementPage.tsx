@@ -12,6 +12,11 @@ import { AddColumn } from 'components/boardManagementPage/addColumnForm';
 import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './BoardManagementPage.module.scss';
+import { getBoardCall } from 'api/boards';
+import Loader from 'components/common/loader';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 
 type TBoardManagementPageProps = {
   boardId?: string;
@@ -31,6 +36,8 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
     type: 'success',
     message: '',
   });
+  const [boardTitle, setBoardTitle] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const addTasks = useCallback(
     (dataColumns: TColumn[]) => {
@@ -65,6 +72,20 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
     });
   }, [addTasks, boardId, user.token]);
 
+  const getBoard = useCallback(async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const { title } = await getBoardCall(user.token, boardId || '');
+      setBoardTitle(title);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [boardId, user.token]);
+
+  useEffect(() => {
+    getBoard();
+  }, [getBoard]);
+
   const handlerSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
     setLoading(true);
     const index = columns.length ? columns[columns.length - 1].order + 1 : 0;
@@ -98,8 +119,24 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
   return (
     <div className={`container ${styles.wrapper}`}>
       <div className={styles.header}>
-        <h2 className={styles.title}>{t('title')}</h2>
-        <AddColumn onSubmit={handlerSubmit} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
+            <Box className={styles.buttons} mb={2}>
+              <Button
+                className={styles.redirectButton}
+                variant="outlined"
+                component={Link}
+                to="/boards-list"
+              >
+                {t('backButton')}
+              </Button>
+              <AddColumn onSubmit={handlerSubmit} />
+            </Box>
+          </>
+        )}
       </div>
       {!!columns.length && (
         <Board

@@ -28,7 +28,7 @@ function App() {
             </Route>
             <Route element={<PrivateRoute user={isAuthenticated} />}>
               <Route path="edit-profile" element={<EditProfilePage />} />
-              <Route path="board-management" element={<BoardManagementPage />} />
+              <Route path="board-management/:boardId" element={<BoardManagementPage />} />
               <Route path="boards-list" element={<BoardsListPage />} />
             </Route>
             <Route path="404" element={<NotFoundPage />} />
