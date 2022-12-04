@@ -21,7 +21,6 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { useTranslation } from 'react-i18next';
 import { ColumnAPI } from 'api/column';
 import { Task } from '../taskList';
 import { TColumn, TTask } from 'models/types';
@@ -45,7 +44,6 @@ type TBoardProps = {
 };
 
 function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
-  const { t } = useTranslation('board-management-page');
   const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const { user } = useAuth();
