@@ -1,12 +1,5 @@
 import { API_BASE_URL } from './constants';
-import { IResponseError } from './types';
-
-interface IBoard {
-  _id: string;
-  title: string;
-  owner: string;
-  users: string[];
-}
+import { IResponseError, IBoard, TBoards } from './types';
 
 export async function createBoardCall(
   token: string,
@@ -28,4 +21,20 @@ export async function createBoardCall(
   if (!response.ok) throw new Error((data as IResponseError).message);
 
   return data as IBoard;
+}
+
+export async function getAllBoardsCall(token: string): Promise<TBoards> {
+  const response = await fetch(`${API_BASE_URL}/boards`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data: TBoards | IResponseError = await response.json();
+
+  if (!response.ok) throw new Error((data as IResponseError).message);
+
+  return data as TBoards;
 }
