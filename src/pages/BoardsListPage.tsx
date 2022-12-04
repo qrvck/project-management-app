@@ -8,9 +8,11 @@ function BoardsListPage() {
   const { t } = useTranslation('boards-list-page');
 
   return (
-    <div className={styles.wrapper}>
-      <h2>{t('title')}</h2>
-      <BoardsList />
+    <div className="container">
+      <div className={styles.wrapper}>
+        <h2>{t('title')}</h2>
+        <BoardsList />
+      </div>
     </div>
   );
 }

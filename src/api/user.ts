@@ -41,4 +41,20 @@ async function deleteUserCall(token: string, id: string): Promise<IUser> {
   return data as IUser;
 }
 
-export { editUserCall, deleteUserCall };
+async function getUserCall(token: string, id: string): Promise<IUser> {
+  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data: IUser | IResponseError = await response.json();
+
+  if (!response.ok) throw new Error((data as IResponseError).message);
+
+  return data as IUser;
+}
+
+export { editUserCall, deleteUserCall, getUserCall };
