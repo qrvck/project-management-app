@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import BoardCard from '../boardCard';
 import Loader from 'components/common/loader';
 import { getAllBoardsCall } from 'api/boards';
@@ -41,7 +42,9 @@ function BoardsList() {
           !isLoading &&
           !errorMessage &&
           boards.map((board) => (
-            <BoardCard key={board._id} to={board._id} title={board.title} owner={board.owner} />
+            <Link className={styles.link} key={board._id} to={`/board-management/${board._id}`}>
+              <BoardCard title={board.title} owner={board.owner} />
+            </Link>
           ))}
       </div>
       {errorMessage && <p>{t(`${errorMessage}`)}</p>}
