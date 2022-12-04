@@ -13,6 +13,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Hamburger from './hamburger';
 import Loader from 'components/common/loader';
+import CustomSnackBar from 'components/common/customSnackbar';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import useAuth from 'auth/useAuth';
 import styles from './Navigation.module.scss';
 
@@ -24,6 +26,11 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
   const [lang, setLang] = useState(i18n.language);
   const [isHamburgerOpen, setHamburgerOpen] = useState(false);
   const [isAddBoardFormOpen, setAddBoardFormOpen] = useState(false);
+  const [snackBar, setSnackBar] = useState<TSnackBarState>({
+    isOpen: false,
+    type: 'success',
+    message: '',
+  });
 
   const handleLangChange = (event: React.MouseEvent<HTMLElement>, newLang: string) => {
     if (newLang) {
@@ -42,6 +49,16 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
 
   const closeAddBoardForm = () => {
     setAddBoardFormOpen(false);
+  };
+
+  const closeSnackBar = (): void => {
+    setSnackBar((prevState) => {
+      return { ...prevState, isOpen: false };
+    });
+  };
+
+  const updateSnackBar = ({ isOpen, type, message }: TSnackBarState) => {
+    setSnackBar({ isOpen, type, message });
   };
 
   return (
@@ -172,10 +189,11 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
         <h3 className={styles.formTitle}>{t('createBoard')}</h3>
         <DialogContent className={styles.dialogContent}>
           <Suspense fallback={<Loader />}>
-            <AddBoardForm onClose={closeAddBoardForm} />
+            <AddBoardForm onClose={closeAddBoardForm} updateSnackBar={updateSnackBar} />
           </Suspense>
         </DialogContent>
       </Dialog>
+      <CustomSnackBar {...snackBar} onClose={closeSnackBar} message={t(`${snackBar.message}`)} />
     </>
   );
 }
