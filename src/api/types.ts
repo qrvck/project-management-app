@@ -9,4 +9,13 @@ interface IResponseError {
   message: string;
 }
 
-export { IUser, IResponseError };
+interface IBoard {
+  _id: string;
+  title: string;
+  owner: string;
+  users: string[];
+}
+
+type TBoards = IBoard[];
+
+export { IUser, IResponseError, IBoard, TBoards };
