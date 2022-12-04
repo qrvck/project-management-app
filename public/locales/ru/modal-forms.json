@@ -1,0 +1,7 @@
+{
+  "createBoardLabel": "Название доски",
+  "addButton": "Создать",
+  "cancelButton": "Отмена",
+  "fieldLength": "Название должно быть не менее 2 символов и не более 50",
+  "fieldRequired": "Обязательное поле"
+}
