@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useAuth from 'auth/useAuth';
 import Board from 'components/boardManagementPage';
-import Loader from 'components/common/loader';
+import CustomSnackBar from 'components/common/customSnackbar';
+import FullScreenLoader from 'components/common/fullScreenLoader';
 import { useTranslation } from 'react-i18next';
-import { AddColumn } from 'components/boardManagementPage/addColumnForm';
-import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
 import { SubmitHandler } from 'react-hook-form';
+import { TaskAPI } from 'api/task';
 import { ColumnAPI } from 'api/column';
 import { TColumn, TTask } from 'models/types';
-import { taskAPI } from 'api/task';
-
+import { AddColumn } from 'components/boardManagementPage/addColumnForm';
+import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './BoardManagementPage.module.scss';
 
 type TBoardManagementPageProps = {
@@ -25,13 +26,18 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
   const { user } = useAuth();
   const [columns, setColumns] = useState<TColumn[]>([]);
   const [loading, setLoading] = useState(true);
+  const [snackBar, setSnackBar] = useState<TSnackBarState>({
+    isOpen: false,
+    type: 'success',
+    message: '',
+  });
 
   const addTasks = useCallback(
     (dataColumns: TColumn[]) => {
       if (!dataColumns.length) return;
 
       const promises: Promise<TTask[]>[] = dataColumns.map((column) =>
-        taskAPI.getAll(user.token, boardId, column._id)
+        TaskAPI.getAll(user.token, boardId, column._id)
       );
 
       Promise.all(promises).then((taskData) => {
@@ -60,9 +66,33 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
   }, [addTasks, boardId, user.token]);
 
   const handlerSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
+    setLoading(true);
     const index = columns.length ? columns[columns.length - 1].order + 1 : 0;
     const newColumn = await ColumnAPI.create(user.token, boardId, data.columnName, index);
+    setLoading(false);
+
+    if (!newColumn) {
+      setSnackBar((prev) => ({
+        ...prev,
+        isOpen: true,
+        type: 'error',
+        message: t('columnNotAdd'),
+      }));
+      return;
+    }
+
     setColumns((prev) => [...prev, newColumn]);
+
+    setSnackBar((prev) => ({
+      ...prev,
+      isOpen: true,
+      type: 'success',
+      message: t('columnAdd'),
+    }));
+  };
+
+  const handleCloseSnackBar = () => {
+    setSnackBar((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -71,8 +101,16 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
         <h2 className={styles.title}>{t('title')}</h2>
         <AddColumn onSubmit={handlerSubmit} />
       </div>
-      {!!columns.length && <Board boardId={boardId} columns={columns} setColumns={setColumns} />}
-      {loading && <Loader />}
+      {!!columns.length && (
+        <Board
+          boardId={boardId}
+          columns={columns}
+          setColumns={setColumns}
+          setSnackBar={setSnackBar}
+        />
+      )}
+      {loading && <FullScreenLoader />}
+      {<CustomSnackBar onClose={handleCloseSnackBar} {...snackBar} />}
     </div>
   );
 }
