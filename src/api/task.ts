@@ -13,11 +13,10 @@ export const taskAPI = {
     });
 
     if (!response.ok) {
-      return null;
+      return [];
     }
 
     const data: TTask[] = await response.json();
-    console.log(data);
 
     return data;
   },

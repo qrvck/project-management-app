@@ -13,7 +13,6 @@ export const ColumnAPI = {
     title: string,
     order: number
   ): Promise<TColumn> => {
-    console.log(token);
     const response = await fetch(`${API_BASE_URL}/boards/${boardId}/columns`, {
       method: 'POST',
       headers: {
@@ -53,10 +52,12 @@ export const ColumnAPI = {
     return data;
   },
 
-  delete: async (boardId: string, columnId: string): Promise<TColumn> => {
+  delete: async (token: string, boardId: string, columnId: string): Promise<TColumn> => {
     const response = await fetch(`${API_BASE_URL}/boards/${boardId}/columns/${columnId}`, {
       method: 'DELETE',
       headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     });
@@ -82,9 +83,6 @@ export const ColumnAPI = {
       return null;
     }
 
-    const data: TColumn[] = await response.json();
-    console.log(data);
-
-    return data;
+    return await response.json();
   },
 };
