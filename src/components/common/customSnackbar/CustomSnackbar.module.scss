@@ -1,0 +1,11 @@
+.snackbar {
+  @media (min-width: 600px) {
+    bottom: 12px;
+  }
+}
+
+.alert {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+}

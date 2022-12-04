@@ -3,19 +3,11 @@
   "image subtitle": "всего пара кликов и мы начнем",
   "sign up": "Регистрация",
   "sign in": "Вход",
-  "name": "Имя",
   "login": "Логин",
   "password": "Пароль",
   "have no account yet": "Еще нет аккаунта",
   "already have an account": "Уже имеете аккаунт",
   "authorization error": "Неправильный логин или пароль",
   "login already exist": "Такой логин уже существует",
-
-  "this field is required": "обязательное поле",
-  "minimum length symbols": "минимальная длина символов - {{symbolsCount}}",
-  "maximum length 20 symbols": "максимальная длина 20 символов",
-  "must start only with a letter": "должен начинаться только с буквы",
-  "must contain only letters": "должен содержать только буквы",
-  "must contain only latin letters or/and digits": "должен содержать только латинские буквы или/и цифры",
-  "at least one number, one uppercase and one lowercase letters": "минимум одна цифра, одна заглавная и одна строчная буквы"
+  "this field is required": "обязательное поле"
 }
