@@ -26,7 +26,6 @@ function ColumnHeader({ label, deleteColumn, updateColumnTitle }: TColumnHeaderP
     <Box className={styles.header}>
       {openEditForm ? (
         <EditTitleForm
-          label={label}
           close={handleClose}
           columnNameRef={columnNameRef}
           updateColumnTitle={updateColumnTitle}

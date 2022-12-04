@@ -9,13 +9,12 @@ import { useTranslation } from 'react-i18next';
 import styles from './EditTitleForm.module.scss';
 
 type TEditTitleForm = {
-  label: string;
   columnNameRef: React.MutableRefObject<string>;
   close: () => void;
   updateColumnTitle: (title: string) => void;
 };
 
-function EditTitleForm({ label, close, columnNameRef, updateColumnTitle }: TEditTitleForm) {
+function EditTitleForm({ close, columnNameRef, updateColumnTitle }: TEditTitleForm) {
   const { t } = useTranslation('board-management-page');
   const {
     register,
@@ -23,7 +22,7 @@ function EditTitleForm({ label, close, columnNameRef, updateColumnTitle }: TEdit
     formState: { errors },
   } = useForm({
     defaultValues: {
-      columnName: label,
+      columnName: columnNameRef.current,
     },
   });
 
