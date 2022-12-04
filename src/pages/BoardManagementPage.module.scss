@@ -1,5 +1,39 @@
+@import 'styles/_variables';
+
 .wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.title {
+  margin: 16px 0;
+  font-size: 26px;
+  word-break: break-word;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.redirectButton {
+  border-color: $violet;
+  font-family: inherit;
+  color: $violet;
+
+  &:hover {
+    border-color: $deep-violet;
+    color: $deep-violet;
+  }
+}
+
+.addButton {
+  background-color: $violet;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $deep-violet;
+  }
 }
