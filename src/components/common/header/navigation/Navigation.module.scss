@@ -125,3 +125,14 @@
     }
   }
 }
+
+.formTitle {
+  margin-bottom: 0;
+  color: $dark-grey;
+  text-align: center;
+}
+
+.dialogContent {
+  position: relative;
+  min-height: 170px; // минимальная высота, когда подгрузился контент, чтобы лоадер корректно отображался
+}
