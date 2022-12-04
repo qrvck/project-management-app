@@ -169,8 +169,8 @@ function Navigation({ isSticky }: { isSticky: boolean }) {
         <Hamburger isSticky={isSticky} isOpen={isHamburgerOpen} toggleHamburger={toggleHamburger} />
       </nav>
       <Dialog open={isAddBoardFormOpen} onClose={closeAddBoardForm} maxWidth="xs" fullWidth>
-        <h3 className={styles.title}>{t('createBoard')}</h3>
-        <DialogContent>
+        <h3 className={styles.formTitle}>{t('createBoard')}</h3>
+        <DialogContent className={styles.dialogContent}>
           <Suspense fallback={<Loader />}>
             <AddBoardForm onClose={closeAddBoardForm} />
           </Suspense>
