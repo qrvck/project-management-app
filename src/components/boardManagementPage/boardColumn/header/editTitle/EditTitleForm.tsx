@@ -4,17 +4,16 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { TSnackbarMessage } from 'components/common/snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './EditTitleForm.module.scss';
 
 type TEditTitleForm = {
   label: string;
   columnName: React.MutableRefObject<string>;
   close: () => void;
-  showSnackMessage: (props: TSnackbarMessage) => void;
+  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
 };
 
 function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitleForm) {
@@ -34,7 +33,7 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
 
     showSnackMessage({
       isOpen: true,
-      severity: 'success',
+      type: 'success',
       message: t('titleUpdated'),
     });
 
@@ -48,7 +47,7 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
 
     showSnackMessage({
       isOpen: true,
-      severity: 'error',
+      type: 'error',
       message: t('titleNotUpdated'),
     });
 

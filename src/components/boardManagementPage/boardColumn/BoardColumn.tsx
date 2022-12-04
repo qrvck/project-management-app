@@ -4,7 +4,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { TaskList } from '../taskList';
 import { TColumn } from 'models/types';
-import { TSnackbarMessage } from 'components/common/snackbar';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -15,7 +15,7 @@ import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
 type TBoardColumnProps = TColumn & {
-  showSnackMessage: (props: TSnackbarMessage) => void;
+  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   deleteColumn: (columnId: string) => void;
 };
 

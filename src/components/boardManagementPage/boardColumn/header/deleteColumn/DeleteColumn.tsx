@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { ConfirmationPopup } from 'components/common/confirmationPopup';
-import { TSnackbarMessage } from 'components/common/snackbar';
 import { useTranslation } from 'react-i18next';
-
+import { ConfirmationPopup } from 'components/common/confirmationPopup';
 import styles from './DeleteColumn.module.scss';
 
 type TDeleteColumnProps = {
   columnName: string;
-  showSnackMessage: (props: TSnackbarMessage) => void;
   deleteColumn: () => void;
 };
 

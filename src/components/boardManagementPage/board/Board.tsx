@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import useAuth from 'auth/useAuth';
 import BoardColumn from '../boardColumn';
 import FullScreenLoader from 'components/common/fullScreenLoader';
-import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
 import {
   DndContext,
   closestCorners,
@@ -22,13 +21,12 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { Task } from '../taskList';
-import { SENSOR_OPTIONS } from 'constants/index';
-
-import { TColumn, TTask } from 'models/types';
-import { ColumnAPI } from 'api/column';
 import { useTranslation } from 'react-i18next';
-
+import { ColumnAPI } from 'api/column';
+import { Task } from '../taskList';
+import { TColumn, TTask } from 'models/types';
+import { SENSOR_OPTIONS } from 'constants/index';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './Board.module.scss';
 
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
@@ -42,18 +40,14 @@ const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
 type TBoardProps = {
   boardId: string;
   columns: TColumn[];
+  setSnackBar: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
 };
 
-function Board({ boardId, columns, setColumns }: TBoardProps) {
+function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
   const { t } = useTranslation('board-management-page');
   const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
-  const [snackState, setSnackState] = useState<TSnackbarMessage>({
-    isOpen: false,
-    severity: 'success',
-    message: '',
-  });
   const { user } = useAuth();
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -177,10 +171,6 @@ function Board({ boardId, columns, setColumns }: TBoardProps) {
     setActiveItem(null);
   };
 
-  function handleClose() {
-    setSnackState((prev) => ({ ...prev, isOpen: false }));
-  }
-
   const deleteColumn = (columnId: string) => {
     setShowLoader(true);
 
@@ -189,7 +179,7 @@ function Board({ boardId, columns, setColumns }: TBoardProps) {
 
     if (!dataColumn) {
       setShowLoader(false);
-      setSnackState((prev) => ({
+      setSnackBar((prev) => ({
         ...prev,
         isOpen: true,
         severity: 'error',
@@ -204,7 +194,7 @@ function Board({ boardId, columns, setColumns }: TBoardProps) {
       return [...newState];
     });
     setShowLoader(false);
-    setSnackState((prev) => ({
+    setSnackBar((prev) => ({
       ...prev,
       isOpen: true,
       severity: 'success',
@@ -234,7 +224,7 @@ function Board({ boardId, columns, setColumns }: TBoardProps) {
                       <BoardColumn
                         key={column._id}
                         deleteColumn={deleteColumn}
-                        showSnackMessage={setSnackState}
+                        showSnackMessage={setSnackBar}
                         {...column}
                       />
                     )
@@ -251,7 +241,6 @@ function Board({ boardId, columns, setColumns }: TBoardProps) {
         )}
       </DndContext>
       {showLoader && <FullScreenLoader />}
-      <SnackbarMessage {...snackState} onClose={handleClose} />
     </>
   );
 }

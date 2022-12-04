@@ -21,8 +21,7 @@ export default function AddColumnForm({ isOpen, onSubmit, onClose }: TAddColumnF
     },
   });
 
-  const handlerSubmit: SubmitHandler<TAddColumnFormValues> = (data, event) => {
-    event?.preventDefault();
+  const handlerSubmit: SubmitHandler<TAddColumnFormValues> = (data) => {
     onSubmit(data);
     onClose();
   };

@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import Box from '@mui/material/Box';
 import EditTitleForm from './editTitle';
 import DeleteColumn from './deleteColumn';
-import { TSnackbarMessage } from 'components/common/snackbar';
-
 import styles from './ColumnHeader.module.scss';
 
 type TColumnHeaderProps = {
   label: string;
-  showSnackMessage: (props: TSnackbarMessage) => void;
+  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   deleteColumn: () => void;
 };
 
@@ -40,13 +39,7 @@ function ColumnHeader({ label, showSnackMessage, deleteColumn }: TColumnHeaderPr
         </h3>
       )}
 
-      {!openEditForm && (
-        <DeleteColumn
-          columnName={label}
-          deleteColumn={deleteColumn}
-          showSnackMessage={showSnackMessage}
-        />
-      )}
+      {!openEditForm && <DeleteColumn columnName={label} deleteColumn={deleteColumn} />}
     </Box>
   );
 }
