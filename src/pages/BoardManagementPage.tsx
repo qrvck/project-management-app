@@ -3,6 +3,9 @@ import useAuth from 'auth/useAuth';
 import Board from 'components/boardManagementPage';
 import CustomSnackBar from 'components/common/customSnackbar';
 import FullScreenLoader from 'components/common/fullScreenLoader';
+import Loader from 'components/common/loader';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import { SubmitHandler } from 'react-hook-form';
 import { TaskAPI } from 'api/task';
@@ -11,23 +14,17 @@ import { TColumn, TTask } from 'models/types';
 import { AddColumn } from 'components/boardManagementPage/addColumnForm';
 import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
-import styles from './BoardManagementPage.module.scss';
 import { getBoardCall } from 'api/boards';
-import Loader from 'components/common/loader';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-
-type TBoardManagementPageProps = {
-  boardId?: string;
-};
+import { useParams, Link } from 'react-router-dom';
+import styles from './BoardManagementPage.module.scss';
 
 const sortByOrder = (items: TColumn[]) => {
   return items.sort((a, b) => a.order - b.order);
 };
 
-function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardManagementPageProps) {
+function BoardManagementPage() {
   const { t } = useTranslation('board-management-page');
+  const { boardId } = useParams();
   const { user } = useAuth();
   const [columns, setColumns] = useState<TColumn[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,9 +36,23 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
   const [boardTitle, setBoardTitle] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const getBoard = useCallback(async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const { title } = await getBoardCall(user.token, boardId || '');
+      setBoardTitle(title);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [boardId, user.token]);
+
+  useEffect(() => {
+    getBoard();
+  }, [getBoard]);
+
   const addTasks = useCallback(
     (dataColumns: TColumn[]) => {
-      if (!dataColumns.length) return;
+      if (!dataColumns.length || !boardId) return;
 
       const promises: Promise<TTask[]>[] = dataColumns.map((column) =>
         TaskAPI.getAll(user.token, boardId, column._id)
@@ -63,6 +74,8 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
   );
 
   useEffect(() => {
+    if (!boardId) return;
+
     ColumnAPI.getAll(user.token, boardId).then((dataColumns) => {
       setLoading(false);
 
@@ -72,21 +85,9 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
     });
   }, [addTasks, boardId, user.token]);
 
-  const getBoard = useCallback(async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const { title } = await getBoardCall(user.token, boardId || '');
-      setBoardTitle(title);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [boardId, user.token]);
-
-  useEffect(() => {
-    getBoard();
-  }, [getBoard]);
-
   const handlerSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
+    if (!boardId) return;
+
     setLoading(true);
     const index = columns.length ? columns[columns.length - 1].order + 1 : 0;
     const newColumn = await ColumnAPI.create(user.token, boardId, data.columnName, index);
@@ -138,7 +139,7 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
           </>
         )}
       </div>
-      {!!columns.length && (
+      {!!columns.length && boardId && (
         <Board
           boardId={boardId}
           columns={columns}
