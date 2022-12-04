@@ -3,6 +3,8 @@
   "addColumn": "Add column",
   "addTask": "Add task",
   "editTitleTooltip": "Click to edit column name",
+  "columnAdd": "Column added",
+  "columnNotAdd": "Column wasn't create",
   "columnDeleted": "Column was deleted",
   "columnNotDeleted": "Column wasn't deleted",
   "deleteLabel": "Delete column",

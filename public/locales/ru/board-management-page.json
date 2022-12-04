@@ -2,6 +2,8 @@
   "title": "Доска",
   "addColumn": "Добавить колонку",
   "addTask": "Добавить задачу",
+  "columnAdd": "Колонка добавлена",
+  "columnNotAdd": "Колонка не создана",
   "columnDeleted": "Колонка удалена",
   "columnNotDeleted": "Ошибка. Колонка не удалена",
   "editTitleTooltip": "Нажмите, чтобы отредактировать название",
