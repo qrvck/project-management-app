@@ -1,7 +1,7 @@
 import { TTask } from 'models/types';
 import { API_BASE_URL } from './constants';
 
-export const taskAPI = {
+export const TaskAPI = {
   getAll: async (token: string, boardId: string, columnId: string) => {
     const response = await fetch(`${API_BASE_URL}/boards/${boardId}/columns/${columnId}/tasks`, {
       method: 'GET',
