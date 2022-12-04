@@ -30,13 +30,13 @@ function EditProfilePage() {
       await editUserCall(user.token, user.id, name, login, password);
       setSnackBar({ type: 'success', isOpen: true, message: 'successfulEdit' });
     } catch (error) {
-      let errorMessage: string;
       if (error instanceof Error) {
-        errorMessage = error.message === 'Login already exist' ? 'loginExists' : 'unknownError';
-      } else {
-        errorMessage = 'unknownError';
+        setSnackBar({
+          isOpen: true,
+          type: 'error',
+          message: error.message === 'Login already exist' ? 'loginExists' : 'unknownError',
+        });
       }
-      setSnackBar({ isOpen: true, type: 'error', message: errorMessage });
     } finally {
       setIsLoading(false);
     }
