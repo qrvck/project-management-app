@@ -1,4 +1,6 @@
 {
   "title": "Your boards",
-  "owner": "owner"
+  "owner": "owner",
+  "unknownError": "Unexpected error occurred. Try again",
+  "noBoards": "You don't have any boards yet"
 }
