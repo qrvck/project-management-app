@@ -11,14 +11,14 @@ import styles from './DeleteColumn.module.scss';
 type TDeleteColumnProps = {
   columnName: string;
   showSnackMessage: (props: TSnackbarMessage) => void;
+  deleteColumn: () => void;
 };
 
-function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
+function DeleteColumn({ columnName, deleteColumn }: TDeleteColumnProps) {
   const [openConfirmationForm, setOpenConfirmationForm] = useState(false);
   const { t } = useTranslation('board-management-page');
 
-  const handleBtnClick = (event: React.MouseEvent) => {
-    event.preventDefault();
+  const handleBtnClick = () => {
     setOpenConfirmationForm(true);
   };
 
@@ -26,15 +26,9 @@ function DeleteColumn({ columnName, showSnackMessage }: TDeleteColumnProps) {
     setOpenConfirmationForm(false);
   };
 
-  const handleDelete = (event: React.MouseEvent) => {
-    event.preventDefault();
-
+  const handleDelete = () => {
+    deleteColumn();
     setOpenConfirmationForm(false);
-    showSnackMessage({
-      isOpen: true,
-      severity: 'success',
-      message: t('columnDeleted'),
-    });
   };
 
   return (

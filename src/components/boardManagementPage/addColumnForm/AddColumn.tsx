@@ -5,11 +5,10 @@ import { TAddColumnFormValues } from './AddColumn.types';
 import AddColumnForm from './AddColumnForm';
 
 type TAddColumnProps = {
-  boardId: string;
   onSubmit: (data: TAddColumnFormValues) => void;
 };
 
-function AddColumn({ boardId, onSubmit }: TAddColumnProps) {
+function AddColumn({ onSubmit }: TAddColumnProps) {
   const { t } = useTranslation('board-management-page');
   const [open, setOpen] = React.useState(false);
 
@@ -17,8 +16,7 @@ function AddColumn({ boardId, onSubmit }: TAddColumnProps) {
     setOpen(false);
   };
 
-  const handlerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handlerClick = () => {
     setOpen(true);
   };
 

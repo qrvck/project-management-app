@@ -7,13 +7,12 @@ import { TSnackbarMessage } from 'components/common/snackbar';
 import styles from './ColumnHeader.module.scss';
 
 type TColumnHeaderProps = {
-  boardId: string;
-  columnId: string;
   label: string;
   showSnackMessage: (props: TSnackbarMessage) => void;
+  deleteColumn: () => void;
 };
 
-function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHeaderProps) {
+function ColumnHeader({ label, showSnackMessage, deleteColumn }: TColumnHeaderProps) {
   const [openEditForm, setOpenEditForm] = useState(false);
   const columnName = useRef(label);
 
@@ -41,7 +40,13 @@ function ColumnHeader({ label, boardId, columnId, showSnackMessage }: TColumnHea
         </h3>
       )}
 
-      {!openEditForm && <DeleteColumn columnName={label} showSnackMessage={showSnackMessage} />}
+      {!openEditForm && (
+        <DeleteColumn
+          columnName={label}
+          deleteColumn={deleteColumn}
+          showSnackMessage={showSnackMessage}
+        />
+      )}
     </Box>
   );
 }

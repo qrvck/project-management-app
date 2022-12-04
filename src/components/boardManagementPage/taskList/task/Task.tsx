@@ -1,10 +1,10 @@
 import React from 'react';
-import { TTask } from './Task.types';
 import Box from '@mui/material/Box';
 import yellow from '@mui/material/colors/yellow';
 import styles from './Task.module.scss';
 
-interface ITaskProps extends TTask {
+interface ITaskProps {
+  title: string;
   isDragging?: boolean;
 }
 

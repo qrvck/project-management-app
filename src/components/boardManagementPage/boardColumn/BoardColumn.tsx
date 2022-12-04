@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
+import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
-import { TaskList, TTask } from '../taskList';
+import { TaskList } from '../taskList';
+import { TColumn } from 'models/types';
+import { TSnackbarMessage } from 'components/common/snackbar';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,18 +13,20 @@ import ColumnHeader from './header/ColumnHeader';
 
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
-import { TSnackbarMessage } from 'components/common/snackbar';
 
-type TBoardColumnProps = {
-  _id: string;
-  title: string;
-  order: number;
-  boardId: string;
+type TBoardColumnProps = TColumn & {
   showSnackMessage: (props: TSnackbarMessage) => void;
+  deleteColumn: (columnId: string) => void;
 };
 
-function BoardColumn({ _id: id, boardId, title, order, showSnackMessage }: TBoardColumnProps) {
-  const [items, setItems] = useState(null);
+function BoardColumn({
+  _id: id,
+  title,
+  order,
+  items,
+  showSnackMessage,
+  deleteColumn,
+}: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
@@ -31,6 +35,10 @@ function BoardColumn({ _id: id, boardId, title, order, showSnackMessage }: TBoar
       columnId: 'root',
     },
   });
+
+  const handleDeleteColumn = () => {
+    deleteColumn(id);
+  };
 
   return (
     <Grid item xs={4}>
@@ -49,12 +57,11 @@ function BoardColumn({ _id: id, boardId, title, order, showSnackMessage }: TBoar
       >
         <ColumnHeader
           label={title}
-          boardId={boardId}
-          columnId={id}
           showSnackMessage={showSnackMessage}
+          deleteColumn={handleDeleteColumn}
         />
         order = {order}
-        {items ? <TaskList items={items} columnId={id} /> : 'Loading...'}
+        {!!items?.length && <TaskList items={items} columnId={id} />}
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained">
             + {t('addTask')}
