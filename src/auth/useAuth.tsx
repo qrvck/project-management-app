@@ -87,7 +87,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     signInApi(login, password)
       .then((response) => {
-        localStorage.setItem('pm-token', JSON.stringify(response.token));
+        localStorage.setItem('pm-token', response.token);
 
         const tokenValidityTime = getTokenValidityTime(response.token);
 
