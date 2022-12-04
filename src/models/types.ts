@@ -3,6 +3,7 @@ export type TColumn = {
   title: string;
   order: number;
   boardId: string;
+  items: TTask[];
 };
 
 export type TTask = {

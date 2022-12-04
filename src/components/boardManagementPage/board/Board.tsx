@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import useAuth from 'auth/useAuth';
 import BoardColumn from '../boardColumn';
+import FullScreenLoader from 'components/common/fullScreenLoader';
+import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
 import {
   DndContext,
   closestCorners,
@@ -19,68 +22,39 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { Task, TTask } from '../taskList';
+import { Task } from '../taskList';
 import { SENSOR_OPTIONS } from 'constants/index';
-import SnackbarMessage, { TSnackbarMessage } from 'components/common/snackbar';
-import { TColumn } from 'models/types';
-import { taskAPI } from 'api/task';
-import useAuth from 'auth/useAuth';
+
+import { TColumn, TTask } from 'models/types';
+import { ColumnAPI } from 'api/column';
+import { useTranslation } from 'react-i18next';
 
 import styles from './Board.module.scss';
-
-const generateColumns = () => {
-  return Array(5)
-    .fill(1)
-    .map((_, idx) => ({
-      id: self.crypto.randomUUID(),
-      label: `Column ${idx + 1}`,
-      items: [
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 1`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 2`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 3`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-      ],
-    }));
-};
-
-const initColumns = generateColumns();
 
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
   return columns.findIndex((column) => column._id === id);
 };
 
-// const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
-//   return column.items.findIndex((task) => task.id === id);
-// };
+const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
+  return column?.items?.findIndex((task) => task._id === id);
+};
 
 type TBoardProps = {
   boardId: string;
   columns: TColumn[];
+  setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
 };
 
-function Board({ boardId, columns }: TBoardProps) {
-  const { user } = useAuth();
-  const [tasks, setTasks] = useState([]);
+function Board({ boardId, columns, setColumns }: TBoardProps) {
+  const { t } = useTranslation('board-management-page');
+  const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const [snackState, setSnackState] = useState<TSnackbarMessage>({
     isOpen: false,
     severity: 'success',
     message: '',
   });
+  const { user } = useAuth();
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: SENSOR_OPTIONS,
@@ -90,11 +64,6 @@ function Board({ boardId, columns }: TBoardProps) {
     })
   );
 
-  useEffect(() => {
-    const promises = columns.map((column) => taskAPI.getAll(user.token, boardId, column._id));
-    console.log(promises);
-  }, []);
-
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
@@ -102,8 +71,11 @@ function Board({ boardId, columns }: TBoardProps) {
       const activeColumn = columns.find(
         (column) => column._id === active.data.current?.columnId.toString()
       );
-      //const task = activeColumn?.items.find((task) => task.id === active.id.toString());
-      //task && setActiveItem({ ...task });
+
+      if (!activeColumn) return;
+
+      const task = activeColumn?.items?.find((task) => task._id === active.id.toString());
+      task && setActiveItem({ ...task });
     }
   };
 
@@ -119,43 +91,45 @@ function Board({ boardId, columns }: TBoardProps) {
       return;
     }
 
-    // setColumns((prev) => {
-    //   const activeColumn = prev.find(({ id }) => id === activeContainerID);
-    //   const overColumn = prev.find(({ id }) => id === overContainerID);
+    setColumns((prev) => {
+      const activeColumn = prev.find(({ _id }) => _id === activeContainerID);
+      const overColumn = prev.find(({ _id }) => _id === overContainerID);
 
-    //   if (!activeColumn || !overColumn) return [...prev];
+      if (!activeColumn || !overColumn) return [...prev];
 
-    //   const activeIndex = getTaskIndex(active.id, activeColumn);
-    //   const overIndex = !overColumn.items.length ? 0 : getTaskIndex(over?.id, overColumn);
+      const activeIndex = getTaskIndex(active.id, activeColumn);
+      const overIndex = !overColumn?.items?.length ? 0 : getTaskIndex(over?.id, overColumn);
 
-    //   prev[prev.indexOf(activeColumn)] = {
-    //     ...activeColumn,
-    //     items: [...activeColumn.items.filter((task) => task.id !== active.id.toString())],
-    //   };
+      if (!activeIndex || !overIndex) return [...prev];
 
-    //   const activeTaskItem = activeColumn.items[activeIndex];
+      prev[prev.indexOf(activeColumn)] = {
+        ...activeColumn,
+        items: [...activeColumn.items.filter((task) => task._id !== active.id.toString())],
+      };
 
-    //   if (!activeTaskItem) return [...prev];
+      const activeTaskItem = activeColumn.items?.[activeIndex];
 
-    //   if (overIndex === 0) {
-    //     prev[prev.indexOf(overColumn)] = {
-    //       ...overColumn,
-    //       items: [activeTaskItem, ...overColumn.items],
-    //     };
-    //   } else {
-    //     activeTaskItem &&
-    //       (prev[prev.indexOf(overColumn)] = {
-    //         ...overColumn,
-    //         items: [
-    //           ...overColumn.items.slice(0, overIndex),
-    //           activeTaskItem,
-    //           ...overColumn.items.slice(overIndex, overColumn.items.length),
-    //         ],
-    //       });
-    //   }
+      if (!activeTaskItem) return [...prev];
 
-    //   return [...prev];
-    // });
+      if (overIndex === 0) {
+        prev[prev.indexOf(overColumn)] = {
+          ...overColumn,
+          items: [activeTaskItem, ...overColumn?.items],
+        };
+      } else {
+        activeTaskItem &&
+          (prev[prev.indexOf(overColumn)] = {
+            ...overColumn,
+            items: [
+              ...overColumn?.items?.slice(0, overIndex),
+              activeTaskItem,
+              ...overColumn?.items?.slice(overIndex, overColumn.items.length),
+            ],
+          });
+      }
+
+      return [...prev];
+    });
   };
 
   const handlerDragEnd = (event: DragEndEvent) => {
@@ -181,23 +155,23 @@ function Board({ boardId, columns }: TBoardProps) {
           const activeIndex: number = getColumnIndex(active.id, columns);
           const overIndex: number = getColumnIndex(over?.id || 0, columns);
 
-          //setColumns(arrayMove(columns, activeIndex, overIndex));
+          setColumns(arrayMove(columns, activeIndex, overIndex));
         }
         return;
       }
 
-      // const activeIndex: number = getTaskIndex(active.id, currentColumn);
-      // const overIndex: number = getTaskIndex(over?.id || 0, currentColumn);
+      const activeIndex: number = getTaskIndex(active.id, currentColumn);
+      const overIndex: number = getTaskIndex(over?.id || 0, currentColumn);
 
-      // if (activeIndex != overIndex) {
-      //   setColumns((prev) => {
-      //     prev[prev.indexOf(currentColumn)] = {
-      //       ...currentColumn,
-      //       items: arrayMove<TTask>(currentColumn.items, activeIndex, overIndex),
-      //     };
-      //     return [...prev];
-      //   });
-      // }
+      if (activeIndex != overIndex) {
+        setColumns((prev) => {
+          prev[prev.indexOf(currentColumn)] = {
+            ...currentColumn,
+            items: arrayMove<TTask>(currentColumn.items, activeIndex, overIndex),
+          };
+          return [...prev];
+        });
+      }
       return;
     }
     setActiveItem(null);
@@ -207,14 +181,45 @@ function Board({ boardId, columns }: TBoardProps) {
     setSnackState((prev) => ({ ...prev, isOpen: false }));
   }
 
+  const deleteColumn = (columnId: string) => {
+    setShowLoader(true);
+
+    const dataColumn = ColumnAPI.delete(user.token, boardId, columnId);
+    console.log(dataColumn);
+
+    if (!dataColumn) {
+      setShowLoader(false);
+      setSnackState((prev) => ({
+        ...prev,
+        isOpen: true,
+        severity: 'error',
+        message: t('columnNotDeleted'),
+      }));
+      return;
+    }
+
+    setColumns((prev) => {
+      const newState = prev.filter((column) => column._id !== columnId);
+      console.log(newState);
+      return [...newState];
+    });
+    setShowLoader(false);
+    setSnackState((prev) => ({
+      ...prev,
+      isOpen: true,
+      severity: 'success',
+      message: t('columnDeleted'),
+    }));
+  };
+
   return (
     <>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
-        //onDragStart={handleDragStart}
-        //onDragOver={handlerDragOver}
-        //onDragEnd={handlerDragEnd}
+        onDragStart={handleDragStart}
+        onDragOver={handlerDragOver}
+        onDragEnd={handlerDragEnd}
       >
         <SortableContext
           items={columns.map((column) => column?._id)}
@@ -226,7 +231,12 @@ function Board({ boardId, columns }: TBoardProps) {
                 {columns.map(
                   (column) =>
                     column._id && (
-                      <BoardColumn key={column._id} {...column} showSnackMessage={setSnackState} />
+                      <BoardColumn
+                        key={column._id}
+                        deleteColumn={deleteColumn}
+                        showSnackMessage={setSnackState}
+                        {...column}
+                      />
                     )
                 )}
               </div>
@@ -240,7 +250,7 @@ function Board({ boardId, columns }: TBoardProps) {
           </DragOverlay>
         )}
       </DndContext>
-
+      {showLoader && <FullScreenLoader />}
       <SnackbarMessage {...snackState} onClose={handleClose} />
     </>
   );
