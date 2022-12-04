@@ -6,17 +6,16 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './EditTitleForm.module.scss';
 
 type TEditTitleForm = {
   label: string;
-  columnName: React.MutableRefObject<string>;
+  columnNameRef: React.MutableRefObject<string>;
   close: () => void;
-  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
+  updateColumnTitle: (title: string) => void;
 };
 
-function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitleForm) {
+function EditTitleForm({ label, close, columnNameRef, updateColumnTitle }: TEditTitleForm) {
   const { t } = useTranslation('board-management-page');
   const {
     register,
@@ -24,32 +23,14 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
     formState: { errors },
   } = useForm({
     defaultValues: {
-      editColumnName: label,
+      columnName: label,
     },
   });
 
-  const changeName: SubmitHandler<{ editColumnName: string }> = (data, event) => {
-    event?.preventDefault();
+  const changeName: SubmitHandler<{ columnName: string }> = (data) => {
+    updateColumnTitle(data.columnName);
 
-    showSnackMessage({
-      isOpen: true,
-      type: 'success',
-      message: t('titleUpdated'),
-    });
-
-    columnName.current = data.editColumnName;
-
-    close();
-  };
-
-  const handlerClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    showSnackMessage({
-      isOpen: true,
-      type: 'error',
-      message: t('titleNotUpdated'),
-    });
+    columnNameRef.current = data.columnName;
 
     close();
   };
@@ -64,16 +45,16 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
       >
         <Tooltip
           arrow
-          open={!!errors.editColumnName}
-          title={errors.editColumnName?.message}
+          open={!!errors.columnName}
+          title={errors.columnName?.message}
           classes={{ tooltip: styles.tooltip, arrow: styles.arrow }}
         >
           <Input
-            className={!!errors.editColumnName ? styles.error : styles.input}
+            className={!!errors.columnName ? styles.error : styles.input}
             autoFocus={true}
             fullWidth
             disableUnderline
-            {...register('editColumnName', {
+            {...register('columnName', {
               required: t('emptyName') || '',
               minLength: {
                 value: 2,
@@ -89,7 +70,7 @@ function EditTitleForm({ label, close, columnName, showSnackMessage }: TEditTitl
         <IconButton aria-label="save" className={styles.save} onClick={handleSubmit(changeName)}>
           <CheckOutlinedIcon className={styles.iconSave} />
         </IconButton>
-        <IconButton aria-label="cancel" className={styles.cancel} onClick={handlerClose}>
+        <IconButton aria-label="cancel" className={styles.cancel} onClick={close}>
           <CloseOutlinedIcon className={styles.iconCancel} />
         </IconButton>
       </form>

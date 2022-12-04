@@ -35,21 +35,20 @@ export const ColumnAPI = {
     columnId: string,
     title: string,
     order: number
-  ): Promise<TColumn> => {
+  ): Promise<TColumn | null> => {
     const response = await fetch(`${API_BASE_URL}/boards/${boardId}/columns/${columnId}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, order }),
     });
 
-    const data = await response.json();
+    if (!response.ok) return null;
 
-    if (!response.ok) throw new Error(data.message);
-
-    return data;
+    return await response.json();
   },
 
   delete: async (token: string, boardId: string, columnId: string): Promise<TColumn> => {

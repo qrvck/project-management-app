@@ -55,6 +55,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      keyboardCodes: { start: ['KeyS'], end: [], cancel: [] },
     })
   );
 
@@ -202,6 +203,27 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
     }));
   };
 
+  const updateColumnTitle = (columnId: string, title: string, order: number) => {
+    setShowLoader(true);
+    const columnTitle = ColumnAPI.update(user.token, boardId, columnId, title, order);
+    setShowLoader(false);
+
+    if (!columnTitle) {
+      setSnackBar({
+        isOpen: true,
+        type: 'error',
+        message: t('titleNotUpdated'),
+      });
+      return;
+    }
+
+    setSnackBar({
+      isOpen: true,
+      type: 'success',
+      message: t('titleUpdated'),
+    });
+  };
+
   return (
     <>
       <DndContext
@@ -224,7 +246,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
                       <BoardColumn
                         key={column._id}
                         deleteColumn={deleteColumn}
-                        showSnackMessage={setSnackBar}
+                        updateColumnTitle={updateColumnTitle}
                         {...column}
                       />
                     )
@@ -240,6 +262,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
           </DragOverlay>
         )}
       </DndContext>
+
       {showLoader && <FullScreenLoader />}
     </>
   );

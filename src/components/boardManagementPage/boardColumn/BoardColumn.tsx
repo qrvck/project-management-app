@@ -4,19 +4,17 @@ import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { TaskList } from '../taskList';
 import { TColumn } from 'models/types';
-import { TSnackBarState } from 'components/common/customSnackbar/types';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import ColumnHeader from './header/ColumnHeader';
-
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
 type TBoardColumnProps = TColumn & {
-  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   deleteColumn: (columnId: string) => void;
+  updateColumnTitle: (columnId: string, title: string, order: number) => void;
 };
 
 function BoardColumn({
@@ -24,7 +22,7 @@ function BoardColumn({
   title,
   order,
   items,
-  showSnackMessage,
+  updateColumnTitle,
   deleteColumn,
 }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
@@ -38,6 +36,10 @@ function BoardColumn({
 
   const handleDeleteColumn = () => {
     deleteColumn(id);
+  };
+
+  const handleUpdateTitle = (title: string) => {
+    updateColumnTitle(id, title, order);
   };
 
   return (
@@ -57,8 +59,8 @@ function BoardColumn({
       >
         <ColumnHeader
           label={title}
-          showSnackMessage={showSnackMessage}
           deleteColumn={handleDeleteColumn}
+          updateColumnTitle={handleUpdateTitle}
         />
         order = {order}
         {!!items?.length && <TaskList items={items} columnId={id} />}

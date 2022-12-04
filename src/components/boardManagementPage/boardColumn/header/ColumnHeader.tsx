@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { TSnackBarState } from 'components/common/customSnackbar/types';
 import Box from '@mui/material/Box';
 import EditTitleForm from './editTitle';
 import DeleteColumn from './deleteColumn';
@@ -7,13 +6,13 @@ import styles from './ColumnHeader.module.scss';
 
 type TColumnHeaderProps = {
   label: string;
-  showSnackMessage: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   deleteColumn: () => void;
+  updateColumnTitle: (title: string) => void;
 };
 
-function ColumnHeader({ label, showSnackMessage, deleteColumn }: TColumnHeaderProps) {
+function ColumnHeader({ label, deleteColumn, updateColumnTitle }: TColumnHeaderProps) {
   const [openEditForm, setOpenEditForm] = useState(false);
-  const columnName = useRef(label);
+  const columnNameRef = useRef(label);
 
   const handleEdit = () => {
     setOpenEditForm(true);
@@ -25,17 +24,16 @@ function ColumnHeader({ label, showSnackMessage, deleteColumn }: TColumnHeaderPr
 
   return (
     <Box className={styles.header}>
-      {openEditForm && (
+      {openEditForm ? (
         <EditTitleForm
           label={label}
           close={handleClose}
-          columnName={columnName}
-          showSnackMessage={showSnackMessage}
+          columnNameRef={columnNameRef}
+          updateColumnTitle={updateColumnTitle}
         />
-      )}
-      {!openEditForm && (
+      ) : (
         <h3 className={styles.title} onClick={handleEdit}>
-          {columnName.current}
+          {columnNameRef.current}
         </h3>
       )}
 
