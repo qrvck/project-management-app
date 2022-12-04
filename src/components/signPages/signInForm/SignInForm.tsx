@@ -128,7 +128,7 @@ function SignInForm() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={errors.login || errors.password ? true : false}
+                disabled={!!errors.login || !!errors.password}
               >
                 {t('sign in')}
               </Button>

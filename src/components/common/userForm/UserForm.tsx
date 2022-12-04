@@ -190,7 +190,7 @@ function UserForm({ submitButton, onSubmit }: IUserFormProps) {
           type="submit"
           variant="contained"
           fullWidth
-          disabled={errors.login || errors.name || errors.password ? true : false}
+          disabled={!!errors.login || !!errors.name || !!errors.password}
         >
           {submitButton}
         </Button>
