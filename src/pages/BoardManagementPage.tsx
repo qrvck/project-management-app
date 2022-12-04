@@ -76,7 +76,7 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
         ...prev,
         isOpen: true,
         type: 'error',
-        message: t('columnNotAdd'),
+        message: 'columnNotAdd',
       }));
       return;
     }
@@ -87,7 +87,7 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
       ...prev,
       isOpen: true,
       type: 'success',
-      message: t('columnAdd'),
+      message: 'columnAdd',
     }));
   };
 
@@ -110,7 +110,14 @@ function BoardManagementPage({ boardId = '638a9ea62decb250ebf17291' }: TBoardMan
         />
       )}
       {loading && <FullScreenLoader />}
-      {<CustomSnackBar onClose={handleCloseSnackBar} {...snackBar} />}
+      {
+        <CustomSnackBar
+          onClose={handleCloseSnackBar}
+          isOpen={snackBar.isOpen}
+          type={snackBar.type}
+          message={t(`${snackBar.message}`)}
+        />
+      }
     </div>
   );
 }

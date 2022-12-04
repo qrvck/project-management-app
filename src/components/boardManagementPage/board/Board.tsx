@@ -184,7 +184,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
         ...prev,
         isOpen: true,
         severity: 'error',
-        message: t('columnNotDeleted'),
+        message: 'columnNotDeleted',
       }));
       return;
     }
@@ -199,7 +199,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
       ...prev,
       isOpen: true,
       severity: 'success',
-      message: t('columnDeleted'),
+      message: 'columnDeleted',
     }));
   };
 
@@ -212,7 +212,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
       setSnackBar({
         isOpen: true,
         type: 'error',
-        message: t('titleNotUpdated'),
+        message: 'titleNotUpdated',
       });
       return;
     }
@@ -220,7 +220,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
     setSnackBar({
       isOpen: true,
       type: 'success',
-      message: t('titleUpdated'),
+      message: 'titleUpdated',
     });
   };
 
