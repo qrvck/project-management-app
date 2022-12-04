@@ -2,5 +2,6 @@
   "title": "Your boards",
   "owner": "owner",
   "unknownError": "Unexpected error occurred. Try again",
-  "noBoards": "You don't have any boards yet"
+  "noBoards": "You don't have any boards yet",
+  "successDeletion": "Board deleted successfully"
 }
