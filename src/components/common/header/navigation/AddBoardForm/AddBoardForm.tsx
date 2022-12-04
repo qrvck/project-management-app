@@ -18,7 +18,7 @@ interface IFormValues {
 
 function AddBoardForm({ onClose }: IAddBoardFormProps) {
   const { user } = useAuth();
-  const { t } = useTranslation('add-board-form');
+  const { t } = useTranslation('modal-forms');
   const {
     register,
     handleSubmit,
@@ -32,6 +32,7 @@ function AddBoardForm({ onClose }: IAddBoardFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <TextField
+        className={styles.titleInput}
         id="board-title"
         type="text"
         helperText={errors.boardTitle?.message ? t(`${errors.boardTitle.message}`) : ' '}
@@ -40,26 +41,33 @@ function AddBoardForm({ onClose }: IAddBoardFormProps) {
         autoComplete="off"
         autoFocus
         margin="dense"
-        label={t('boardTitle')}
+        label={t('createBoardLabel')}
         fullWidth
         variant="outlined"
         {...register('boardTitle', {
           required: 'fieldRequired' || '',
           minLength: {
             value: 2,
-            message: 'minLength' || '',
+            message: 'fieldLength' || '',
           },
           maxLength: {
             value: 50,
-            message: 'maxLength' || '',
+            message: 'fieldLength' || '',
           },
         })}
       />
-      <div className={styles.button}>
-        <Button type="submit" variant="contained">
+      <div className={styles.buttons}>
+        <Button
+          className={styles.addButton}
+          type="submit"
+          variant="contained"
+          disabled={!!errors.boardTitle}
+        >
           {t('addButton')}
         </Button>
-        <Button onClick={onClose}>{t('cancelButton')}</Button>
+        <Button className={styles.cancelButton} variant="outlined" onClick={onClose}>
+          {t('cancelButton')}
+        </Button>
       </div>
     </form>
   );
