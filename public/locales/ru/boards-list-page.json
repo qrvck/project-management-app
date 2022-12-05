@@ -3,5 +3,6 @@
   "owner": "владелец",
   "unknownError": "Произошла неизвестная ошибка. Попробуйте снова",
   "noBoards": "У вас ещё нет досок",
-  "successDeletion": "Доска успешно удалена"
+  "successDeletion": "Доска успешно удалена",
+  "deleteInfo": "доску ''{{ columnName }}''"
 }
