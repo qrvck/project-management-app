@@ -5,13 +5,23 @@
   gap: 15px;
   justify-content: space-between;
   align-items: center;
+  padding: 0 0 0 8px;
   border: 1px solid;
   border-color: $task-border;
   border-radius: 4px;
   font-size: 14px;
 }
 
-.deleteBtn {
-  padding: 0;
-  align-self: flex-start;
+.title {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.deleteBtn, .editBtn {
+  padding: 3px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
 }

@@ -20,6 +20,38 @@ export const TaskAPI = {
     return data;
   },
 
+  update: async (
+    token: string,
+    boardId: string,
+    columnId: string,
+    userId: string,
+    taskId: string,
+    title: string,
+    order: number,
+    description: string
+  ) => {
+    const response = await fetch(
+      `${API_BASE_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, order, description, columnId, userId, users: [] }),
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data: TTask = await response.json();
+
+    return data;
+  },
+
   delete: async (token: string, boardId: string, columnId: string, taskId: string) => {
     const response = await fetch(
       `${API_BASE_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
