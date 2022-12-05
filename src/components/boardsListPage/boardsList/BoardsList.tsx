@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import BoardCard from '../boardCard';
 import Loader from 'components/common/loader';
 import CustomSnackBar from 'components/common/customSnackbar';
@@ -7,9 +8,13 @@ import { getAllBoardsCall } from 'api/boards';
 import { TBoards } from 'api/types';
 import useAuth from 'auth/useAuth';
 import { useTranslation } from 'react-i18next';
+import { RootState } from 'store';
+import { updateBoardsAfterCreation } from 'store/boardsSlice';
 import styles from './BoardsList.module.scss';
 
 function BoardsList() {
+  const shouldBoardsUpdate = useSelector((state: RootState) => state.boards.shouldBoardsUpdate);
+  const dispatch = useDispatch();
   const { t } = useTranslation('boards-list-page');
   const { user } = useAuth();
   const [boards, setBoards] = useState<TBoards>([]);
@@ -38,7 +43,10 @@ function BoardsList() {
 
   useEffect(() => {
     getAllBoards();
-  }, [getAllBoards]);
+    if (shouldBoardsUpdate) {
+      dispatch(updateBoardsAfterCreation(false));
+    }
+  }, [dispatch, getAllBoards, shouldBoardsUpdate]);
 
   const updateBoards = () => {
     getAllBoards();

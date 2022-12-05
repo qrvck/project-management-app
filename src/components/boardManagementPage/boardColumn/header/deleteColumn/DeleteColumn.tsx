@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Loader from 'components/common/loader';
 import { useTranslation } from 'react-i18next';
-import { ConfirmationPopup } from 'components/common/confirmationPopup';
 import styles from './DeleteColumn.module.scss';
+
+const ConfirmationPopup = lazy(() => import('components/common/confirmationPopup'));
 
 type TDeleteColumnProps = {
   columnName: string;
@@ -38,13 +42,17 @@ function DeleteColumn({ columnName, deleteColumn }: TDeleteColumnProps) {
         </>
       </Tooltip>
 
-      <ConfirmationPopup
-        isOpen={openConfirmationForm}
-        onClose={handleClose}
-        onDelete={handleDelete}
-      >
-        {t('deleteColumnConfirmation', { columnName })}
-      </ConfirmationPopup>
+      <Dialog open={openConfirmationForm} onClose={handleClose} maxWidth="xs" fullWidth>
+        <DialogContent className={styles.dialogContent}>
+          <Suspense fallback={<Loader />}>
+            <ConfirmationPopup
+              itemToDelete={t('deleteInfo', { columnName })}
+              onClose={handleClose}
+              onDelete={handleDelete}
+            />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
