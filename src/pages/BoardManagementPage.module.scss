@@ -47,3 +47,14 @@
     background-color: $deep-violet;
   }
 }
+
+.createTaskTitle {
+  text-align: center;
+  margin-bottom: 0;
+  color: $dark-grey;
+}
+
+.dialogContent {
+  position: relative;
+  min-height: 340px;
+}

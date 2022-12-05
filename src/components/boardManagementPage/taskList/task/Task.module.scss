@@ -9,9 +9,15 @@
   border-color: $task-border;
   border-radius: 4px;
   font-size: 14px;
+  word-break: break-all;
 }
 
 .deleteBtn {
   padding: 0;
   align-self: flex-start;
+}
+
+.dialogContent {
+  position: relative;
+  min-height: 265px;
 }

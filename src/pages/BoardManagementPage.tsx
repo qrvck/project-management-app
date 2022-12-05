@@ -1,11 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
+import { Navigate } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
-import { Board, CreateTask } from 'components/boardManagementPage';
+import { Board } from 'components/boardManagementPage';
 import CustomSnackBar from 'components/common/customSnackbar';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import Loader from 'components/common/loader';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
 import { SubmitHandler } from 'react-hook-form';
 import { TaskAPI } from 'api/task';
@@ -17,6 +20,8 @@ import { TSnackBarState } from 'components/common/customSnackbar/types';
 import { getBoardCall } from 'api/boards';
 import { useParams, Link } from 'react-router-dom';
 import styles from './BoardManagementPage.module.scss';
+
+const CreateTask = lazy(() => import('components/boardManagementPage/createTask'));
 
 function sortByOrder<T extends { order: number }>(items: T[]): T[] {
   return items.sort((a, b) => a.order - b.order);
@@ -42,6 +47,7 @@ function BoardManagementPage() {
   });
   const [boardTitle, setBoardTitle] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [boardNotFound, setBoardNotFound] = useState(false);
   const [taskFormState, setTaskFormState] = useState<TAddTaskFormState>({
     isOpen: false,
     columnId: null,
@@ -54,6 +60,8 @@ function BoardManagementPage() {
     try {
       const { title } = await getBoardCall(user.token, boardId || '');
       setBoardTitle(title);
+    } catch (error) {
+      setBoardNotFound(true);
     } finally {
       setIsLoading(false);
     }
@@ -203,12 +211,12 @@ function BoardManagementPage() {
 
   return (
     <div className={`container ${styles.wrapper}`}>
+      {boardNotFound && <Navigate to="/404" />}
       <div className={styles.header}>
         {isLoading ? (
           <Loader />
         ) : (
           <>
-            <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
             <Box className={styles.buttons} mb={2}>
               <AddColumn onSubmit={addColumnSubmit} />
               <Button
@@ -220,6 +228,7 @@ function BoardManagementPage() {
                 {t('backButton')}
               </Button>
             </Box>
+            <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
           </>
         )}
       </div>
@@ -240,7 +249,14 @@ function BoardManagementPage() {
         type={snackBar.type}
         message={t(`${snackBar.message}`)}
       />
-      <CreateTask addTask={addTaskSubmit} onClose={closeTaskForm} {...taskFormState} />
+      <Dialog open={taskFormState.isOpen} onClose={closeTaskForm} maxWidth="xs" fullWidth>
+        <h3 className={styles.createTaskTitle}>{t('createTask')}</h3>
+        <DialogContent className={styles.dialogContent}>
+          <Suspense fallback={<Loader />}>
+            <CreateTask addTask={addTaskSubmit} onClose={closeTaskForm} {...taskFormState} />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

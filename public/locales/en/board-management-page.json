@@ -20,5 +20,6 @@
   "backButton": "Back",
   "deleteInfo": "column ''{{ columnName }}''",
   "deleteTaskInfo": "task ''{{ title }}''",
-  "formTitle": "Create a column"
+  "formTitle": "Create a column",
+  "createTask": "Create a task"
 }
