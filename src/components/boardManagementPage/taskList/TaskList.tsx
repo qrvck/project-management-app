@@ -10,9 +10,10 @@ import styles from './TaskList.module.scss';
 type TTaskListProps = {
   items: TTask[];
   columnId: string;
+  deleteTask: (columnId: string, taskId: string) => void;
 };
 
-function TaskList({ columnId, items }: TTaskListProps) {
+function TaskList({ columnId, items, deleteTask }: TTaskListProps) {
   const { setNodeRef } = useDroppable({
     id: `${columnId}drop`,
     data: {
@@ -26,7 +27,7 @@ function TaskList({ columnId, items }: TTaskListProps) {
       <Box ref={setNodeRef} className={styles.scrollable}>
         <ul>
           {items.map((item) => (
-            <TaskContainer key={item._id} {...item} columnId={columnId} />
+            <TaskContainer key={item._id} {...item} columnId={columnId} deleteTask={deleteTask} />
           ))}
         </ul>
       </Box>

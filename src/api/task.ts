@@ -20,6 +20,25 @@ export const TaskAPI = {
     return data;
   },
 
+  delete: async (token: string, boardId: string, columnId: string, taskId: string) => {
+    const response = await fetch(
+      `${API_BASE_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) return null;
+
+    const data: TTask = await response.json();
+    return data;
+  },
+
   getAll: async (token: string, boardId: string, columnId: string) => {
     const response = await fetch(`${API_BASE_URL}/boards/${boardId}/columns/${columnId}/tasks`, {
       method: 'GET',

@@ -81,12 +81,13 @@ function BoardManagementPage() {
         });
 
         setColumns([...newColumns]);
+        snackBar.message && setSnackBar((prev) => ({ ...prev, isOpen: true }));
       });
     },
-    [boardId, user.token]
+    [boardId, snackBar.message, user.token]
   );
 
-  const getColumnsTasks = useCallback(() => {
+  const getColumnsAndTasks = useCallback(() => {
     if (!boardId) return;
 
     ColumnAPI.getAll(user.token, boardId).then((dataColumns) => {
@@ -99,12 +100,12 @@ function BoardManagementPage() {
   }, [getTasks, boardId, user.token]);
 
   useEffect(() => {
-    getColumnsTasks();
-  }, [getColumnsTasks]);
+    getColumnsAndTasks();
+  }, [getColumnsAndTasks]);
 
   if (!boardId) return <></>;
 
-  const handlerSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
+  const addColumnSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
     if (!boardId) return;
 
     setLoading(true);
@@ -122,7 +123,7 @@ function BoardManagementPage() {
       return;
     }
 
-    getColumnsTasks();
+    getColumnsAndTasks();
     setLoading(false);
     setSnackBar((prev) => ({
       ...prev,
@@ -136,7 +137,31 @@ function BoardManagementPage() {
     setSnackBar((prev) => ({ ...prev, isOpen: false }));
   };
 
-  const addTask = (taskParams: TNewTask) => {
+  const deleteTaskSubmit = (columnId: string, taskId: string) => {
+    setLoading(true);
+
+    TaskAPI.delete(user.token, boardId, columnId, taskId).then((taskData) => {
+      if (!taskData) {
+        setLoading(false);
+        setSnackBar((prev) => ({
+          ...prev,
+          isOpen: true,
+          type: 'error',
+          message: 'taskNotDeleted',
+        }));
+        return;
+      }
+      getColumnsAndTasks();
+
+      setSnackBar((prev) => ({
+        ...prev,
+        type: 'success',
+        message: 'taskDeleted',
+      }));
+    });
+  };
+
+  const addTaskSubmit = (taskParams: TNewTask) => {
     const { columnId, order } = taskFormState;
     const newTask = { ...taskParams, order, userId: user.id, users: [] };
 
@@ -158,11 +183,10 @@ function BoardManagementPage() {
         return;
       }
 
-      getColumnsTasks();
+      getColumnsAndTasks();
 
       setSnackBar((prev) => ({
         ...prev,
-        isOpen: true,
         type: 'success',
         message: 'taskCreated',
       }));
@@ -186,7 +210,7 @@ function BoardManagementPage() {
           <>
             <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
             <Box className={styles.buttons} mb={2}>
-              <AddColumn onSubmit={handlerSubmit} />
+              <AddColumn onSubmit={addColumnSubmit} />
               <Button
                 className={styles.redirectButton}
                 variant="outlined"
@@ -206,6 +230,7 @@ function BoardManagementPage() {
           setColumns={setColumns}
           setSnackBar={setSnackBar}
           openTaskForm={openTaskForm}
+          deleteTask={deleteTaskSubmit}
         />
       )}
       {loading && <FullScreenLoader />}
@@ -215,7 +240,7 @@ function BoardManagementPage() {
         type={snackBar.type}
         message={t(`${snackBar.message}`)}
       />
-      <CreateTask addTask={addTask} onClose={closeTaskForm} {...taskFormState} />
+      <CreateTask addTask={addTaskSubmit} onClose={closeTaskForm} {...taskFormState} />
     </div>
   );
 }

@@ -42,9 +42,17 @@ type TBoardProps = {
   setSnackBar: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
   openTaskForm: ({ isOpen, columnId }: { isOpen: boolean; columnId: string }) => void;
+  deleteTask: (columnId: string, taskId: string) => void;
 };
 
-function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoardProps) {
+function Board({
+  boardId,
+  columns,
+  setColumns,
+  setSnackBar,
+  openTaskForm,
+  deleteTask,
+}: TBoardProps) {
   const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const { user } = useAuth();
@@ -84,8 +92,7 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
     if (!activeContainerID || !overContainerID || activeContainerID === overContainerID) {
       return;
     }
-    console.log('active: ', active);
-    console.log('over: ', over);
+
     setColumns((prev) => {
       const activeColumn = prev.find(({ _id }) => _id === activeContainerID);
       const overColumn = prev.find(({ _id }) => _id === overContainerID);
@@ -247,6 +254,7 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
                         deleteColumn={deleteColumn}
                         updateColumnTitle={updateColumnTitle}
                         openTaskForm={openTaskForm}
+                        deleteTask={deleteTask}
                         {...column}
                       />
                     )
@@ -258,7 +266,7 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
 
         {activeItem && (
           <DragOverlay>
-            <Task {...activeItem} />
+            <Task {...activeItem} isOverlay />
           </DragOverlay>
         )}
       </DndContext>

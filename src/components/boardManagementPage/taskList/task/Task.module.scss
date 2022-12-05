@@ -1,8 +1,17 @@
 @import 'styles/_variables';
 
 .task {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid;
   border-color: $task-border;
   border-radius: 4px;
   font-size: 14px;
+}
+
+.deleteBtn {
+  padding: 0;
+  align-self: flex-start;
 }

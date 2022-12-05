@@ -24,6 +24,7 @@ type TBoardColumnProps = TColumn & {
     columnId: string;
     order: number;
   }) => void;
+  deleteTask: (columnId: string, taskId: string) => void;
 };
 
 function BoardColumn({
@@ -34,6 +35,7 @@ function BoardColumn({
   updateColumnTitle,
   deleteColumn,
   openTaskForm,
+  deleteTask,
 }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
 
@@ -82,7 +84,7 @@ function BoardColumn({
           updateColumnTitle={handleUpdateTitle}
         />
         order = {order}
-        <TaskList items={items} columnId={id} />
+        <TaskList items={items} columnId={id} deleteTask={deleteTask} />
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained" onClick={handleAddTaskClick}>
             + {t('addTask')}
