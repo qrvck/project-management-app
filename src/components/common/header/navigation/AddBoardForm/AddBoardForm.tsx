@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
 import Button from '@mui/material/Button';
@@ -8,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { getUserCall } from 'api/user';
 import { createBoardCall } from 'api/boards';
 import useAuth from 'auth/useAuth';
+import { updateBoardsAfterCreation } from 'store/boardsSlice';
 import styles from './AddBoardForm.module.scss';
 
 interface IAddBoardFormProps {
@@ -20,6 +22,7 @@ interface IFormValues {
 }
 
 function AddBoardForm({ onClose, updateSnackBar }: IAddBoardFormProps) {
+  const dispatch = useDispatch();
   const { user } = useAuth();
   const { t } = useTranslation('modal-forms');
   const {
@@ -35,6 +38,7 @@ function AddBoardForm({ onClose, updateSnackBar }: IAddBoardFormProps) {
       const { name: owner } = await getUserCall(user.token, user.id);
       await createBoardCall(user.token, owner, title);
       updateSnackBar({ type: 'success', isOpen: true, message: 'successfulCreation' });
+      dispatch(updateBoardsAfterCreation(true));
     } catch (error) {
       if (error instanceof Error) {
         updateSnackBar({
