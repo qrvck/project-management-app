@@ -5,5 +5,6 @@
   "editButton": "Edit",
   "unknownError": "Unexpected error occurred. Try again",
   "loginExists": "This login already exists",
-  "successfulEdit": "Profile successfully updated"
+  "successfulEdit": "Profile successfully updated",
+  "profile": "profile"
 }
