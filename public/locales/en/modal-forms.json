@@ -1,8 +1,11 @@
 {
   "createBoardLabel": "Board name",
   "addButton": "Add",
+  "editButton": "Edit",
   "cancelButton": "Cancel",
   "fieldLength": "Title must be at least 2 symbols and maximum 50",
   "fieldRequired": "This field is required",
-  "createColumnLabel": "Column name"
+  "createColumnLabel": "Column name",
+  "taskNameLabel": "Task name",
+  "taskDescriptionLabel": "Description"
 }

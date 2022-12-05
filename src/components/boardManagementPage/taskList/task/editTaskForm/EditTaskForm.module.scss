@@ -1,0 +1,67 @@
+@import 'styles/_variables';
+
+.titleInput,
+.descriptionInput {
+  & :global(.MuiFormLabel-root) {
+    color: $dark-grey;
+  }
+
+  & :global(.MuiInputBase-input) {
+    color: $dark-grey;
+  }
+
+  & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: $violet;
+  }
+
+  & :global(.MuiInputBase-root),
+  & :global(.MuiFormHelperText-root),
+  & :global(.MuiFormLabel-root) {
+    font-family: inherit;
+  }
+
+  & :global(.MuiFormLabel-root) {
+    font-weight: 500;
+  }
+
+  & :global(.MuiFormHelperText-root) {
+    min-height: 40px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 20px;
+
+    @media (max-width: 365px) {
+      min-height: 60px;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 15px;
+}
+
+.addButton,
+.cancelButton {
+  font-family: inherit;
+}
+
+.addButton {
+  background-color: $violet;
+  &:hover {
+    background-color: $deep-violet;
+  }
+}
+
+.cancelButton {
+  color: $violet;
+  border-color: $violet;
+
+  &:hover {
+    color: $deep-violet;
+    border-color: $deep-violet;
+  }
+}

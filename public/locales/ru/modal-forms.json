@@ -1,8 +1,11 @@
 {
   "createBoardLabel": "Название доски",
   "addButton": "Создать",
+  "editButton": "Редактировать",
   "cancelButton": "Отмена",
   "fieldLength": "Название должно быть не менее 2 символов и не более 50",
   "fieldRequired": "Обязательное поле",
+  "taskNameLabel": "Название таска",
+  "taskDescriptionLabel": "Описание",
   "createColumnLabel": "Название колонки"
 }
