@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
+import { Navigate } from 'react-router-dom';
 import useAuth from 'auth/useAuth';
 import { Board } from 'components/boardManagementPage';
 import CustomSnackBar from 'components/common/customSnackbar';
@@ -46,6 +47,7 @@ function BoardManagementPage() {
   });
   const [boardTitle, setBoardTitle] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [boardNotFound, setBoardNotFound] = useState(false);
   const [taskFormState, setTaskFormState] = useState<TAddTaskFormState>({
     isOpen: false,
     columnId: null,
@@ -58,6 +60,8 @@ function BoardManagementPage() {
     try {
       const { title } = await getBoardCall(user.token, boardId || '');
       setBoardTitle(title);
+    } catch (error) {
+      setBoardNotFound(true);
     } finally {
       setIsLoading(false);
     }
@@ -207,6 +211,7 @@ function BoardManagementPage() {
 
   return (
     <div className={`container ${styles.wrapper}`}>
+      {boardNotFound && <Navigate to="/404" />}
       <div className={styles.header}>
         {isLoading ? (
           <Loader />
