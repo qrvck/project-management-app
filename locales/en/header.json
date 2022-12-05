@@ -1,0 +1,10 @@
+{
+  "createBoard": "Create a board",
+  "editProfile": "Edit profile",
+  "mainPage": "Go to main page",
+  "signIn": "Sign in",
+  "signUp": "Sign up",
+  "signOut": "Sign out",
+  "successfulCreation": "New board successfully created",
+  "unknownError": "Unexpected error occurred. Try again"
+}
