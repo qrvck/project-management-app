@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, ChangeEvent } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,12 +31,21 @@ function EditTaskForm({
   } = useForm<IFormValues>({
     defaultValues: {
       taskTitle: currentTaskTitle,
-      taskDescription: currentTaskDescription,
     },
   });
+  const descriptionElement = useRef<string>();
 
-  const onSubmit: SubmitHandler<IFormValues> = ({ taskTitle, taskDescription }) => {
-    updateTaskOnEdit(taskTitle, taskDescription || '');
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    descriptionElement.current = event.target.value;
+  };
+
+  const onSubmit: SubmitHandler<IFormValues> = ({ taskTitle }) => {
+    updateTaskOnEdit(
+      taskTitle,
+      typeof descriptionElement.current === 'string'
+        ? descriptionElement.current
+        : currentTaskDescription
+    );
   };
 
   return (
@@ -73,14 +82,16 @@ function EditTaskForm({
           id="task-description"
           type="text"
           focused
-          //multiline
-          //rows={4}
+          multiline
+          rows={4}
           autoComplete="off"
           margin="dense"
           label={t('taskDescriptionLabel')}
           fullWidth
           variant="outlined"
-          {...register('taskDescription')}
+          defaultValue={currentTaskDescription}
+          inputRef={descriptionElement}
+          onChange={onChange}
         />
 
         <div className={styles.buttons}>
