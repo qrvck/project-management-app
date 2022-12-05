@@ -63,8 +63,8 @@ function CreateTask({ onClose, addTask }: TCreateTaskType) {
         autoComplete="off"
         margin="dense"
         multiline
-        maxRows="4"
-        minRows="4"
+        maxRows={4}
+        minRows={4}
         {...register('description')}
       />
       <div className={styles.buttons}>
