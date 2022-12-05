@@ -14,5 +14,6 @@
   "emptyName": "Column name can't be empty",
   "minSymbols": "Column name must be at least 2 symbols",
   "maxSymbols": "Column name must be maximum 50 symbols",
-  "backButton": "Back"
+  "backButton": "Back",
+  "formTitle": "Create a column"
 }
