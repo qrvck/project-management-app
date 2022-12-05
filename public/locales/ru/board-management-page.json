@@ -19,5 +19,6 @@
   "backButton": "Назад",
   "deleteInfo": "колонку ''{{ columnName }}''",
   "deleteTaskInfo": "задачу ''{{ title }}''",
-  "formTitle": "Создание колонки"
+  "formTitle": "Создание колонки",
+  "createTask": "Создание задачи"
 }

@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import useAuth from 'auth/useAuth';
-import { Board, CreateTask } from 'components/boardManagementPage';
+import { Board } from 'components/boardManagementPage';
 import CustomSnackBar from 'components/common/customSnackbar';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import Loader from 'components/common/loader';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
 import { SubmitHandler } from 'react-hook-form';
 import { TaskAPI } from 'api/task';
@@ -17,6 +19,8 @@ import { TSnackBarState } from 'components/common/customSnackbar/types';
 import { getBoardCall } from 'api/boards';
 import { useParams, Link } from 'react-router-dom';
 import styles from './BoardManagementPage.module.scss';
+
+const CreateTask = lazy(() => import('components/boardManagementPage/createTask'));
 
 const sortByOrder = (items: TColumn[]) => {
   return items.sort((a, b) => a.order - b.order);
@@ -240,7 +244,14 @@ function BoardManagementPage() {
         type={snackBar.type}
         message={t(`${snackBar.message}`)}
       />
-      <CreateTask addTask={addTaskSubmit} onClose={closeTaskForm} {...taskFormState} />
+      <Dialog open={taskFormState.isOpen} onClose={closeTaskForm} maxWidth="xs" fullWidth>
+        <h3 className={styles.createTaskTitle}>{t('createTask')}</h3>
+        <DialogContent className={styles.dialogContent}>
+          <Suspense fallback={<Loader />}>
+            <CreateTask addTask={addTaskSubmit} onClose={closeTaskForm} {...taskFormState} />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
