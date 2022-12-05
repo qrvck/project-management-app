@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { TNewTask } from 'models/types';
+import { useTranslation } from 'react-i18next';
 import styles from './CreateTask.module.scss';
 
 type TCreateTaskType = {
@@ -14,6 +15,7 @@ type TCreateTaskType = {
 };
 
 function CreateTask({ isOpen, onClose, addTask }: TCreateTaskType) {
+  const { t } = useTranslation('modal-forms');
   const {
     register,
     reset,
@@ -43,30 +45,56 @@ function CreateTask({ isOpen, onClose, addTask }: TCreateTaskType) {
       <DialogContent>
         <form noValidate onSubmit={handleSubmit(submit)}>
           <TextField
+            className={styles.input}
             fullWidth
-            label="Title"
+            label={t('taskNameLabel')}
             variant="outlined"
             autoComplete="off"
-            margin="normal"
-            {...register('title', { required: true, minLength: 2, maxLength: 50 })}
+            margin="dense"
+            helperText={errors.title?.message ? t(`${errors.title.message}`) : ' '}
+            {...register('title', {
+              required: 'fieldRequired' || '',
+              minLength: {
+                value: 2,
+                message: 'fieldLength' || '',
+              },
+              maxLength: {
+                value: 50,
+                message: 'fieldLength' || '',
+              },
+            })}
             error={!!errors.title}
           />
           <TextField
+            className={styles.input}
             fullWidth
-            label="Description"
+            label={t('taskDescriptionLabel')}
             variant="outlined"
             autoComplete="off"
-            margin="normal"
+            margin="dense"
             multiline
             maxRows="4"
             minRows="4"
-            {...register('description', { required: true, minLength: 2, maxLength: 150 })}
+            helperText={errors.description?.message ? t(`${errors.description.message}`) : ' '}
+            {...register('description', {
+              required: 'fieldRequired' || '',
+              minLength: {
+                value: 2,
+                message: 'fieldLength' || '',
+              },
+              maxLength: {
+                value: 50,
+                message: 'fieldLength' || '',
+              },
+            })}
             error={!!errors.description}
           />
-          <Button type="submit" variant="contained">
-            Create
-          </Button>
-          <Button onClick={onClose}>Cancel</Button>
+          <div className={styles.buttons}>
+            <Button type="submit" variant="contained">
+              Create
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
