@@ -6,6 +6,8 @@
   "columnNotAdd": "Колонка не создана",
   "columnDeleted": "Колонка удалена",
   "columnNotDeleted": "Ошибка. Колонка не удалена",
+  "taskCreated": "Задача создана",
+  "taskNotCreated": "Задача не создана",
   "editTitleTooltip": "Нажмите, чтобы отредактировать название",
   "deleteColumnConfirmation": "Вы действительно хотите удалить колонку\n {{columnName}}?",
   "titleUpdated": "Название колонки успешно обновлено!",

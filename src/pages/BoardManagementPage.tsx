@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { SubmitHandler } from 'react-hook-form';
 import { TaskAPI } from 'api/task';
 import { ColumnAPI } from 'api/column';
-import { TColumn, TTask } from 'models/types';
+import { TColumn, TNewTask, TTask } from 'models/types';
 import { AddColumn } from 'components/boardManagementPage/addColumnForm';
 import { TAddColumnFormValues } from 'components/boardManagementPage/addColumnForm';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
@@ -22,9 +22,11 @@ const sortByOrder = (items: TColumn[]) => {
   return items.sort((a, b) => a.order - b.order);
 };
 
-type TBoardManagementPageState = {
+type TAddTaskFormState = {
   isOpen: boolean;
   columnId: string | null;
+  boardId: string | null;
+  order: number;
 };
 
 function BoardManagementPage() {
@@ -40,9 +42,11 @@ function BoardManagementPage() {
   });
   const [boardTitle, setBoardTitle] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [state, setState] = useState<TBoardManagementPageState>({
+  const [taskFormState, setTaskFormState] = useState<TAddTaskFormState>({
     isOpen: false,
     columnId: null,
+    boardId: boardId || null,
+    order: 0,
   });
 
   const getBoard = useCallback(async (): Promise<void> => {
@@ -59,7 +63,7 @@ function BoardManagementPage() {
     getBoard();
   }, [getBoard]);
 
-  const addTasks = useCallback(
+  const getTasks = useCallback(
     (dataColumns: TColumn[]) => {
       if (!dataColumns.length || !boardId) return;
 
@@ -82,7 +86,7 @@ function BoardManagementPage() {
     [boardId, user.token]
   );
 
-  useEffect(() => {
+  const getColumnsTasks = useCallback(() => {
     if (!boardId) return;
 
     ColumnAPI.getAll(user.token, boardId).then((dataColumns) => {
@@ -90,9 +94,13 @@ function BoardManagementPage() {
 
       if (!dataColumns) return;
 
-      dataColumns.length && addTasks(sortByOrder(dataColumns));
+      dataColumns.length && getTasks(sortByOrder(dataColumns));
     });
-  }, [addTasks, boardId, user.token]);
+  }, [getTasks, boardId, user.token]);
+
+  useEffect(() => {
+    getColumnsTasks();
+  }, [getColumnsTasks]);
 
   if (!boardId) return <></>;
 
@@ -102,9 +110,9 @@ function BoardManagementPage() {
     setLoading(true);
     const index = columns.length ? columns[columns.length - 1].order + 1 : 0;
     const newColumn = await ColumnAPI.create(user.token, boardId, data.columnName, index);
-    setLoading(false);
 
     if (!newColumn) {
+      setLoading(false);
       setSnackBar((prev) => ({
         ...prev,
         isOpen: true,
@@ -114,8 +122,8 @@ function BoardManagementPage() {
       return;
     }
 
-    setColumns((prev) => [...prev, newColumn]);
-
+    getColumnsTasks();
+    setLoading(false);
     setSnackBar((prev) => ({
       ...prev,
       isOpen: true,
@@ -128,12 +136,45 @@ function BoardManagementPage() {
     setSnackBar((prev) => ({ ...prev, isOpen: false }));
   };
 
-  const showCreateForm = (columnId: string) => {
-    setState({ isOpen: true, columnId });
+  const addTask = (taskParams: TNewTask) => {
+    const { columnId, order } = taskFormState;
+    const newTask = { ...taskParams, order, userId: user.id, users: [] };
+
+    if (!columnId || !boardId) return;
+
+    closeTaskForm();
+
+    setLoading(true);
+
+    TaskAPI.create(user.token, boardId, columnId, newTask).then((taskData) => {
+      if (!taskData) {
+        setLoading(false);
+        setSnackBar((prev) => ({
+          ...prev,
+          isOpen: true,
+          type: 'error',
+          message: 'taskNotCreated',
+        }));
+        return;
+      }
+
+      getColumnsTasks();
+
+      setSnackBar((prev) => ({
+        ...prev,
+        isOpen: true,
+        type: 'success',
+        message: 'taskCreated',
+      }));
+    });
   };
 
-  const handlerClose = () => {
-    setState((prev) => ({ ...prev, isOpen: false }));
+  const openTaskForm = ({ isOpen, columnId }: { isOpen: boolean; columnId: string }) => {
+    setTaskFormState((prev) => ({ ...prev, isOpen, columnId }));
+  };
+
+  const closeTaskForm = () => {
+    setTaskFormState((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -164,7 +205,7 @@ function BoardManagementPage() {
           columns={columns}
           setColumns={setColumns}
           setSnackBar={setSnackBar}
-          addTask={showCreateForm}
+          openTaskForm={openTaskForm}
         />
       )}
       {loading && <FullScreenLoader />}
@@ -174,7 +215,7 @@ function BoardManagementPage() {
         type={snackBar.type}
         message={t(`${snackBar.message}`)}
       />
-      <CreateTask boardId={boardId} onClose={handlerClose} {...state} />
+      <CreateTask addTask={addTask} onClose={closeTaskForm} {...taskFormState} />
     </div>
   );
 }

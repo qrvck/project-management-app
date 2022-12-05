@@ -41,10 +41,10 @@ type TBoardProps = {
   columns: TColumn[];
   setSnackBar: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
-  addTask: (columnId: string) => void;
+  openTaskForm: ({ isOpen, columnId }: { isOpen: boolean; columnId: string }) => void;
 };
 
-function Board({ boardId, columns, setColumns, setSnackBar, addTask }: TBoardProps) {
+function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoardProps) {
   const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const { user } = useAuth();
@@ -246,7 +246,7 @@ function Board({ boardId, columns, setColumns, setSnackBar, addTask }: TBoardPro
                         key={column._id}
                         deleteColumn={deleteColumn}
                         updateColumnTitle={updateColumnTitle}
-                        addTask={addTask}
+                        openTaskForm={openTaskForm}
                         {...column}
                       />
                     )

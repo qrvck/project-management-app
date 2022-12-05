@@ -7,6 +7,8 @@
   "columnNotAdd": "Column wasn't create",
   "columnDeleted": "Column was deleted",
   "columnNotDeleted": "Column wasn't deleted",
+  "taskCreated": "task created",
+  "taskNotCreated": "Task didn't create",
   "deleteLabel": "Delete column",
   "deleteColumnConfirmation": "You are going to delete column {{columnName}}.\n Are you sure?",
   "titleUpdated": "Title has been updated",

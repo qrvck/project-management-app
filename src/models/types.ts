@@ -16,3 +16,8 @@ export type TTask = {
   userId: string;
   users: string[];
 };
+
+export type TNewTask = {
+  title: string;
+  description: string;
+};

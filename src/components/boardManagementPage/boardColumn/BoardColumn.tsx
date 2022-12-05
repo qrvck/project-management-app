@@ -15,7 +15,15 @@ import styles from './BoardColumn.module.scss';
 type TBoardColumnProps = TColumn & {
   deleteColumn: (columnId: string) => void;
   updateColumnTitle: (columnId: string, title: string, order: number) => void;
-  addTask: (columnId: string) => void;
+  openTaskForm: ({
+    isOpen,
+    columnId,
+    order,
+  }: {
+    isOpen: boolean;
+    columnId: string;
+    order: number;
+  }) => void;
 };
 
 function BoardColumn({
@@ -25,7 +33,7 @@ function BoardColumn({
   items,
   updateColumnTitle,
   deleteColumn,
-  addTask,
+  openTaskForm,
 }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
 
@@ -46,7 +54,11 @@ function BoardColumn({
   };
 
   const handleAddTaskClick = () => {
-    addTask(id);
+    openTaskForm({
+      isOpen: true,
+      columnId: id,
+      order: items && items.length ? items[items.length - 1].order + 1 : 0,
+    });
   };
 
   return (
