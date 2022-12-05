@@ -84,7 +84,8 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
     if (!activeContainerID || !overContainerID || activeContainerID === overContainerID) {
       return;
     }
-
+    console.log('active: ', active);
+    console.log('over: ', over);
     setColumns((prev) => {
       const activeColumn = prev.find(({ _id }) => _id === activeContainerID);
       const overColumn = prev.find(({ _id }) => _id === overContainerID);
@@ -94,7 +95,7 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
       const activeIndex = getTaskIndex(active.id, activeColumn);
       const overIndex = !overColumn?.items?.length ? 0 : getTaskIndex(over?.id, overColumn);
 
-      if (!activeIndex || !overIndex) return [...prev];
+      if (activeIndex < 0 || overIndex < 0) return [...prev];
 
       prev[prev.indexOf(activeColumn)] = {
         ...activeColumn,
@@ -175,7 +176,6 @@ function Board({ boardId, columns, setColumns, setSnackBar, openTaskForm }: TBoa
     setShowLoader(true);
 
     const dataColumn = ColumnAPI.delete(user.token, boardId, columnId);
-    console.log(dataColumn);
 
     if (!dataColumn) {
       setShowLoader(false);

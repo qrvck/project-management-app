@@ -82,7 +82,7 @@ function BoardColumn({
           updateColumnTitle={handleUpdateTitle}
         />
         order = {order}
-        {!!items?.length && <TaskList items={items} columnId={id} />}
+        <TaskList items={items} columnId={id} />
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained" onClick={handleAddTaskClick}>
             + {t('addTask')}
