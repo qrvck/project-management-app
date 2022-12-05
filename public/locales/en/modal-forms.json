@@ -3,5 +3,6 @@
   "addButton": "Add",
   "cancelButton": "Cancel",
   "fieldLength": "Title must be at least 2 symbols and maximum 50",
-  "fieldRequired": "This field is required"
+  "fieldRequired": "This field is required",
+  "createColumnLabel": "Column name"
 }
