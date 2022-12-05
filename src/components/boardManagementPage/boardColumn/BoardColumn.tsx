@@ -86,7 +86,12 @@ function BoardColumn({
         order = {order}
         <TaskList items={items} columnId={id} deleteTask={deleteTask} />
         <Box p={1}>
-          <Button size="small" color="secondary" variant="contained" onClick={handleAddTaskClick}>
+          <Button
+            className={styles.addButton}
+            size="small"
+            variant="contained"
+            onClick={handleAddTaskClick}
+          >
             + {t('addTask')}
           </Button>
         </Box>
