@@ -1,4 +1,4 @@
-import { TNewTask, TTask } from 'models/types';
+import { TNewTask, TTask, TTaskReOrder } from 'models/types';
 import { API_BASE_URL } from './constants';
 
 export const TaskAPI = {
@@ -51,6 +51,24 @@ export const TaskAPI = {
 
     if (!response.ok) {
       return [];
+    }
+    const data: TTask[] = await response.json();
+    return data;
+  },
+
+  reOrder: async (token: string, tasks: TTaskReOrder[]): Promise<TTask[] | null> => {
+    const response = await fetch(`${API_BASE_URL}/tasksSet`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(tasks),
+    });
+
+    if (!response.ok) {
+      return null;
     }
     const data: TTask[] = await response.json();
     return data;

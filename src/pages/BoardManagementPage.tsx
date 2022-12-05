@@ -23,9 +23,9 @@ import styles from './BoardManagementPage.module.scss';
 
 const CreateTask = lazy(() => import('components/boardManagementPage/createTask'));
 
-const sortByOrder = (items: TColumn[]) => {
+function sortByOrder<T extends { order: number }>(items: T[]): T[] {
   return items.sort((a, b) => a.order - b.order);
-};
+}
 
 type TAddTaskFormState = {
   isOpen: boolean;
@@ -85,7 +85,7 @@ function BoardManagementPage() {
         const newColumns = [...dataColumns];
 
         taskData.forEach((task, idx) => {
-          newColumns[idx] = { ...newColumns[idx], items: task };
+          newColumns[idx] = { ...newColumns[idx], items: sortByOrder(task) };
         });
 
         setColumns([...newColumns]);

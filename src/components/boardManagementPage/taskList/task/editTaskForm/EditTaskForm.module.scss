@@ -1,6 +1,7 @@
 @import 'styles/_variables';
 
-.titleInput {
+.titleInput,
+.descriptionInput {
   & :global(.MuiFormLabel-root) {
     color: $dark-grey;
   }
@@ -39,7 +40,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
+  gap: 10px;
+  padding-top: 15px;
 }
 
 .addButton,

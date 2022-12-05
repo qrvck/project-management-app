@@ -83,7 +83,6 @@ function BoardColumn({
           deleteColumn={handleDeleteColumn}
           updateColumnTitle={handleUpdateTitle}
         />
-        order = {order}
         <TaskList items={items} columnId={id} deleteTask={deleteTask} />
         <Box p={1}>
           <Button
