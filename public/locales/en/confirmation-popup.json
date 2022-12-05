@@ -1,4 +1,5 @@
 {
-  "delete": "delete",
-  "cancel": "cancel"
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "deleteColumnConfirmation": "You are going to delete {{itemToDelete}}.\n Are you sure?"
 }

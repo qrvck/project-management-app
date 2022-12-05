@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { AuthProvider } from './auth/useAuth';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 import App from './App';
 import './i18n';
@@ -15,7 +17,9 @@ root.render(
     <BrowserRouter>
       <StyledEngineProvider injectFirst>
         <AuthProvider>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </AuthProvider>
       </StyledEngineProvider>
     </BrowserRouter>

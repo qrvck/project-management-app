@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import UserForm from 'components/common/userForm/UserForm';
 import { TFormValues } from 'components/common/userForm/UserForm.types';
 import styles from './EditProfilePage.module.scss';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import CustomSnackBar from 'components/common/customSnackbar';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
+import Loader from 'components/common/loader';
 import { editUserCall, deleteUserCall } from 'api/user';
 import useAuth from 'auth/useAuth';
+
+const ConfirmationPopup = lazy(() => import('components/common/confirmationPopup'));
 
 function EditProfilePage() {
   const { t } = useTranslation('edit-profile-page');
@@ -18,6 +23,7 @@ function EditProfilePage() {
   const { user, logout } = useAuth();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isConfirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [snackBar, setSnackBar] = useState<TSnackBarState>({
     isOpen: false,
     type: 'success',
@@ -60,6 +66,14 @@ function EditProfilePage() {
     });
   };
 
+  const openConfirmationPopup = () => {
+    setConfirmationPopupOpen(true);
+  };
+
+  const closeConfirmationPopup = () => {
+    setConfirmationPopupOpen(false);
+  };
+
   const handleFormSubmit: SubmitHandler<TFormValues> = ({ name, login, password }): void => {
     updateUser(name, login, password);
   };
@@ -75,10 +89,26 @@ function EditProfilePage() {
         <div className={styles.formContainer}>
           <UserForm submitButton={t('editButton')} onSubmit={handleFormSubmit} />
         </div>
-        <Button className={styles.deleteButton} variant="contained" onClick={deleteUser}>
+        <Button className={styles.deleteButton} variant="contained" onClick={openConfirmationPopup}>
           {t('deleteButton')}
         </Button>
       </div>
+      <Dialog
+        open={isConfirmationPopupOpen}
+        onClose={closeConfirmationPopup}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogContent className={styles.dialogContent}>
+          <Suspense fallback={<Loader />}>
+            <ConfirmationPopup
+              itemToDelete={t('profile')}
+              onClose={closeConfirmationPopup}
+              onDelete={deleteUser}
+            />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
       <CustomSnackBar {...snackBar} onClose={closeSnackBar} message={t(`${snackBar.message}`)} />
       {isLoading && <FullScreenLoader />}
     </>
