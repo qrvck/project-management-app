@@ -3,5 +3,6 @@
   "addButton": "Создать",
   "cancelButton": "Отмена",
   "fieldLength": "Название должно быть не менее 2 символов и не более 50",
-  "fieldRequired": "Обязательное поле"
+  "fieldRequired": "Обязательное поле",
+  "createColumnLabel": "Название колонки"
 }
