@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useAuth from 'auth/useAuth';
-import Board from 'components/boardManagementPage';
+import { Board, CreateTask } from 'components/boardManagementPage';
 import CustomSnackBar from 'components/common/customSnackbar';
 import FullScreenLoader from 'components/common/fullScreenLoader';
 import Loader from 'components/common/loader';
@@ -22,9 +22,14 @@ const sortByOrder = (items: TColumn[]) => {
   return items.sort((a, b) => a.order - b.order);
 };
 
+type TBoardManagementPageState = {
+  isOpen: boolean;
+  columnId: string | null;
+};
+
 function BoardManagementPage() {
-  const { t } = useTranslation('board-management-page');
   const { boardId } = useParams();
+  const { t } = useTranslation('board-management-page');
   const { user } = useAuth();
   const [columns, setColumns] = useState<TColumn[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +40,10 @@ function BoardManagementPage() {
   });
   const [boardTitle, setBoardTitle] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [state, setState] = useState<TBoardManagementPageState>({
+    isOpen: false,
+    columnId: null,
+  });
 
   const getBoard = useCallback(async (): Promise<void> => {
     setIsLoading(true);
@@ -84,6 +93,8 @@ function BoardManagementPage() {
       dataColumns.length && addTasks(sortByOrder(dataColumns));
     });
   }, [addTasks, boardId, user.token]);
+
+  if (!boardId) return <></>;
 
   const handlerSubmit: SubmitHandler<TAddColumnFormValues> = async (data) => {
     if (!boardId) return;
@@ -147,23 +158,23 @@ function BoardManagementPage() {
           </>
         )}
       </div>
-      {!!columns.length && boardId && (
+      {!!columns.length && (
         <Board
           boardId={boardId}
           columns={columns}
           setColumns={setColumns}
           setSnackBar={setSnackBar}
+          addTask={showCreateForm}
         />
       )}
       {loading && <FullScreenLoader />}
-      {
-        <CustomSnackBar
-          onClose={handleCloseSnackBar}
-          isOpen={snackBar.isOpen}
-          type={snackBar.type}
-          message={t(`${snackBar.message}`)}
-        />
-      }
+      <CustomSnackBar
+        onClose={handleCloseSnackBar}
+        isOpen={snackBar.isOpen}
+        type={snackBar.type}
+        message={t(`${snackBar.message}`)}
+      />
+      <CreateTask boardId={boardId} onClose={handlerClose} {...state} />
     </div>
   );
 }

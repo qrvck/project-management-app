@@ -4,7 +4,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { TaskList } from '../taskList';
 import { TColumn } from 'models/types';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -16,6 +15,7 @@ import styles from './BoardColumn.module.scss';
 type TBoardColumnProps = TColumn & {
   deleteColumn: (columnId: string) => void;
   updateColumnTitle: (columnId: string, title: string, order: number) => void;
+  addTask: (columnId: string) => void;
 };
 
 function BoardColumn({
@@ -25,6 +25,7 @@ function BoardColumn({
   items,
   updateColumnTitle,
   deleteColumn,
+  addTask,
 }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
 
@@ -42,6 +43,10 @@ function BoardColumn({
 
   const handleUpdateTitle = (title: string) => {
     updateColumnTitle(id, title, order);
+  };
+
+  const handleAddTaskClick = () => {
+    addTask(id);
   };
 
   return (
@@ -67,7 +72,7 @@ function BoardColumn({
         order = {order}
         {!!items?.length && <TaskList items={items} columnId={id} />}
         <Box p={1}>
-          <Button size="small" color="secondary" variant="contained" onClick={handlerClick}>
+          <Button size="small" color="secondary" variant="contained" onClick={handleAddTaskClick}>
             + {t('addTask')}
           </Button>
         </Box>
