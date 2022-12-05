@@ -212,7 +212,6 @@ function BoardManagementPage() {
           <Loader />
         ) : (
           <>
-            <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
             <Box className={styles.buttons} mb={2}>
               <AddColumn onSubmit={addColumnSubmit} />
               <Button
@@ -224,6 +223,7 @@ function BoardManagementPage() {
                 {t('backButton')}
               </Button>
             </Box>
+            <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
           </>
         )}
       </div>
