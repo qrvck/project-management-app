@@ -1,22 +1,30 @@
 import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
-import { TaskList, TTask } from '../taskList';
+import { TaskList } from '../taskList';
+import { TColumn } from 'models/types';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import ColumnHeader from './header/ColumnHeader';
 import grey from '@mui/material/colors/grey';
 import styles from './BoardColumn.module.scss';
 
-type TBoardColumnProps = {
-  id: string;
-  label: string;
-  items: TTask[];
+type TBoardColumnProps = TColumn & {
+  deleteColumn: (columnId: string) => void;
+  updateColumnTitle: (columnId: string, title: string, order: number) => void;
 };
 
-function BoardColumn({ id, label, items }: TBoardColumnProps) {
+function BoardColumn({
+  _id: id,
+  title,
+  order,
+  items,
+  updateColumnTitle,
+  deleteColumn,
+}: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
@@ -25,6 +33,14 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
       columnId: 'root',
     },
   });
+
+  const handleDeleteColumn = () => {
+    deleteColumn(id);
+  };
+
+  const handleUpdateTitle = (title: string) => {
+    updateColumnTitle(id, title, order);
+  };
 
   return (
     <Grid item xs={4}>
@@ -41,9 +57,13 @@ function BoardColumn({ id, label, items }: TBoardColumnProps) {
         {...listeners}
         {...attributes}
       >
-        <h3 className={styles.title}>{label}</h3>
-
-        <TaskList items={items} columnId={id} />
+        <ColumnHeader
+          label={title}
+          deleteColumn={handleDeleteColumn}
+          updateColumnTitle={handleUpdateTitle}
+        />
+        order = {order}
+        {!!items?.length && <TaskList items={items} columnId={id} />}
         <Box p={1}>
           <Button size="small" color="secondary" variant="contained">
             + {t('addTask')}
