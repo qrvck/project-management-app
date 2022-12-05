@@ -1,10 +1,5 @@
-import { TColumn } from 'models/types';
+import { TColumn, TColumnReOrder } from 'models/types';
 import { API_BASE_URL } from './constants';
-
-type TResponseError = {
-  statusCode: number;
-  message: string;
-};
 
 export const ColumnAPI = {
   create: async (
@@ -83,5 +78,23 @@ export const ColumnAPI = {
     }
 
     return await response.json();
+  },
+
+  reOrder: async (token: string, columns: TColumnReOrder[]): Promise<TColumn[] | null> => {
+    const response = await fetch(`${API_BASE_URL}/columnsSet`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(columns),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+    const data: TColumn[] = await response.json();
+    return data;
   },
 };
