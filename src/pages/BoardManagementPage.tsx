@@ -126,6 +126,7 @@ function BoardManagementPage() {
           <>
             <h2 className={styles.title}>{`${t('title')} "${boardTitle || ''}"`}</h2>
             <Box className={styles.buttons} mb={2}>
+              <AddColumn onSubmit={handlerSubmit} />
               <Button
                 className={styles.redirectButton}
                 variant="outlined"
@@ -134,7 +135,6 @@ function BoardManagementPage() {
               >
                 {t('backButton')}
               </Button>
-              <AddColumn onSubmit={handlerSubmit} />
             </Box>
           </>
         )}

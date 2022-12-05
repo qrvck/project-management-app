@@ -1,0 +1,10 @@
+@import 'styles/_variables';
+
+.addButton {
+  background-color: $violet;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $deep-violet;
+  }
+}
