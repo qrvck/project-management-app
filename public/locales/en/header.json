@@ -4,5 +4,7 @@
   "mainPage": "Go to main page",
   "signIn": "Sign in",
   "signUp": "Sign up",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "successfulCreation": "New board successfully created",
+  "unknownError": "Unexpected error occurred. Try again"
 }

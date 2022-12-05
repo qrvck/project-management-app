@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import useAuth from 'auth/useAuth';
 import BoardColumn from '../boardColumn';
+import FullScreenLoader from 'components/common/fullScreenLoader';
 import {
   DndContext,
   closestCorners,
   DragEndEvent,
   DragOverEvent,
-  KeyboardSensor,
   UniqueIdentifier,
   useSensor,
   useSensors,
   PointerSensor,
+  KeyboardSensor,
+  DragOverlay,
+  DragStartEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -17,71 +21,56 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { TTask } from '../taskList';
+import { ColumnAPI } from 'api/column';
+import { Task } from '../taskList';
+import { TColumn, TTask } from 'models/types';
+import { SENSOR_OPTIONS } from 'constants/index';
+import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './Board.module.scss';
 
-const generateColumns = () => {
-  return Array(5)
-    .fill(1)
-    .map((_, idx) => ({
-      id: self.crypto.randomUUID(),
-      label: `Column ${idx + 1}`,
-      items: [
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 1`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 2`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-        {
-          id: self.crypto.randomUUID(),
-          title: `Column ${idx + 1}, item 3`,
-          description: `Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали
-          от всех живут они в`,
-        },
-      ],
-    }));
-};
-
-const initColumns = generateColumns();
-
-type TColumn = {
-  id: string;
-  label: string;
-  items: TTask[];
-};
-
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
-  return columns.findIndex((column) => column.id === id);
+  return columns.findIndex((column) => column._id === id);
 };
 
 const getTaskIndex = (id: UniqueIdentifier, column: TColumn) => {
-  return column.items.findIndex((task) => task.id === id);
+  return column?.items?.findIndex((task) => task._id === id);
 };
 
 type TBoardProps = {
-  addTask: (columnId: string) => void;
+  boardId: string;
+  columns: TColumn[];
+  setSnackBar: React.Dispatch<React.SetStateAction<TSnackBarState>>;
+  setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
 };
 
-function Board({ addTask }: TBoardProps) {
-  const [columns, setColumns] = useState(initColumns);
-
+function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
+  const [showLoader, setShowLoader] = useState(false);
+  const [activeItem, setActiveItem] = useState<TTask | null>(null);
+  const { user } = useAuth();
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 3,
-      },
+      activationConstraint: SENSOR_OPTIONS,
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      keyboardCodes: { start: ['KeyS'], end: [], cancel: [] },
     })
   );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+
+    if (active.data.current?.type === 'task') {
+      const activeColumn = columns.find(
+        (column) => column._id === active.data.current?.columnId.toString()
+      );
+
+      if (!activeColumn) return;
+
+      const task = activeColumn?.items?.find((task) => task._id === active.id.toString());
+      task && setActiveItem({ ...task });
+    }
+  };
 
   const handlerDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
@@ -96,36 +85,38 @@ function Board({ addTask }: TBoardProps) {
     }
 
     setColumns((prev) => {
-      const activeColumn = prev.find(({ id }) => id === activeContainerID);
-      const overColumn = prev.find(({ id }) => id === overContainerID);
+      const activeColumn = prev.find(({ _id }) => _id === activeContainerID);
+      const overColumn = prev.find(({ _id }) => _id === overContainerID);
 
       if (!activeColumn || !overColumn) return [...prev];
 
       const activeIndex = getTaskIndex(active.id, activeColumn);
-      const overIndex = !overColumn.items.length ? 0 : getTaskIndex(over?.id, overColumn);
+      const overIndex = !overColumn?.items?.length ? 0 : getTaskIndex(over?.id, overColumn);
+
+      if (!activeIndex || !overIndex) return [...prev];
 
       prev[prev.indexOf(activeColumn)] = {
         ...activeColumn,
-        items: [...activeColumn.items.filter((task) => task.id !== active.id.toString())],
+        items: [...activeColumn.items.filter((task) => task._id !== active.id.toString())],
       };
 
-      const activeTaskItem = activeColumn.items[activeIndex];
+      const activeTaskItem = activeColumn.items?.[activeIndex];
 
       if (!activeTaskItem) return [...prev];
 
       if (overIndex === 0) {
         prev[prev.indexOf(overColumn)] = {
           ...overColumn,
-          items: [activeTaskItem, ...overColumn.items],
+          items: [activeTaskItem, ...overColumn?.items],
         };
       } else {
         activeTaskItem &&
           (prev[prev.indexOf(overColumn)] = {
             ...overColumn,
             items: [
-              ...overColumn.items.slice(0, overIndex),
+              ...overColumn?.items?.slice(0, overIndex),
               activeTaskItem,
-              ...overColumn.items.slice(overIndex, overColumn.items.length),
+              ...overColumn?.items?.slice(overIndex, overColumn.items.length),
             ],
           });
       }
@@ -138,6 +129,7 @@ function Board({ addTask }: TBoardProps) {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
+      setActiveItem(null);
       return;
     }
 
@@ -149,7 +141,7 @@ function Board({ addTask }: TBoardProps) {
     }
 
     if (activeContainerID === overContainerID) {
-      const currentColumn = columns.find(({ id }) => id === activeContainerID);
+      const currentColumn = columns.find(({ _id }) => _id === activeContainerID);
 
       if (!currentColumn) {
         if (active.id !== over?.id) {
@@ -175,27 +167,102 @@ function Board({ addTask }: TBoardProps) {
       }
       return;
     }
+    setActiveItem(null);
   };
+
+  const deleteColumn = (columnId: string) => {
+    setShowLoader(true);
+
+    const dataColumn = ColumnAPI.delete(user.token, boardId, columnId);
+    console.log(dataColumn);
+
+    if (!dataColumn) {
+      setShowLoader(false);
+      setSnackBar((prev) => ({
+        ...prev,
+        isOpen: true,
+        severity: 'error',
+        message: 'columnNotDeleted',
+      }));
+      return;
+    }
+
+    setColumns((prev) => {
+      const newState = prev.filter((column) => column._id !== columnId);
+      console.log(newState);
+      return [...newState];
+    });
+    setShowLoader(false);
+    setSnackBar((prev) => ({
+      ...prev,
+      isOpen: true,
+      severity: 'success',
+      message: 'columnDeleted',
+    }));
+  };
+
+  const updateColumnTitle = (columnId: string, title: string, order: number) => {
+    setShowLoader(true);
+    const columnTitle = ColumnAPI.update(user.token, boardId, columnId, title, order);
+    setShowLoader(false);
+
+    if (!columnTitle) {
+      setSnackBar({
+        isOpen: true,
+        type: 'error',
+        message: 'titleNotUpdated',
+      });
+      return;
+    }
+
+    setSnackBar({
+      isOpen: true,
+      type: 'success',
+      message: 'titleUpdated',
+    });
+  };
+
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragOver={handlerDragOver}
-      onDragEnd={handlerDragEnd}
-    >
-      <SortableContext
-        items={columns.map((column) => column?.id)}
-        strategy={horizontalListSortingStrategy}
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragOver={handlerDragOver}
+        onDragEnd={handlerDragEnd}
       >
-        <div className={styles.fixed}>
-          <div className={styles.scrollable}>
-            <div className={styles.columns}>
-              {columns.map((column) => column?.id && <BoardColumn key={column?.id} {...column} />)}
+        <SortableContext
+          items={columns.map((column) => column?._id)}
+          strategy={horizontalListSortingStrategy}
+        >
+          <div className={styles.fixed}>
+            <div className={styles.scrollable}>
+              <div className={styles.columns}>
+                {columns.map(
+                  (column) =>
+                    column._id && (
+                      <BoardColumn
+                        key={column._id}
+                        deleteColumn={deleteColumn}
+                        updateColumnTitle={updateColumnTitle}
+                        {...column}
+                      />
+                    )
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </SortableContext>
-    </DndContext>
+        </SortableContext>
+
+        {activeItem && (
+          <DragOverlay>
+            <Task {...activeItem} />
+          </DragOverlay>
+        )}
+      </DndContext>
+
+      {showLoader && <FullScreenLoader />}
+    </>
   );
 }
 

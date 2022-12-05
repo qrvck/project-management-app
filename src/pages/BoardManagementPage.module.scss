@@ -1,5 +1,49 @@
+@import 'styles/_variables';
+
 .wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.header {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  align-items: center;
+}
+
+.title {
+  margin: 0 40px 0 0;
+  font-size: 26px;
+  word-break: break-word;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.redirectButton {
+  border-color: $violet;
+  font-family: inherit;
+  color: $violet;
+
+  &:hover {
+    border-color: $deep-violet;
+    color: $deep-violet;
+  }
+}
+
+.addButton {
+  background-color: $violet;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $deep-violet;
+  }
 }

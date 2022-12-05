@@ -1,14 +1,14 @@
 import React from 'react';
 import Task from './Task';
-import { TTask } from './Task.types';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
+import { TTask } from 'models/types';
 
 interface TTaskContainerProps extends TTask {
   columnId: string;
 }
 
-function TaskContainer({ id, title, description, columnId }: TTaskContainerProps) {
+function TaskContainer({ _id: id, title, columnId }: TTaskContainerProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
@@ -24,7 +24,7 @@ function TaskContainer({ id, title, description, columnId }: TTaskContainerProps
 
   return (
     <li style={style} ref={setNodeRef} {...attributes} {...listeners}>
-      <Task id={id} title={title} description={description} isDragging={isDragging} />
+      <Task title={title} isDragging={isDragging} />
     </li>
   );
 }
