@@ -7,9 +7,16 @@ import { TTask } from 'models/types';
 interface TTaskContainerProps extends TTask {
   columnId: string;
   deleteTask: (columnId: string, taskId: string) => void;
+  openEditForm: () => void;
 }
 
-function TaskContainer({ _id: id, title, columnId, deleteTask }: TTaskContainerProps) {
+function TaskContainer({
+  _id: id,
+  title,
+  columnId,
+  deleteTask,
+  openEditForm,
+}: TTaskContainerProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
@@ -29,7 +36,12 @@ function TaskContainer({ _id: id, title, columnId, deleteTask }: TTaskContainerP
 
   return (
     <li style={style} ref={setNodeRef} {...attributes} {...listeners}>
-      <Task title={title} isDragging={isDragging} deleteTask={handleDeleteTask} />
+      <Task
+        title={title}
+        isDragging={isDragging}
+        deleteTask={handleDeleteTask}
+        openEditForm={openEditForm}
+      />
     </li>
   );
 }

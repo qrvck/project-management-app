@@ -18,15 +18,24 @@ interface ITaskProps {
   isDragging?: boolean;
   isOverlay?: boolean;
   deleteTask?: () => void;
+  openEditForm?: () => void;
 }
 
-function Task({ title, isDragging = false, isOverlay = false, deleteTask = () => {} }: ITaskProps) {
+function Task({
+  title,
+  isDragging = false,
+  isOverlay = false,
+  deleteTask = () => {},
+  openEditForm = () => {},
+}: ITaskProps) {
   const [openConfirmationForm, setOpenConfirmationForm] = useState(false);
   const { t } = useTranslation('board-management-page');
 
-  const handleEdit = () => {};
+  const handleOpenEdit = () => {
+    openEditForm?.();
+  };
 
-  const handleOpen = () => {
+  const handleOpenDeleteForm = () => {
     setOpenConfirmationForm(true);
   };
 
@@ -53,10 +62,10 @@ function Task({ title, isDragging = false, isOverlay = false, deleteTask = () =>
 
         {!isOverlay && (
           <div className={styles.buttons}>
-            <IconButton className={styles.editBtn} onClick={handleEdit}>
+            <IconButton className={styles.editBtn} onClick={handleOpenEdit}>
               <EditOutlinedIcon />
             </IconButton>
-            <IconButton className={styles.deleteBtn} onClick={handleOpen}>
+            <IconButton className={styles.deleteBtn} onClick={handleOpenDeleteForm}>
               <DeleteOutlineOutlinedIcon fontSize="small" />
             </IconButton>
           </div>

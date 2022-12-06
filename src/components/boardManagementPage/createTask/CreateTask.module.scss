@@ -1,4 +1,47 @@
+@import 'styles/_variables';
+
 .title {
   text-align: center;
   margin-bottom: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin: 30px 0 10px;
+}
+
+.input {
+  & :global(.MuiFormLabel-root) {
+    color: $dark-grey;
+  }
+
+  & :global(.MuiInputBase-input) {
+    color: $dark-grey;
+  }
+
+  & :global(.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: $violet;
+  }
+
+  & :global(.MuiInputBase-root),
+  & :global(.MuiFormHelperText-root),
+  & :global(.MuiFormLabel-root) {
+    font-family: inherit;
+  }
+
+  & :global(.MuiFormLabel-root) {
+    font-weight: 500;
+  }
+
+  & :global(.MuiFormHelperText-root) {
+    font-size: 14px;
+    line-height: 20px;
+
+    @media (max-width: 365px) {
+      min-height: 60px;
+    }
+  }
 }

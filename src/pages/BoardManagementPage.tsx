@@ -201,6 +201,29 @@ function BoardManagementPage() {
     setTaskFormState((prev) => ({ ...prev, isOpen: false }));
   };
 
+  const editTaskSubmit = (task: TTask) => {
+    const { _id, title, order, description, columnId, userId, users } = task;
+
+    setLoading(true);
+
+    TaskAPI.update(user.token, boardId, columnId, userId, _id, title, order, description).then(
+      (tasksData) => {
+        if (!tasksData) return;
+
+        getColumnsAndTasks();
+
+        setLoading(false);
+
+        setSnackBar((prev) => ({
+          ...prev,
+          isOpen: true,
+          type: 'success',
+          message: 'update',
+        }));
+      }
+    );
+  };
+
   return (
     <div className={`container ${styles.wrapper}`}>
       <div className={styles.header}>
