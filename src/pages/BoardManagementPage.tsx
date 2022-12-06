@@ -132,17 +132,16 @@ function BoardManagementPage() {
     }
 
     getColumnsAndTasks();
-    setLoading(false);
+
     setSnackBar((prev) => ({
       ...prev,
-      isOpen: true,
       type: 'success',
       message: 'columnAdd',
     }));
   };
 
   const handleCloseSnackBar = () => {
-    setSnackBar((prev) => ({ ...prev, isOpen: false }));
+    setSnackBar((prev) => ({ ...prev, isOpen: false, message: '' }));
   };
 
   const deleteTaskSubmit = (columnId: string, taskId: string) => {
@@ -220,11 +219,8 @@ function BoardManagementPage() {
 
         getColumnsAndTasks();
 
-        setLoading(false);
-
         setSnackBar((prev) => ({
           ...prev,
-          isOpen: true,
           type: 'success',
           message: 'update',
         }));
