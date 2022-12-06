@@ -10,6 +10,7 @@
   border-color: $task-border;
   border-radius: 4px;
   font-size: 14px;
+  word-break: break-all;
 }
 
 .title {
@@ -24,4 +25,9 @@
 .buttons {
   display: flex;
   flex-direction: column;
+}
+
+.dialogContent {
+  position: relative;
+  min-height: 265px;
 }
