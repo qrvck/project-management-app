@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Loader from 'components/common/loader';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 import { TaskContainer } from './task';
 import { TTask } from 'models/types';
-
+import { useTranslation } from 'react-i18next';
 import styles from './TaskList.module.scss';
-import EditTaskForm from './task/editTaskForm';
+
+const EditTaskForm = lazy(() => import('./task/editTaskForm'));
 
 type TTaskListProps = {
   items: TTask[];
@@ -15,6 +19,7 @@ type TTaskListProps = {
 };
 
 function TaskList({ columnId, items, deleteTask }: TTaskListProps) {
+  const { t } = useTranslation('board-management-page');
   const [showEditTaskForm, setShowEditTaskForm] = useState(false);
   const { setNodeRef } = useDroppable({
     id: `${columnId}drop`,
@@ -53,14 +58,19 @@ function TaskList({ columnId, items, deleteTask }: TTaskListProps) {
           </ul>
         </Box>
       </SortableContext>
-      {showEditTaskForm && (
-        <EditTaskForm
-          currentTaskTitle={''}
-          currentTaskDescription={''}
-          updateTaskOnEdit={updateTaskOnEdit}
-          onClose={handleClose}
-        />
-      )}
+      <Dialog open={showEditTaskForm} onClose={handleClose} maxWidth="xs" fullWidth>
+        <h3 className={styles.formTitle}>{t('editTask')}</h3>
+        <DialogContent className={styles.dialogContent}>
+          <Suspense fallback={<Loader />}>
+            <EditTaskForm
+              currentTaskTitle={''}
+              currentTaskDescription={''}
+              updateTaskOnEdit={updateTaskOnEdit}
+              onClose={handleClose}
+            />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

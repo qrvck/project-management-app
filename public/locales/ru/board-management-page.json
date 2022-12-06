@@ -20,5 +20,6 @@
   "deleteInfo": "колонку ''{{ columnName }}''",
   "deleteTaskInfo": "задачу ''{{ title }}''",
   "formTitle": "Создание колонки",
-  "createTask": "Создание задачи"
+  "createTask": "Создание задачи",
+  "editTask": "Редактировать задание"
 }

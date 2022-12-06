@@ -21,5 +21,6 @@
   "deleteInfo": "column ''{{ columnName }}''",
   "deleteTaskInfo": "task ''{{ title }}''",
   "formTitle": "Create a column",
-  "createTask": "Create a task"
+  "createTask": "Create a task",
+  "editTask": "Edit task"
 }
