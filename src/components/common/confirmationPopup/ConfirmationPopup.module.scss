@@ -1,0 +1,33 @@
+@import 'styles/_variables';
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  white-space: pre-line;
+}
+
+.icon {
+  font-size: 90px;
+}
+
+.title,
+.delete,
+.cancel {
+  font-family: inherit;
+}
+
+.delete {
+  margin-right: 20px;
+}
+
+.cancel {
+  color: $dark-grey;
+
+  &:global.MuiButton-root:hover {
+    color: $davy-grey;
+    background-color: $white;
+  }
+}
