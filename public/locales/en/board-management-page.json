@@ -7,6 +7,10 @@
   "columnNotAdd": "Column wasn't create",
   "columnDeleted": "Column was deleted",
   "columnNotDeleted": "Column wasn't deleted",
+  "taskCreated": "Task created",
+  "taskNotCreated": "Task didn't create",
+  "taskDeleted": "Task deleted",
+  "taskNotDeleted": "Task not deleted",
   "deleteLabel": "Delete column",
   "titleUpdated": "Title has been updated",
   "titleNotUpdated": "Title has not been updated",
@@ -15,5 +19,10 @@
   "maxSymbols": "Column name must be maximum 50 symbols",
   "backButton": "Back",
   "deleteInfo": "column ''{{ columnName }}''",
-  "formTitle": "Create a column"
+  "deleteTaskInfo": "task ''{{ title }}''",
+  "formTitle": "Create a column",
+  "createTask": "Create a task",
+  "editTask": "Edit task",
+  "taskNotUpdated": "Task didn't update",
+  "taskUpdated": "Task updated"
 }

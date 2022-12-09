@@ -10,7 +10,7 @@ function BoardsListPage() {
   return (
     <div className="container">
       <div className={styles.wrapper}>
-        <h2>{t('title')}</h2>
+        <h2 className={styles.title}>{t('title')}</h2>
         <BoardsList />
       </div>
     </div>

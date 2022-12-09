@@ -1,8 +1,44 @@
 @import 'styles/_variables';
 
 .task {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 8px;
   border: 1px solid;
   border-color: $task-border;
   border-radius: 4px;
   font-size: 14px;
+  word-break: break-all;
+}
+
+.title {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.deleteBtn, .editBtn {
+  padding: 3px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialogConfirmation {
+  position: relative;
+  min-height: 265px;
+}
+
+.formTitle {
+  text-align: center;
+  margin-bottom: 0;
+  color: #1a1a1a;
+}
+
+.dialogEdit {
+  position: relative;
+  min-height: 340px;
 }

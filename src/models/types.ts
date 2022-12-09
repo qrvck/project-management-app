@@ -16,3 +16,19 @@ export type TTask = {
   userId: string;
   users: string[];
 };
+
+export type TNewTask = {
+  title: string;
+  description: string;
+};
+
+export type TColumnReOrder = {
+  _id: string;
+  order: number;
+};
+
+export type TTaskReOrder = {
+  _id: string;
+  order: number;
+  columnId: string;
+};

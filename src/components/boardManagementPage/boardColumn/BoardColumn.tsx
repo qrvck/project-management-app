@@ -4,9 +4,9 @@ import { useSortable } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { TaskList } from '../taskList';
 import { TColumn } from 'models/types';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import ColumnHeader from './header/ColumnHeader';
 import grey from '@mui/material/colors/grey';
@@ -15,6 +15,23 @@ import styles from './BoardColumn.module.scss';
 type TBoardColumnProps = TColumn & {
   deleteColumn: (columnId: string) => void;
   updateColumnTitle: (columnId: string, title: string, order: number) => void;
+  openTaskForm: ({
+    isOpen,
+    columnId,
+    order,
+  }: {
+    isOpen: boolean;
+    columnId: string;
+    order: number;
+  }) => void;
+  deleteTask: (columnId: string, taskId: string) => void;
+  updateTask: (
+    columnId: string,
+    taskId: string,
+    title: string,
+    order: number,
+    description: string
+  ) => void;
 };
 
 function BoardColumn({
@@ -24,8 +41,12 @@ function BoardColumn({
   items,
   updateColumnTitle,
   deleteColumn,
+  openTaskForm,
+  deleteTask,
+  updateTask,
 }: TBoardColumnProps) {
   const { t } = useTranslation('board-management-page');
+
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
     data: {
@@ -40,6 +61,14 @@ function BoardColumn({
 
   const handleUpdateTitle = (title: string) => {
     updateColumnTitle(id, title, order);
+  };
+
+  const handleAddTaskClick = () => {
+    openTaskForm({
+      isOpen: true,
+      columnId: id,
+      order: items.length,
+    });
   };
 
   return (
@@ -62,10 +91,14 @@ function BoardColumn({
           deleteColumn={handleDeleteColumn}
           updateColumnTitle={handleUpdateTitle}
         />
-        order = {order}
-        {!!items?.length && <TaskList items={items} columnId={id} />}
+        <TaskList items={items} columnId={id} deleteTask={deleteTask} updateTask={updateTask} />
         <Box p={1}>
-          <Button size="small" color="secondary" variant="contained">
+          <Button
+            className={styles.addButton}
+            size="small"
+            variant="contained"
+            onClick={handleAddTaskClick}
+          >
             + {t('addTask')}
           </Button>
         </Box>

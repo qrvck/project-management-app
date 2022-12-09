@@ -13,10 +13,13 @@ function CustomSnackBar({ isOpen, onClose, type, message }: ISnackBarProps) {
   };
   return (
     <Snackbar
-      className={styles.snackbar}
       open={isOpen}
       autoHideDuration={2000}
       onClose={toggleSnackBar}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
     >
       <Alert
         elevation={6}

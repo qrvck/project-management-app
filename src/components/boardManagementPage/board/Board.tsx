@@ -23,10 +23,11 @@ import {
 } from '@dnd-kit/sortable';
 import { ColumnAPI } from 'api/column';
 import { Task } from '../taskList';
-import { TColumn, TTask } from 'models/types';
+import { TColumn, TTask, TTaskReOrder } from 'models/types';
 import { SENSOR_OPTIONS } from 'constants/index';
 import { TSnackBarState } from 'components/common/customSnackbar/types';
 import styles from './Board.module.scss';
+import { TaskAPI } from 'api/task';
 
 const getColumnIndex = (id: UniqueIdentifier, columns: TColumn[]) => {
   return columns.findIndex((column) => column._id === id);
@@ -41,9 +42,34 @@ type TBoardProps = {
   columns: TColumn[];
   setSnackBar: React.Dispatch<React.SetStateAction<TSnackBarState>>;
   setColumns: React.Dispatch<React.SetStateAction<TColumn[]>>;
+  openTaskForm: ({
+    isOpen,
+    columnId,
+    order,
+  }: {
+    isOpen: boolean;
+    columnId: string;
+    order: number;
+  }) => void;
+  deleteTask: (columnId: string, taskId: string) => void;
+  updateTask: (
+    columnId: string,
+    taskId: string,
+    title: string,
+    order: number,
+    description: string
+  ) => void;
 };
 
-function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
+function Board({
+  boardId,
+  columns,
+  setColumns,
+  setSnackBar,
+  openTaskForm,
+  deleteTask,
+  updateTask,
+}: TBoardProps) {
   const [showLoader, setShowLoader] = useState(false);
   const [activeItem, setActiveItem] = useState<TTask | null>(null);
   const { user } = useAuth();
@@ -56,6 +82,47 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
       keyboardCodes: { start: ['KeyS'], end: [], cancel: [] },
     })
   );
+
+  const saveTasksInColumnOrder = (sortedTasks: TTask[]) => {
+    const formatedTasks = sortedTasks.map((task, idx) => ({
+      _id: task._id,
+      columnId: task.columnId,
+      order: idx,
+    }));
+
+    TaskAPI.reOrder(user.token, formatedTasks).then((tasksData) => {
+      if (!tasksData) return;
+    });
+  };
+
+  const saveColumnOrder = (sortedColumns: TColumn[]) => {
+    const formatedColumns = sortedColumns.map((column, idx) => ({
+      _id: column._id,
+      order: idx,
+    }));
+
+    ColumnAPI.reOrder(user.token, formatedColumns).then((columnsData) => {
+      if (!columnsData) return;
+    });
+  };
+
+  const saveTaskOrder = (columns: TColumn[]) => {
+    const formatedTasks: TTaskReOrder[] = [];
+
+    columns.forEach((column) => {
+      return column.items.forEach((task, idx) => {
+        formatedTasks.push({
+          _id: task._id,
+          columnId: task.columnId,
+          order: idx,
+        });
+      });
+    });
+
+    TaskAPI.reOrder(user.token, formatedTasks).then((tasksData) => {
+      if (!tasksData) return;
+    });
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -93,7 +160,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
       const activeIndex = getTaskIndex(active.id, activeColumn);
       const overIndex = !overColumn?.items?.length ? 0 : getTaskIndex(over?.id, overColumn);
 
-      if (!activeIndex || !overIndex) return [...prev];
+      if (activeIndex < 0 || overIndex < 0) return [...prev];
 
       prev[prev.indexOf(activeColumn)] = {
         ...activeColumn,
@@ -104,23 +171,24 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
 
       if (!activeTaskItem) return [...prev];
 
+      activeTaskItem.columnId = overColumn._id;
+
       if (overIndex === 0) {
         prev[prev.indexOf(overColumn)] = {
           ...overColumn,
           items: [activeTaskItem, ...overColumn?.items],
         };
       } else {
-        activeTaskItem &&
-          (prev[prev.indexOf(overColumn)] = {
-            ...overColumn,
-            items: [
-              ...overColumn?.items?.slice(0, overIndex),
-              activeTaskItem,
-              ...overColumn?.items?.slice(overIndex, overColumn.items.length),
-            ],
-          });
+        prev[prev.indexOf(overColumn)] = {
+          ...overColumn,
+          items: [
+            ...overColumn?.items?.slice(0, overIndex),
+            activeTaskItem,
+            ...overColumn?.items?.slice(overIndex, overColumn.items.length),
+          ],
+        };
       }
-
+      saveTaskOrder([...prev]);
       return [...prev];
     });
   };
@@ -148,7 +216,9 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
           const activeIndex: number = getColumnIndex(active.id, columns);
           const overIndex: number = getColumnIndex(over?.id || 0, columns);
 
-          setColumns(arrayMove(columns, activeIndex, overIndex));
+          const sortedColumns = arrayMove(columns, activeIndex, overIndex);
+          setColumns(sortedColumns);
+          saveColumnOrder(sortedColumns);
         }
         return;
       }
@@ -157,28 +227,30 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
       const overIndex: number = getTaskIndex(over?.id || 0, currentColumn);
 
       if (activeIndex != overIndex) {
+        const sortedTasks = arrayMove<TTask>(currentColumn.items, activeIndex, overIndex);
         setColumns((prev) => {
           prev[prev.indexOf(currentColumn)] = {
             ...currentColumn,
-            items: arrayMove<TTask>(currentColumn.items, activeIndex, overIndex),
+            items: sortedTasks,
           };
           return [...prev];
         });
+
+        saveTasksInColumnOrder(sortedTasks);
       }
       return;
     }
     setActiveItem(null);
   };
 
-  const deleteColumn = (columnId: string) => {
+  const deleteColumn = async (columnId: string) => {
     setShowLoader(true);
 
-    const dataColumn = ColumnAPI.delete(user.token, boardId, columnId);
-    console.log(dataColumn);
+    const dataColumn = await ColumnAPI.delete(user.token, boardId, columnId);
 
     if (!dataColumn) {
       setShowLoader(false);
-      setSnackBar((prev) => ({
+      setSnackBar((prev: TSnackBarState) => ({
         ...prev,
         isOpen: true,
         severity: 'error',
@@ -189,11 +261,10 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
 
     setColumns((prev) => {
       const newState = prev.filter((column) => column._id !== columnId);
-      console.log(newState);
       return [...newState];
     });
     setShowLoader(false);
-    setSnackBar((prev) => ({
+    setSnackBar((prev: TSnackBarState) => ({
       ...prev,
       isOpen: true,
       severity: 'success',
@@ -201,9 +272,9 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
     }));
   };
 
-  const updateColumnTitle = (columnId: string, title: string, order: number) => {
+  const updateColumnTitle = async (columnId: string, title: string, order: number) => {
     setShowLoader(true);
-    const columnTitle = ColumnAPI.update(user.token, boardId, columnId, title, order);
+    const columnTitle = await ColumnAPI.update(user.token, boardId, columnId, title, order);
     setShowLoader(false);
 
     if (!columnTitle) {
@@ -245,6 +316,9 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
                         key={column._id}
                         deleteColumn={deleteColumn}
                         updateColumnTitle={updateColumnTitle}
+                        openTaskForm={openTaskForm}
+                        deleteTask={deleteTask}
+                        updateTask={updateTask}
                         {...column}
                       />
                     )
@@ -256,7 +330,7 @@ function Board({ boardId, columns, setColumns, setSnackBar }: TBoardProps) {
 
         {activeItem && (
           <DragOverlay>
-            <Task {...activeItem} />
+            <Task {...activeItem} isOverlay />
           </DragOverlay>
         )}
       </DndContext>

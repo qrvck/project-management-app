@@ -7,5 +7,6 @@
   "fieldRequired": "This field is required",
   "createColumnLabel": "Column name",
   "taskNameLabel": "Task name",
-  "taskDescriptionLabel": "Description"
+  "taskDescriptionLabel": "Description",
+  "createTaskLabel": "Task"
 }

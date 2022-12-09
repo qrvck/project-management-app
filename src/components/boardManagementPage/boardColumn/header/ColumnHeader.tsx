@@ -36,7 +36,9 @@ function ColumnHeader({ label, deleteColumn, updateColumnTitle }: TColumnHeaderP
         </h3>
       )}
 
-      {!openEditForm && <DeleteColumn columnName={label} deleteColumn={deleteColumn} />}
+      {!openEditForm && (
+        <DeleteColumn columnName={columnNameRef.current} deleteColumn={deleteColumn} />
+      )}
     </Box>
   );
 }
