@@ -1,0 +1,18 @@
+@import 'styles/_variables';
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 100%;
+  background-color: $column-bg;
+}
+
+.addButton {
+  background-color: $violet;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $deep-violet;
+  }
+}

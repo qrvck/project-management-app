@@ -1,0 +1,13 @@
+{
+  "image title": "Welcome aboard",
+  "image subtitle": "just a couple of clicks and we’ll start",
+  "sign up": "Sign Up",
+  "sign in": "Sign In",
+  "login": "Login",
+  "password": "Password",
+  "have no account yet": "Have no account yet",
+  "already have an account": "Already have an account",
+  "authorization error": "Incorrect login or password",
+  "login already exist": "This login already exists",
+  "this field is required": "this field is required"
+}

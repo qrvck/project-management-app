@@ -1,0 +1,50 @@
+@import 'styles/_variables';
+
+.board {
+  position: relative;
+  height: 100%;
+}
+
+.link {
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.paper {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 8px;
+  height: 100%;
+  border: 2px solid $light-violet;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $violet;
+  }
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.owner {
+  margin: 18px 0 0 0;
+  padding-bottom: 26px;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.deleteBtn {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+.dialogContent {
+  min-height: 265px;
+}

@@ -1,0 +1,21 @@
+@import 'styles/_variables';
+
+.addButton {
+  background-color: $violet;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $deep-violet;
+  }
+}
+
+.title {
+  margin-bottom: 0;
+  color: $dark-grey;
+  text-align: center;
+}
+
+.dialogContent {
+  position: relative;
+  min-height: 192px;
+}
